@@ -24,6 +24,30 @@ import TownClubPage from "./pages/TownClubPage";
 import KidsPage from "./pages/KidsPage";
 import Committee from "./pages/Committee";
 import CommitteeOld from "./pages/CommitteeOld";
+import Library from "./pages/Library";
+import LibraryOld from "./pages/LibraryOld";
+
+// Sports
+import Sports from "./pages/Sports";
+import SportsOld from "./pages/SportsOld";
+
+// Drama
+import Drama from "./pages/Drama";
+import DramaOld from "./pages/DramaOld";
+
+// Town
+import Town from "./pages/Town";
+import TownOld from "./pages/TownOld";
+
+// Issue বিভাগ
+import Issue from "./pages/Issue";
+import IssueOld from "./pages/IssueOld";
+import Photos from "./pages/Photos";
+import Videos from "./pages/Videos";
+
+import FieldApplication from "./pages/FieldApplication";
+import LeaveApplication from "./pages/LeaveApplication";
+import JadunathMajumdar from "./pages/JadunathMajumdar";
 
 function App() {
   return (
@@ -48,13 +72,38 @@ function App() {
           <Route path="/news" element={<News />} />
           <Route path="/notice" element={<Notice />} />
           <Route path="/contact" element={<Contact />} />
-          <Route path="/library" element={<LibraryPage />} />
-          <Route path="/sports" element={<SportsPage />} />
-          <Route path="/drama" element={<DramaPage />} />
-          <Route path="/townclub" element={<TownClubPage />} />
-          <Route path="/kids" element={<KidsPage />} />
+          <Route path="/library-page" element={<LibraryPage />} />
+          <Route path="/sports-page" element={<SportsPage />} />
+          <Route path="/drama-page" element={<DramaPage />} />
+          <Route path="/townclub-page" element={<TownClubPage />} />
+          <Route path="/kids-page" element={<KidsPage />} />
       <Route path="/committee" element={<Committee />} />
       <Route path="/committee-old" element={<CommitteeOld />} />
+ {/* Library */}
+          <Route path="/library" element={<Library />} />
+          <Route path="/lib-old" element={<LibraryOld />} />
+
+          {/* Sports */}
+          <Route path="/sports" element={<Sports />} />
+          <Route path="/sports-old" element={<SportsOld />} />
+
+          {/* Drama */}
+          <Route path="/drama" element={<Drama />} />
+          <Route path="/drama-old" element={<DramaOld />} />
+
+          {/* Town */}
+          <Route path="/town" element={<Town />} />
+          <Route path="/town-old" element={<TownOld />} />
+
+          {/* Issue */}
+          <Route path="/issue" element={<Issue />} />
+          <Route path="/issue-old" element={<IssueOld />} />
+          <Route path="/photos" element={<Photos />} />
+          <Route path="/videos" element={<Videos />} />
+
+          <Route path="/field-application" element={<FieldApplication />} />
+          <Route path="/leave-application" element={<LeaveApplication />} />
+          <Route path="/jadunathmajumdar" element={<JadunathMajumdar />} />
         </Route>
 
       </Routes>

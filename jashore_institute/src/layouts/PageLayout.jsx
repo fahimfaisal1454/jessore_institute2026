@@ -5,13 +5,13 @@ import Footer from "../components/layout/Footer";
 
 export default function PageLayout() {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen"> {/* ❌ removed bg-white */}
 
       <Header />
       <Navbar />
 
-      {/* FULL WIDTH CONTENT */}
-      <div className="max-w-[1100px] mx-auto p-4">
+      {/* ✅ WHITE CONTENT BOX */}
+      <div className="max-w-[1100px] mx-auto bg-white shadow-md min-h-[600px] p-4">
         <Outlet />
       </div>
 

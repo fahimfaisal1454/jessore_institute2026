@@ -24,11 +24,11 @@ export default function Navbar() {
         {
           name: "প্রাক্তন বিভাগীয় সম্পাদক",
           children: [
-            { name: "সম্পাদক, লাইব্রেরি বিভাগ", path: "/library" },
-            { name: "সম্পাদক, ক্রীড়া সংসদ", path: "/sports" },
-            { name: "সম্পাদক, নাট্যকলা সংসদ", path: "/drama" },
-            { name: "সম্পাদক, টাউন ক্লাব", path: "/townclub" },
-            { name: "সম্পাদক, শিশু চিত্রাঙ্কন কেন্দ্র", path: "/kids" },
+            { name: "সম্পাদক, লাইব্রেরি বিভাগ", path: "/library-page" },
+            { name: "সম্পাদক, ক্রীড়া সংসদ", path: "/sports-page" },
+            { name: "সম্পাদক, নাট্যকলা সংসদ", path: "/drama-page" },
+            { name: "সম্পাদক, টাউন ক্লাব", path: "/townclub-page" },
+            { name: "সম্পাদক, শিশু চিত্রাঙ্কন কেন্দ্র", path: "/kids-page" },
           ],
         },
       ],
@@ -76,19 +76,19 @@ export default function Navbar() {
         { name: "টাউন ক্লাব – প্রাক্তন", path: "/town-old" },
       ],
     },
-    {
-      name: "ইয়ুথ বিভাগ (সি.আর.সি)",
-      children: [
-        { name: "ইয়ুথ বিভাগ (সি.আর.সি)", path: "/youth" },
-        { name: "ইয়ুথ বিভাগ (সি.আর.সি) – প্রাক্তন", path: "/youth-old" },
-      ],
-    },
+{
+  name: "ইস্যু বিভাগ",
+  children: [
+    { name: "ইস্যু বিভাগ", path: "/issue" },
+    { name: "ইস্যু বিভাগ – প্রাক্তন", path: "/issue-old" },
+  ],
+},
   ],
 }
   ],
 },
 
-    { name: "যশোরের মধুমালার", path: "/madhumala" },
+    { name: "যদুনাথ মজুমদার", path: "/jadunathmajumdar" },
 
     {
       name: "গ্যালারি",
@@ -101,8 +101,14 @@ export default function Navbar() {
     {
       name: "ফরম",
       dropdown: [
-        { name: "সদস্য আবেদন ফরম", path: "/apply" },
-        { name: "ছাড়পত্র আবেদন ফরম", path: "/leave" },
+    {
+      name: "মাঠ বরাদ্ধের আবেদন ফরম",
+      path: "/field-application",
+    },
+    {
+      name: "ছুটির আবেদন ফরম",
+      path: "/leave-application",
+    },
       ],
     },
 
