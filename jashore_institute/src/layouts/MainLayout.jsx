@@ -1,3 +1,5 @@
+import { Outlet } from "react-router-dom";
+
 import Header from "../components/layout/Header";
 import Navbar from "../components/layout/Navbar";
 import Footer from "../components/layout/Footer";
@@ -7,7 +9,7 @@ import MapSection from "../components/home/MapSection";
 import LeftSidebar from "../components/home/LeftSidebar";
 import RightSidebar from "../components/home/RightSidebar";
 
-export default function MainLayout({ children }) {
+export default function MainLayout() {
   return (
     <div className="min-h-screen flex justify-center">
 
@@ -17,7 +19,7 @@ export default function MainLayout({ children }) {
         <Navbar />
         <NewsTicker />
 
-        {/* 🔥 ONLY HERE GRID EXISTS */}
+        {/* 🔥 MAIN GRID */}
         <div className="grid grid-cols-12 gap-3 p-3">
 
           <div className="col-span-3">
@@ -25,7 +27,7 @@ export default function MainLayout({ children }) {
           </div>
 
           <div className="col-span-6">
-            {children}  {/* 👈 pages render here */}
+            <Outlet />   {/* ✅ THIS IS IMPORTANT */}
           </div>
 
           <div className="col-span-3">
@@ -33,6 +35,7 @@ export default function MainLayout({ children }) {
           </div>
 
         </div>
+
         <MapSection />
         <Footer />
 
