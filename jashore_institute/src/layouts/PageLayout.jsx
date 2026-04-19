@@ -5,17 +5,22 @@ import Footer from "../components/layout/Footer";
 
 export default function PageLayout() {
   return (
-    <div className="min-h-screen"> {/* ❌ removed bg-white */}
+    <div className="min-h-screen">
 
-      <Header />
-      <Navbar />
+      {/* 🔥 MAIN CENTER BOX */}
+      <div className="max-w-[1100px] mx-auto bg-white shadow-md">
 
-      {/* ✅ WHITE CONTENT BOX */}
-      <div className="max-w-[1100px] mx-auto bg-white shadow-md min-h-[600px] p-4">
-        <Outlet />
+        <Header />
+        <Navbar />
+
+        {/* CONTENT */}
+        <div className="p-4 min-h-[600px]">
+          <Outlet />
+        </div>
+
+        <Footer />
       </div>
 
-      <Footer />
     </div>
   );
 }

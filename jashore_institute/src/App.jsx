@@ -49,6 +49,19 @@ import FieldApplication from "./pages/FieldApplication";
 import LeaveApplication from "./pages/LeaveApplication";
 import JadunathMajumdar from "./pages/JadunathMajumdar";
 
+// Right Sidebar Pages
+import LibraryDiv from "./pages/leftSidebar/LibraryDiv";
+import SportsDiv from "./pages/leftSidebar/SportsDiv";
+import DramaDiv from "./pages/leftSidebar/DramaDiv";
+import TownClubDiv from "./pages/leftSidebar/TownClubDiv";
+import KidsZoneDiv from "./pages/leftSidebar/KidsZoneDiv";
+import LifeMember from "./pages/leftSidebar/LifeMember";
+import AnnualMember from "./pages/leftSidebar/AnnualMember";
+import GeneralMember from "./pages/leftSidebar/GeneralMember";
+import VoterList from "./pages/leftSidebar/VoterList";
+
+
+
 function App() {
   return (
     <BrowserRouter>
@@ -104,6 +117,17 @@ function App() {
           <Route path="/field-application" element={<FieldApplication />} />
           <Route path="/leave-application" element={<LeaveApplication />} />
           <Route path="/jadunathmajumdar" element={<JadunathMajumdar />} />
+
+          <Route path="/library-division" element={<LibraryDiv />} />
+          <Route path="/sports-division" element={<SportsDiv />} />
+<Route path="/drama-division" element={<DramaDiv />} />
+<Route path="/townclub-division" element={<TownClubDiv />} />
+<Route path="/kids-division" element={<KidsZoneDiv />} />
+<Route path="/life-member" element={<LifeMember />} />
+<Route path="/annual-member" element={<AnnualMember />} />
+<Route path="/general-member" element={<GeneralMember />} />
+<Route path="/voter-list" element={<VoterList />} />
+
         </Route>
 
       </Routes>
