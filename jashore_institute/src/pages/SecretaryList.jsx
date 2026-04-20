@@ -1,3 +1,5 @@
+import DataTable from "../components/shared/DataTable";
+
 export default function SecretaryList() {
   const data = [
     { id: 1, name: "রায় বাহাদুর মুনশী মধুসূদন", year: "1928 - 1930" },
@@ -13,42 +15,10 @@ export default function SecretaryList() {
   ];
 
   return (
-    <div className="max-w-[1100px] mx-auto">
-
-      <div className="bg-white border shadow-sm">
-
-        {/* Header */}
-        <div className="bg-[#e9e9e9] border-b px-4 py-2 font-semibold">
-          সাধারণ সম্পাদক তালিকা
-        </div>
-
-        {/* Table */}
-        <div className="p-4 overflow-x-auto">
-          <table className="w-full text-sm border">
-
-            <thead className="bg-[#d9e3ea] text-gray-800">
-              <tr>
-                <th className="border px-3 py-2 text-left">ক্রমিক</th>
-                <th className="border px-3 py-2 text-left">সাধারণ সম্পাদক</th>
-                <th className="border px-3 py-2 text-left">কার্যকাল</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {data.map((item) => (
-                <tr key={item.id} className="hover:bg-gray-100">
-                  <td className="border px-3 py-2">{item.id}.</td>
-                  <td className="border px-3 py-2">{item.name}</td>
-                  <td className="border px-3 py-2">{item.year}</td>
-                </tr>
-              ))}
-            </tbody>
-
-          </table>
-        </div>
-
-      </div>
-
-    </div>
+    <DataTable
+      title="সাধারণ সম্পাদক তালিকা"
+      columns={["ক্রমিক", "সাধারণ সম্পাদক", "কার্যকাল"]}
+      data={data}
+    />
   );
 }

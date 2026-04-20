@@ -1,41 +1,86 @@
+import { NavLink } from "react-router-dom";
 import SectionHeader from "../shared/SectionHeader";
+import icon from "../../assets/committee.png";
+import { FaUser } from "react-icons/fa";
 
 export default function CommitteeList() {
-  const items = [
-    "সভাপতি তালিকা",
-    "সাধারণ সম্পাদক তালিকা",
-    "সহ-সভাপতি তালিকা",
-    "যুগ্ম সম্পাদক তালিকা",
+  const topItems = [
+    { name: "সভাপতি তালিকা", path: "/president-lists" },
+    { name: "সাধারণ সম্পাদক তালিকা", path: "/secretary-lists" },
+  ];
+
+  const bottomItems = [
+    { name: "সম্পাদক, লাইব্রেরি বিভাগ", path: "/library-secretary" },
+    { name: "সম্পাদক, ক্রীড়া বিভাগ", path: "/sports-secretary" },
+    { name: "সম্পাদক, নাট্যকলা সংসদ", path: "/drama-secretary" },
+    { name: "সম্পাদক, টাউন ক্লাব", path: "/town-secretary" },
+    { name: "সম্পাদক, শিশু চিত্তবিনোদন কেন্দ্র", path: "/kids-secretary" },
   ];
 
   return (
-    <div className="grid grid-cols-2 gap-3">
+    <div className="space-y-4">
 
-      {/* LEFT BOX */}
-      <div className="bg-white border shadow-sm">
-        <SectionHeader title="প্রধান... সভাপতি-সাধারণ সম্পাদক এর তালিকা.." />
+      {/* TOP SECTION */}
+      <div className="border bg-white">
+        <SectionHeader title="প্রাক্তন সভাপতি ও সাধারণ সম্পাদক তালিকা" />
 
-        <div className="p-3 space-y-2 text-sm">
-          {items.map((item, index) => (
-            <div key={index} className="flex items-center gap-2 border-b pb-1">
-              <span className="text-green-600">🔰</span>
-              <p className="cursor-pointer hover:text-blue-600">{item}</p>
-            </div>
-          ))}
+        <div className="flex gap-4 p-3">
+          
+          {/* LEFT ICON */}
+          <div className="w-24 flex justify-center items-start">
+            <img src={icon} alt="icon" className="w-16 opacity-80" />
+          </div>
+
+          {/* RIGHT LIST */}
+          <div className="flex-1 space-y-2">
+            {topItems.map((item, i) => (
+              <NavLink
+                key={i}
+                to={item.path}
+                className="flex items-center gap-2 border px-3 py-1
+                           bg-[url('/bg-blue.png')] bg-cover 
+                           hover:shadow hover:bg-blue-50 transition"
+              >
+                <FaUser className="text-blue-600" />
+                <span className="hover:text-blue-600 font-medium">
+                  {item.name}
+                </span>
+              </NavLink>
+            ))}
+          </div>
+
         </div>
       </div>
 
-      {/* RIGHT BOX */}
-      <div className="bg-white border shadow-sm">
-        <SectionHeader title="প্রধান... বিভাগীয় সম্পাদক এর তালিকা.." />
+      {/* BOTTOM SECTION */}
+      <div className="border bg-white">
+        <SectionHeader title="প্রাক্তন বিভাগীয় সম্পাদক তালিকা" />
 
-        <div className="p-3 space-y-2 text-sm">
-          {items.map((item, index) => (
-            <div key={index} className="flex items-center gap-2 border-b pb-1">
-              <span className="text-purple-600">📌</span>
-              <p className="cursor-pointer hover:text-blue-600">{item}</p>
-            </div>
-          ))}
+        <div className="flex gap-4 p-3">
+          
+          {/* LEFT ICON */}
+          <div className="w-24 flex justify-center items-start">
+            <img src={icon} alt="icon" className="w-16 opacity-80" />
+          </div>
+
+          {/* RIGHT LIST */}
+          <div className="flex-1 space-y-2">
+            {bottomItems.map((item, i) => (
+              <NavLink
+                key={i}
+                to={item.path}
+                className="flex items-center gap-2 border px-3 py-1
+                           bg-[url('/bg-blue.png')] bg-cover 
+                           hover:shadow hover:bg-blue-50 transition"
+              >
+                <FaUser className="text-blue-600" />
+                <span className="hover:text-blue-600 font-medium">
+                  {item.name}
+                </span>
+              </NavLink>
+            ))}
+          </div>
+
         </div>
       </div>
 

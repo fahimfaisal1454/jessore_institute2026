@@ -55,12 +55,24 @@ import SportsDiv from "./pages/leftSidebar/SportsDiv";
 import DramaDiv from "./pages/leftSidebar/DramaDiv";
 import TownClubDiv from "./pages/leftSidebar/TownClubDiv";
 import KidsZoneDiv from "./pages/leftSidebar/KidsZoneDiv";
-import LifeMember from "./pages/leftSidebar/LifeMember";
-import AnnualMember from "./pages/leftSidebar/AnnualMember";
-import GeneralMember from "./pages/leftSidebar/GeneralMember";
+import LifeMember from "./pages/leftSidebar/members/LifeMember";
+import AnnualMember from "./pages/leftSidebar/members/AnnualMember";
+import GeneralMember from "./pages/leftSidebar/members/GeneralMember";
 import VoterList from "./pages/leftSidebar/VoterList";
+import LibraryMember from "./pages/leftSidebar/members/LibraryMember";
+import SportsMember from "./pages/leftSidebar/members/SportsMember";
+import DramaMember from "./pages/leftSidebar/members/DramaMember";
+import TownClubMember from "./pages/leftSidebar/members/TownClubMember";
+import KidsMember from "./pages/leftSidebar/members/KidsMember";
 
-
+// Committee Secretary Pages
+import CommitteePresidentList from "./pages/committeeList/PresidentList";
+import CommitteeSecretaryList from "./pages/committeeList/SecretaryList";
+import LibrarySecretary from "./pages/committeeList/LibrarySecretary";
+import SportsSecretary from "./pages/committeeList/SportsSecretary";
+import DramaSecretary from "./pages/committeeList/DramaSecretary";
+import TownSecretary from "./pages/committeeList/TownSecretary";
+import KidsSecretary from "./pages/committeeList/KidsSecretary";
 
 function App() {
   return (
@@ -127,6 +139,18 @@ function App() {
 <Route path="/annual-member" element={<AnnualMember />} />
 <Route path="/general-member" element={<GeneralMember />} />
 <Route path="/voter-list" element={<VoterList />} />
+<Route path="/library-member" element={<LibraryMember />} />
+<Route path="/sports-member" element={<SportsMember />} />
+<Route path="/drama-member" element={<DramaMember />} />
+<Route path="/town-member" element={<TownClubMember />} />
+<Route path="/kids-member" element={<KidsMember />} />
+<Route path="/president-lists" element={<CommitteePresidentList />} />
+<Route path="/secretary-lists" element={<CommitteeSecretaryList />} />
+<Route path="/library-secretary" element={<LibrarySecretary />} />
+<Route path="/sports-secretary" element={<SportsSecretary />} />
+<Route path="/drama-secretary" element={<DramaSecretary />} />
+<Route path="/town-secretary" element={<TownSecretary />} />
+<Route path="/kids-secretary" element={<KidsSecretary />} />
 
         </Route>
 

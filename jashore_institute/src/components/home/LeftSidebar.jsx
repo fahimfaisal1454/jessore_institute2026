@@ -90,28 +90,36 @@ export default function LeftSidebar() {
       </div>
 
       {/* Cultural Sections */}
-      <div className="border bg-white shadow-sm">
-        <div className="bg-green-700 text-white px-3 py-1 text-sm font-semibold">
-          যশোর ইনস্টিটিউট বিভাগীয় সদস্য
-        </div>
+<div className="border bg-white shadow-sm">
+  <div className="bg-green-700 text-white px-3 py-1 text-sm font-semibold">
+    যশোর ইনস্টিটিউট বিভাগীয় সদস্য
+  </div>
 
-        <ul className="p-2 text-sm space-y-1">
-          {[
-            "লাইব্রেরি সদস্য",
-            "ক্রীড়া সদস্য",
-            "নাট্যকলা সদস্য",
-            "টাউন ক্লাব সদস্য",
-            "শিশু চিত্তবিনোদন কেন্দ্র সদস্য",
-          ].map((item, i) => (
-            <li
-              key={i}
-              className="px-2 py-1 bg-gray-100 hover:bg-green-100 hover:text-green-700 cursor-pointer transition"
-            >
-              {item}
-            </li>
-          ))}
-        </ul>
-      </div>
+  <ul className="p-2 text-sm space-y-1">
+    {[
+      { name: "লাইব্রেরি সদস্য", path: "/library-member" },
+      { name: "ক্রীড়া সদস্য", path: "/sports-member" },
+      { name: "নাট্যকলা সদস্য", path: "/drama-member" },
+      { name: "টাউন ক্লাব সদস্য", path: "/town-member" },
+      { name: "শিশু চিত্তবিনোদন কেন্দ্র সদস্য", path: "/kids-member" },
+    ].map((item, i) => (
+      <li key={i}>
+        <NavLink
+          to={item.path}
+          className={({ isActive }) =>
+            `block px-2 py-1 transition ${
+              isActive
+                ? "bg-green-200 text-green-800 font-semibold"
+                : "bg-gray-100 hover:bg-green-100 hover:text-green-700"
+            }`
+          }
+        >
+          {item.name}
+        </NavLink>
+      </li>
+    ))}
+  </ul>
+</div>
 
     </div>
   );
