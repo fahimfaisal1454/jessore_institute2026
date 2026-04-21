@@ -1,5 +1,6 @@
 import { NavLink } from "react-router-dom";
 
+import img1 from "../../assets/jadunathmajumdar.png";
 export default function LeftSidebar() {
   return (
     <div className="space-y-3">
@@ -7,11 +8,11 @@ export default function LeftSidebar() {
       {/* Founder Section */}
       <div className="border bg-white shadow-sm">
         <div className="bg-green-700 text-white px-3 py-1 text-sm font-semibold">
-          প্রতিষ্ঠাতা
+          প্রতিষ্ঠাতা: রায় বাহাদুর যদুনাথ মজুমদার-১৯২৮ খ্রি.
         </div>
         <div className="p-2">
           <img
-            src="/founder.jpg"
+            src={img1}
             alt="Founder"
             className="w-full object-cover"
           />

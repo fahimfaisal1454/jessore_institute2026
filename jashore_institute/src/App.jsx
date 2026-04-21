@@ -12,7 +12,7 @@ import Members from "./pages/Members";
 import Gallery from "./pages/Gallery";
 import News from "./pages/News";
 import Notice from "./pages/Notice";
-import Contact from "./pages/Contact";
+// import Contact from "./pages/Contact";
 import History from "./pages/History";
 import Mission from "./pages/Mission";
 import PresidentList from "./pages/PresidentList";
@@ -74,6 +74,11 @@ import DramaSecretary from "./pages/committeeList/DramaSecretary";
 import TownSecretary from "./pages/committeeList/TownSecretary";
 import KidsSecretary from "./pages/committeeList/KidsSecretary";
 
+//rightsidebar 
+import ContactPage from "./pages/rightSidebar/ContactPage";
+import PrimarySchoolPage from "./pages/rightSidebar/PrimarySchoolPage";
+import AnnualReportPage from "./pages/rightSidebar/AnnualReportPage";
+import OpenLibertyStagePage from "./pages/rightSidebar/OpenLibertyStagePage";
 function App() {
   return (
     <BrowserRouter>
@@ -96,7 +101,7 @@ function App() {
           <Route path="/gallery" element={<Gallery />} />
           <Route path="/news" element={<News />} />
           <Route path="/notice" element={<Notice />} />
-          <Route path="/contact" element={<Contact />} />
+          {/* <Route path="/contact" element={<Contact />} /> */}
           <Route path="/library-page" element={<LibraryPage />} />
           <Route path="/sports-page" element={<SportsPage />} />
           <Route path="/drama-page" element={<DramaPage />} />
@@ -151,7 +156,10 @@ function App() {
 <Route path="/drama-secretary" element={<DramaSecretary />} />
 <Route path="/town-secretary" element={<TownSecretary />} />
 <Route path="/kids-secretary" element={<KidsSecretary />} />
-
+<Route path="/contact" element={<ContactPage />} />
+<Route path="/primary-school" element={<PrimarySchoolPage />} />
+<Route path="/annual-report" element={<AnnualReportPage />} />
+<Route path="/open-liberty-stage" element={<OpenLibertyStagePage />} />
         </Route>
 
       </Routes>
