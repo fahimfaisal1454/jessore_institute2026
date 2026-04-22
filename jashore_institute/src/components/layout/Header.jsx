@@ -11,7 +11,7 @@ const Header = () => {
           <img
             src="/logo.png" // put your logo in public folder
             alt="logo"
-            className="w-12 h-12 object-contain"
+            className="w-16 h-16 object-contain"
           />
           <div>
             <h1 className="text-green-700 font-bold text-lg leading-tight">

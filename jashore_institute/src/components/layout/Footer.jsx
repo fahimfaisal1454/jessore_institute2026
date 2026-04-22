@@ -1,3 +1,5 @@
+import { NavLink } from "react-router-dom";
+
 export default function Footer() {
   return (
     <footer className="bg-black text-white mt-5">
@@ -23,12 +25,29 @@ export default function Footer() {
             বিভাগসমূহ
           </h3>
 
-          <ul className="text-sm space-y-1 text-gray-300">
-            <li>লাইব্রেরি বিভাগ</li>
-            <li>ক্রীড়া বিভাগ</li>
-            <li>নাট্যকলা বিভাগ</li>
-            <li>সঙ্গীত বিভাগ</li>
-            <li>শিশু শিক্ষা কেন্দ্র</li>
+          <ul className="text-sm space-y-0">
+            {[
+              { name: "লাইব্রেরি বিভাগ", path: "/library-division" },
+              { name: "ক্রীড়া বিভাগ", path: "/sports-division" },
+              { name: "নাট্যকলা সংসদ", path: "/drama-division" },
+              { name: "টাউন ক্লাব", path: "/townclub-division" },
+              { name: "শিশু চিত্ত বিনোদন কেন্দ্র", path: "/kids-division" },
+            ].map((item, i) => (
+              <li key={i}>
+                <NavLink
+                  to={item.path}
+                  className={({ isActive }) =>
+                    `block px-2 py-1 transition ${
+                      isActive
+                        ? "text-orange-400 font-semibold"
+                        : "text-gray-300 hover:text-orange-300"
+                    }`
+                  }
+                >
+                  {item.name}
+                </NavLink>
+              </li>
+            ))}
           </ul>
         </div>
 
