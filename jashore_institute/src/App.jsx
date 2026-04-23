@@ -6,22 +6,22 @@ import PageLayout from "./layouts/PageLayout";
 
 // Pages
 import Home from "./pages/Home";
-import About from "./pages/About";
+// import About from "./pages/About";
 
-import Members from "./pages/Members";
-import Gallery from "./pages/Gallery";
-import News from "./pages/News";
+// import Members from "./pages/Members";
+// import Gallery from "./pages/Gallery";
+// import News from "./pages/News";
 import Notice from "./pages/Notice";
 // import Contact from "./pages/Contact";
 import History from "./pages/History";
 import Mission from "./pages/Mission";
-import PresidentList from "./pages/PresidentList";
-import SecretaryList from "./pages/SecretaryList";
-import LibraryPage from "./pages/LibraryPage";
-import SportsPage from "./pages/SportsPage";
-import DramaPage from "./pages/DramaPage";
-import TownClubPage from "./pages/TownClubPage";
-import KidsPage from "./pages/KidsPage";
+import PresidentList from "./pages/oldPresnSecList/PresidentList";
+import SecretaryList from "./pages/oldPresnSecList/SecretaryList";
+import LibraryPage from "./pages/olddivsecretary/LibraryPage";
+import SportsPage from "./pages/olddivsecretary/SportsPage";
+import DramaPage from "./pages/olddivsecretary/DramaPage";
+import TownClubPage from "./pages/olddivsecretary/TownClubPage";
+import KidsPage from "./pages/olddivsecretary/KidsPage";
 import Committee from "./pages/Committee";
 import CommitteeOld from "./pages/CommitteeOld";
 import Library from "./pages/Library";
@@ -95,11 +95,11 @@ function App() {
         <Route path="/mission" element={<Mission />} />
         <Route path="/president-list" element={<PresidentList />} />
         <Route path="/secretary-list" element={<SecretaryList />} />
-          <Route path="/about" element={<About />} />
+          {/* <Route path="/about" element={<About />} /> */}
           
-          <Route path="/members" element={<Members />} />
-          <Route path="/gallery" element={<Gallery />} />
-          <Route path="/news" element={<News />} />
+          {/* <Route path="/members" element={<Members />} /> */}
+          {/* <Route path="/gallery" element={<Gallery />} /> */}
+          {/* <Route path="/news" element={<News />} /> */}
           <Route path="/notice" element={<Notice />} />
           {/* <Route path="/contact" element={<Contact />} /> */}
           <Route path="/library-page" element={<LibraryPage />} />

@@ -1,4 +1,10 @@
+import React from "react";
+
 export default function DataTable({ title, data }) {
+
+  // ✅ BASE URL from .env (auto removes /api/)
+  const BASE_URL = import.meta.env.VITE_API_BASE_URL_LOCAL.replace('/api/', '/');
+
   return (
     <div className="max-w-[800px] mx-auto">
 
@@ -25,35 +31,52 @@ export default function DataTable({ title, data }) {
 
             {/* Body */}
             <tbody>
-              {data.map((item, i) => (
-                <tr key={i} className="hover:bg-gray-100">
+              {data && data.length > 0 ? (
+                data.map((item, i) => (
+                  <tr key={item.id || i} className="hover:bg-gray-100">
 
-                  <td className="border px-3 py-2 text-center">
-                    {i + 1}
+                    {/* Serial */}
+                    <td className="border px-3 py-2 text-center">
+                      {i + 1}
+                    </td>
+
+                    {/* Name */}
+                    <td className="border px-3 py-2">
+                      {item.name}
+                    </td>
+
+                    {/* Year */}
+                    <td className="border px-3 py-2 text-center">
+                      {item.year}
+                    </td>
+
+<td className="border px-3 py-2 text-center">
+  {item.image ? (
+    <a
+      href={`${BASE_URL}${item.image}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
+      <img
+        src={`${BASE_URL}${item.image}`}
+        alt="member"
+        className="w-10 h-10 object-cover mx-auto rounded cursor-pointer hover:scale-110 transition"
+      />
+    </a>
+  ) : (
+    "-"
+  )}
+</td>
+
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="4" className="text-center py-4 text-gray-500">
+                    No data available
                   </td>
-
-                  <td className="border px-3 py-2">
-                    {item.name}
-                  </td>
-
-                  <td className="border px-3 py-2 text-center">
-                    {item.year}
-                  </td>
-
-                  <td className="border px-3 py-2 text-center">
-                    {item.image ? (
-                      <img
-                        src={item.image}
-                        alt="member"
-                        className="w-10 h-10 object-cover mx-auto rounded"
-                      />
-                    ) : (
-                      "-"
-                    )}
-                  </td>
-
                 </tr>
-              ))}
+              )}
             </tbody>
 
           </table>
