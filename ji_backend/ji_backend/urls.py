@@ -9,6 +9,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/aboutus/', include('aboutus.urls')),
     path('api/oldcommittee/', include('oldcommittee.urls')),
+    path('api/committee/', include('committee.urls')),
+    path('api/notice/', include('notice.urls')),
 ]
 
 # ✅ MEDIA SERVING

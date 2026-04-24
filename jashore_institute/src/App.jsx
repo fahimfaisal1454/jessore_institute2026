@@ -24,24 +24,24 @@ import TownClubPage from "./pages/olddivsecretary/TownClubPage";
 import KidsPage from "./pages/olddivsecretary/KidsPage";
 import Committee from "./pages/Committee";
 import CommitteeOld from "./pages/CommitteeOld";
-import Library from "./pages/Library";
-import LibraryOld from "./pages/LibraryOld";
+import Library from "./pages/subcommittee/Library";
+import LibraryOld from "./pages/subcommittee/LibraryOld";
 
 // Sports
-import Sports from "./pages/Sports";
-import SportsOld from "./pages/SportsOld";
+import Sports from "./pages/subcommittee/Sports";
+import SportsOld from "./pages/subcommittee/SportsOld";
 
 // Drama
-import Drama from "./pages/Drama";
-import DramaOld from "./pages/DramaOld";
+import Drama from "./pages/subcommittee/Drama";
+import DramaOld from "./pages/subcommittee/DramaOld";
 
 // Town
-import Town from "./pages/Town";
-import TownOld from "./pages/TownOld";
+import Town from "./pages/subcommittee/Town";
+import TownOld from "./pages/subcommittee/TownOld";
 
 // Issue বিভাগ
-import Issue from "./pages/Issue";
-import IssueOld from "./pages/IssueOld";
+import Issue from "./pages/subcommittee/Issue";
+import IssueOld from "./pages/subcommittee/IssueOld";
 import Photos from "./pages/Photos";
 import Videos from "./pages/Videos";
 

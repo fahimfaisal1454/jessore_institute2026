@@ -1,29 +1,25 @@
+import { useEffect, useState } from "react";
+import AxiosInstance from "../api/AxiosInstance";
+
 export default function CommitteeOld() {
-  const data = [
-    {
-      year: "2020-2023",
-      file: "/pdfs/2020-2023.pdf",
-    },
-    {
-      year: "2023-2026",
-      file: "/pdfs/2023-2026.pdf",
-    },
-    {
-      year: "2026-2029",
-      file: "/pdfs/2026-2029.pdf",
-    },
-    {
-      year: "2029-2032",
-      file: "/pdfs/2029-2032.pdf",
-    },
-  ];
+  const [data, setData] = useState([]);
+  const [title, setTitle] = useState("");
+
+  useEffect(() => {
+    AxiosInstance.get("committee/old/")
+      .then((res) => {
+        setData(res.data.data);
+        setTitle(res.data.title);
+      })
+      .catch((err) => console.error(err));
+  }, []);
 
   return (
     <div className="max-w-[1100px] mx-auto text-center">
 
       {/* Title */}
       <h2 className="text-2xl font-semibold my-6">
-        পরিচালনা পরিষদ-প্রাক্তন
+        {title}
       </h2>
 
       {/* Cards */}

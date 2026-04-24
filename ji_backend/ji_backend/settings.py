@@ -25,6 +25,8 @@ INSTALLED_APPS = [
     # Your apps
     'aboutus',
     'oldcommittee',
+    'committee',
+    'notice',
 ]
 
 
