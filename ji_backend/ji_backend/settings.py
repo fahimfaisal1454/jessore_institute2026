@@ -23,6 +23,7 @@ INSTALLED_APPS = [
     'corsheaders',
 
     # Your apps
+    'authentication',
     'aboutus',
     'oldcommittee',
     'committee',
@@ -129,8 +130,14 @@ CORS_ALLOWED_ORIGINS = [
 # ================================
 # ✅ DRF SETTINGS (clean JSON API)
 # ================================
+from datetime import timedelta
+
 REST_FRAMEWORK = {
-    "DEFAULT_RENDERER_CLASSES": [
-        "rest_framework.renderers.JSONRenderer",
-    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
+SIMPLE_JWT = {
+    'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
 }

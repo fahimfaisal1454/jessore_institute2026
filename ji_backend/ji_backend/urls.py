@@ -13,6 +13,7 @@ urlpatterns = [
     path('api/notice/', include('notice.urls')),
     path('api/divisions/', include('divisions.urls')),
     path('api/members/', include('members.urls')),
+    path('api/', include('authentication.urls')),
 ]
 
 # ✅ MEDIA SERVING
