@@ -20,7 +20,8 @@ AxiosInstance.interceptors.request.use(
     const token = localStorage.getItem("token");
 
     if (token) {
-      config.headers.Authorization = `Token ${token}`;
+      // ✅ FIX: use Bearer instead of Token
+      config.headers.Authorization = `Bearer ${token}`;
     }
 
     return config;
@@ -32,6 +33,13 @@ AxiosInstance.interceptors.request.use(
 AxiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
+    // 🔥 Optional but VERY useful improvement
+    if (error.response?.status === 401) {
+      console.warn("Unauthorized - logging out");
+      localStorage.removeItem("token");
+      window.location.href = "/login";
+    }
+
     console.error("API ERROR:", error.response || error);
     return Promise.reject(error);
   }
