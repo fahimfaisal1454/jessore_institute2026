@@ -1,8 +1,21 @@
+from rest_framework import generics
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import CommitteeMember,OldCommitteeDocument,SubCommitteeCategory
-from .serializers import CommitteeMemberSerializer,OldCommitteeDocumentSerializer,SubCommitteeMemberSerializer, SubCommitteeDocumentSerializer
+from .models import CommitteeMember,OldCommitteeDocument,SubCommitteeCategory,ExecutiveCommittee
+from .serializers import CommitteeMemberSerializer,OldCommitteeDocumentSerializer,SubCommitteeMemberSerializer, SubCommitteeDocumentSerializer, ExecutiveCommitteeSerializer
 
+
+class ExecutiveCommitteeView(generics.ListAPIView):
+    serializer_class = ExecutiveCommitteeSerializer
+
+    def get_queryset(self):
+        return ExecutiveCommittee.objects.filter(
+            position__in=["president", "secretary"]
+        )
+
+    # ✅ ADD THIS
+    def get_serializer_context(self):
+        return {"request": self.request}
 
 class CommitteeView(APIView):
     def get(self, request):

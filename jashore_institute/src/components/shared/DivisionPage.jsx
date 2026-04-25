@@ -1,7 +1,17 @@
 export default function DivisionPage({ title, author, content, image }) {
+
+  // 🔥 normalize content
+  let paragraphs = [];
+
+  if (Array.isArray(content)) {
+    paragraphs = content;
+  } else if (typeof content === "string") {
+    paragraphs = content.split("\n"); // split by line
+  }
+
   return (
     <div className="max-w-5xl mx-auto px-4 py-8 bg-white">
-      
+
       {/* TITLE */}
       <h1 className="text-2xl md:text-3xl font-bold text-[#a0522d] text-center mb-3">
         {title}
@@ -16,7 +26,7 @@ export default function DivisionPage({ title, author, content, image }) {
 
       {/* CONTENT */}
       <div className="text-gray-800 leading-7 text-justify space-y-4">
-        {content.map((para, i) => (
+        {paragraphs.map((para, i) => (
           <p key={i}>{para}</p>
         ))}
       </div>

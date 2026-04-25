@@ -3,7 +3,7 @@ import DataTable from "../../components/shared/DataTable";
 export default function DramaSecretary() {
   return (
     <DataTable
-      title="নাট্যকলা সংসদের সম্পাদক তালিকা"
+      title="নাট্যকলা সংসদের সম্পাদক তালিকাssss"
       columns={[
         {
           label: "ক্রমিক",

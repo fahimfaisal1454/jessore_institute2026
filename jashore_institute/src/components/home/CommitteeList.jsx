@@ -5,16 +5,16 @@ import { FaUser } from "react-icons/fa";
 
 export default function CommitteeList() {
   const topItems = [
-    { name: "সভাপতি তালিকা", path: "/president-lists" },
-    { name: "সাধারণ সম্পাদক তালিকা", path: "/secretary-lists" },
+    { name: "সভাপতি তালিকা", path: "/president-list" },
+    { name: "সাধারণ সম্পাদক তালিকা", path: "/secretary-list" },
   ];
 
   const bottomItems = [
-    { name: "সম্পাদক, লাইব্রেরি বিভাগ", path: "/library-secretary" },
-    { name: "সম্পাদক, ক্রীড়া বিভাগ", path: "/sports-secretary" },
-    { name: "সম্পাদক, নাট্যকলা সংসদ", path: "/drama-secretary" },
-    { name: "সম্পাদক, টাউন ক্লাব", path: "/town-secretary" },
-    { name: "সম্পাদক, শিশু চিত্তবিনোদন কেন্দ্র", path: "/kids-secretary" },
+    { name: "সম্পাদক, লাইব্রেরি বিভাগ", path: "/library-page" },
+    { name: "সম্পাদক, ক্রীড়া বিভাগ", path: "/sports-page" },
+    { name: "সম্পাদক, নাট্যকলা সংসদ", path: "/drama-page" },
+    { name: "সম্পাদক, টাউন ক্লাব", path: "/townclub-page" },
+    { name: "সম্পাদক, শিশু চিত্তবিনোদন কেন্দ্র", path: "/kids-page" },
   ];
 
   return (

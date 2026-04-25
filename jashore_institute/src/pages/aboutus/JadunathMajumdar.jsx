@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import AxiosInstance from "../api/AxiosInstance";
+import AxiosInstance from "../../api/AxiosInstance";
 
 export default function JadunathMajumdar() {
   const [data, setData] = useState(null);

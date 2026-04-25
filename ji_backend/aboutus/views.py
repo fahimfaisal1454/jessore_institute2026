@@ -1,7 +1,10 @@
+from rest_framework import generics
+from rest_framework.generics import ListAPIView
+from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from .models import AboutUs, Person, Photo, Video, ApplicationForm
-from .serializers import AboutUsSerializer, PersonSerializer, PhotoSerializer, VideoSerializer,  ApplicationFormSerializer
+from .models import AboutUs, Person, Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage
+from .serializers import AboutUsSerializer, PersonSerializer, PhotoSerializer, VideoSerializer,  ApplicationFormSerializer, InfoPageSerializer, AnnualReportSerializer, ContactMessageSerializer
 
 
 class AboutUsView(APIView):
@@ -52,3 +55,32 @@ class ApplicationFormView(APIView):
 
         except ApplicationForm.DoesNotExist:
             return Response({"error": "Form not found"}, status=404)
+        
+class InfoPageView(APIView):
+    def get(self, request, page_type):
+        try:
+            page = InfoPage.objects.get(page_type=page_type)
+            serializer = InfoPageSerializer(page)
+            return Response(serializer.data)
+        except InfoPage.DoesNotExist:
+            return Response({"error": "Not found"})
+        
+class AnnualReportView(ListAPIView):
+    queryset = AnnualReport.objects.all().order_by("-publish_date")
+    serializer_class = AnnualReportSerializer
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+    
+class ContactMessageView(APIView):
+    def post(self, request):
+        serializer = ContactMessageSerializer(data=request.data)
+
+        if serializer.is_valid():
+            serializer.save()
+            return Response(
+                {"message": "Message sent successfully"},
+                status=status.HTTP_201_CREATED
+            )
+
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

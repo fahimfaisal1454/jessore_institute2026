@@ -1,16 +1,58 @@
+import { useEffect, useState } from "react";
+import AxiosInstance from "../../api/AxiosInstance";
 import DivisionPage from "../../components/shared/DivisionPage";
-// import building from "../../assets/sports.jpg"; // use your image
 
 export default function SportsDiv() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    const fetchSports = async () => {
+      try {
+        const res = await AxiosInstance.get("divisions/sports/");
+        setData(res.data);
+      } catch (err) {
+        console.error("Sports fetch error:", err);
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSports();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="text-center py-10 animate-pulse text-gray-500">
+        Loading Sports Division...
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="text-center py-10 text-red-500">
+        Failed to load data.
+      </div>
+    );
+  }
+
+  if (!data) {
+    return (
+      <div className="text-center py-10 text-gray-500">
+        No data available.
+      </div>
+    );
+  }
+
   return (
     <DivisionPage
-      title="যশোর ইনস্টিটিউট ক্রীড়া সংসদ এর ইতিহাস"
-      author="রিপন রায়"
-      // image={building}
-      content={[
-        "যশোর ইনস্টিটিউটের ক্রীড়া বিভাগ অত্যন্ত সমৃদ্ধ...",
-        "ফুটবল, ক্রিকেটসহ বিভিন্ন খেলাধুলা পরিচালিত হয়...",
-      ]}
+      title={data.title || "No Title"}
+      author={data.author || ""}
+      content={data.content || ""}
+      image={data.image || null}
     />
   );
 }

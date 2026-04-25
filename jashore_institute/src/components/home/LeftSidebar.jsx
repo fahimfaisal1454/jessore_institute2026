@@ -67,8 +67,8 @@ export default function LeftSidebar() {
 
         <ul className="p-2 text-sm space-y-1">
           {[
-            { name: "দাতা সদস্য", path: "/life-member" },
-            { name: "আজীবন সদস্য", path: "/annual-member" },
+            { name: "দাতা সদস্য", path: "/donor-member" },
+            { name: "আজীবন সদস্য", path: "/lifetime-member" },
             { name: "সাধারণ সদস্য", path: "/general-member" },
             { name: "বিগত বছরের ভোটের তালিকা", path: "/voter-list" },
           ].map((item, i) => (

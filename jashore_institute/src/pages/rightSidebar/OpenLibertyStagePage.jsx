@@ -1,18 +1,46 @@
+import { useEffect, useState } from "react";
+import AxiosInstance from "../../api/AxiosInstance";
+
 export default function OpenLibertyStagePage() {
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
+
+  useEffect(() => {
+    AxiosInstance.get("aboutus/info/open_liberty_stage/")
+      .then((res) => setData(res.data))
+      .catch(() => setError(true))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return <div className="text-center py-10 text-gray-500">Loading...</div>;
+  }
+
+  if (error || !data) {
+    return (
+      <div className="text-center py-10 text-red-500">
+        Failed to load content
+      </div>
+    );
+  }
+
   return (
-    <div className="grid md:grid-cols-3 gap-4">
+    <div className="max-w-[900px] mx-auto">
 
-      {/* LEFT CONTENT */}
-      <div className="md:col-span-2 bg-white border p-4 text-[14px] leading-relaxed">
-        <h2 className="text-lg font-semibold mb-3">
-          Open Liberty Stage
-        </h2>
-
-        <p>
-          This section contains detailed article-style content about the Open Liberty Stage...
-        </p>
+      {/* 🔥 HEADER */}
+      <div className="bg-[#0b6b3a] text-white text-center py-2 font-semibold text-lg rounded-t">
+        {data.title}
       </div>
 
+      {/* 🔥 CONTENT BOX */}
+      <div className="bg-white border border-gray-300 p-5 leading-relaxed text-[14px] shadow-sm">
+
+        <div className="prose max-w-none text-gray-800 whitespace-pre-line">
+          {data.content}
+        </div>
+
+      </div>
 
     </div>
   );

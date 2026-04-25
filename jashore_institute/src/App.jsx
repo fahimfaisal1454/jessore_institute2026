@@ -11,10 +11,10 @@ import Home from "./pages/Home";
 // import Members from "./pages/Members";
 // import Gallery from "./pages/Gallery";
 // import News from "./pages/News";
-import Notice from "./pages/Notice";
+import Notice from "./pages/notice/Notice";
 // import Contact from "./pages/Contact";
-import History from "./pages/History";
-import Mission from "./pages/Mission";
+import History from "./pages/aboutus/History";
+import Mission from "./pages/aboutus/Mission";
 import PresidentList from "./pages/oldPresnSecList/PresidentList";
 import SecretaryList from "./pages/oldPresnSecList/SecretaryList";
 import LibraryPage from "./pages/olddivsecretary/LibraryPage";
@@ -22,8 +22,8 @@ import SportsPage from "./pages/olddivsecretary/SportsPage";
 import DramaPage from "./pages/olddivsecretary/DramaPage";
 import TownClubPage from "./pages/olddivsecretary/TownClubPage";
 import KidsPage from "./pages/olddivsecretary/KidsPage";
-import Committee from "./pages/Committee";
-import CommitteeOld from "./pages/CommitteeOld";
+import Committee from "./pages/committee/Committee";
+import CommitteeOld from "./pages/committee/CommitteeOld";
 import Library from "./pages/subcommittee/Library";
 import LibraryOld from "./pages/subcommittee/LibraryOld";
 
@@ -42,12 +42,12 @@ import TownOld from "./pages/subcommittee/TownOld";
 // Issue বিভাগ
 import Issue from "./pages/subcommittee/Issue";
 import IssueOld from "./pages/subcommittee/IssueOld";
-import Photos from "./pages/Photos";
-import Videos from "./pages/Videos";
+import Photos from "./pages/aboutus/Photos";
+import Videos from "./pages/aboutus/Videos";
 
-import FieldApplication from "./pages/FieldApplication";
-import LeaveApplication from "./pages/LeaveApplication";
-import JadunathMajumdar from "./pages/JadunathMajumdar";
+import FieldApplication from "./pages/application/FieldApplication";
+import LeaveApplication from "./pages/application/LeaveApplication";
+import JadunathMajumdar from "./pages/aboutus/JadunathMajumdar";
 
 // Right Sidebar Pages
 import LibraryDiv from "./pages/leftSidebar/LibraryDiv";
@@ -55,8 +55,8 @@ import SportsDiv from "./pages/leftSidebar/SportsDiv";
 import DramaDiv from "./pages/leftSidebar/DramaDiv";
 import TownClubDiv from "./pages/leftSidebar/TownClubDiv";
 import KidsZoneDiv from "./pages/leftSidebar/KidsZoneDiv";
-import LifeMember from "./pages/leftSidebar/members/LifeMember";
-import AnnualMember from "./pages/leftSidebar/members/AnnualMember";
+import DonorMember from "./pages/leftSidebar/members/DonorMember";
+import LifetimeMember from "./pages/leftSidebar/members/LifetimeMember";
 import GeneralMember from "./pages/leftSidebar/members/GeneralMember";
 import VoterList from "./pages/leftSidebar/VoterList";
 import LibraryMember from "./pages/leftSidebar/members/LibraryMember";
@@ -140,8 +140,8 @@ function App() {
 <Route path="/drama-division" element={<DramaDiv />} />
 <Route path="/townclub-division" element={<TownClubDiv />} />
 <Route path="/kids-division" element={<KidsZoneDiv />} />
-<Route path="/life-member" element={<LifeMember />} />
-<Route path="/annual-member" element={<AnnualMember />} />
+<Route path="/Donor-member" element={<DonorMember />} />
+<Route path="/lifetime-member" element={<LifetimeMember />} />
 <Route path="/general-member" element={<GeneralMember />} />
 <Route path="/voter-list" element={<VoterList />} />
 <Route path="/library-member" element={<LibraryMember />} />

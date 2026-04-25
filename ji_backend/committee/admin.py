@@ -5,10 +5,13 @@ from .models import (
     OldCommitteeDocument,
     SubCommitteeCategory,
     SubCommitteeMember,
-    SubCommitteeDocument
+    SubCommitteeDocument,
+    ExecutiveCommittee
 )
 
-
+@admin.register(ExecutiveCommittee)
+class ExecutiveCommitteeAdmin(admin.ModelAdmin):
+    list_display = ('position', 'name')
 # 🔥 MAIN COMMITTEE
 @admin.register(CommitteeMember)
 class CommitteeMemberAdmin(admin.ModelAdmin):

@@ -1,45 +1,85 @@
+import { useEffect, useState } from "react";
+import AxiosInstance from "../../api/AxiosInstance";
 import BottomCards from "./BottomCards";
 import { Link } from "react-router-dom";
 
 export default function RightSidebar() {
+  const [leaders, setLeaders] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    AxiosInstance.get("committee/executive/")
+      .then((res) => {
+        let data = res.data;
+
+        // handle pagination / object / array
+        if (data?.results) data = data.results;
+        if (!Array.isArray(data)) data = data ? [data] : [];
+
+        // sort president first
+        data.sort((a, b) =>
+          a.position === "president" ? -1 : 1
+        );
+
+        setLeaders(data);
+      })
+      .catch((err) => {
+        console.error("Executive committee error:", err);
+        setLeaders([]);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  const getTitle = (pos) => {
+    if (pos === "president") return "সভাপতি";
+    if (pos === "secretary") return "সাধারণ সম্পাদক";
+    return pos;
+  };
+
   return (
     <div className="space-y-2 text-[13px]">
 
-      {/* সভাপতি + সম্পাদক */}
-      {[
-        {
-          title: "সভাপতি",
-          name: "মোঃ আব্দুল কাদের",
-          img: "/president.jpg",
-        },
-        {
-          title: "সাধারণ সম্পাদক",
-          name: "ডাঃ মোঃ আবুল কালাম",
-          img: "/secretary.jpg",
-        },
-      ].map((item, i) => (
-        <div key={i} className="border border-gray-300 bg-white">
+      {/* 🔥 DYNAMIC সভাপতি + সম্পাদক */}
+      {loading ? (
+        <div className="text-center py-4 text-gray-500">Loading...</div>
+      ) : leaders.length > 0 ? (
+        leaders.map((item) => (
+          <div
+            key={item.id || item.position}  // ✅ FIXED KEY WARNING
+            className="border border-gray-300 bg-white"
+          >
+            <div className="bg-[#0b6b3a] text-white text-center py-[4px] font-semibold">
+              {getTitle(item.position)}
+            </div>
 
-          <div className="bg-[#0b6b3a] text-white text-center py-[4px] font-semibold">
-            {item.title}
-          </div>
+<div className="p-4 text-center">
 
-          <div className="p-2 text-center">
-            <img
-              src={item.img}
-              alt={item.title}
-              className="w-24 h-24 mx-auto border border-gray-400 object-cover"
-            />
-            <p className="mt-1 font-medium">{item.name}</p>
+  <div className="w-[150px] h-[160px] mx-auto border border-gray-300 bg-white p-1">
+    <img
+      src={item.image || "/no-image.png"}
+      alt={item.position}
+      className="w-full h-full object-cover"
+    />
+  </div>
+
+  <p className="mt-3 font-medium text-gray-800">
+    {item.name}
+  </p>
+
+</div>
           </div>
+        ))
+      ) : (
+        <div className="text-center py-4 text-gray-500">
+          No executive committee data
         </div>
-      ))}
+      )}
 
       {/* MINI BOXES */}
       <div className="grid grid-cols-3 gap-[2px]">
-        {["চাকুরি", "টেন্ডার", "বিজ্ঞাপন"].map((item, i) => (
+        {["চাকুরি", "টেন্ডার", "বিজ্ঞাপন"].map((item) => (
           <div
-            key={i}
+            key={item}  // ✅ FIXED KEY WARNING
             className="border border-gray-300 bg-[#f5f5f5] text-center py-2 hover:bg-gray-200 cursor-pointer"
           >
             {item}
@@ -60,14 +100,11 @@ export default function RightSidebar() {
             label: "ইনোভেশন কর্নার",
             link: "https://publiclibrary.jessore.gov.bd/pages/innovation-corners/",
           },
-          {
-            label: "আপনার মতামত",
-            link: "/contact",
-          },
-        ].map((item, i) =>
+          { label: "আপনার মতামত", link: "/contact" },
+        ].map((item) =>
           item.link.startsWith("http") ? (
             <a
-              key={i}
+              key={item.label} // ✅ FIXED KEY
               href={item.link}
               target="_blank"
               rel="noopener noreferrer"
@@ -78,7 +115,7 @@ export default function RightSidebar() {
             </a>
           ) : (
             <Link
-              key={i}
+              key={item.label} // ✅ FIXED KEY
               to={item.link}
               className="flex items-center gap-2 border border-gray-300 px-2 py-1 bg-[url('/btn-bg.png')] bg-cover hover:brightness-95"
             >
@@ -101,24 +138,15 @@ export default function RightSidebar() {
         </ul>
       </div>
 
-      {/* BANNER LINKS (FIXED) */}
+      {/* BANNER LINKS */}
       <div className="space-y-2">
         {[
-          {
-            label: "উন্মুক্ত স্বাধীনতা মঞ্চ",
-            link: "/open-liberty-stage",
-          },
-          {
-            label: "প্রাথমিক বিদ্যালয়",
-            link: "/primary-school",
-          },
-          {
-            label: "বার্ষিক প্রতিবেদন",
-            link: "/annual-report",
-          },
-        ].map((item, i) => (
+          { label: "উন্মুক্ত স্বাধীনতা মঞ্চ", link: "/open-liberty-stage" },
+          { label: "প্রাথমিক বিদ্যালয়", link: "/primary-school" },
+          { label: "বার্ষিক প্রতিবেদন", link: "/annual-report" },
+        ].map((item) => (
           <Link
-            key={i}
+            key={item.label} // ✅ FIXED KEY
             to={item.link}
             className="flex items-center gap-2 px-2 py-2 bg-[url('/blue-bg.png')] bg-cover border border-gray-200 hover:brightness-95"
           >

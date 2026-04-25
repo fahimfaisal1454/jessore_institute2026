@@ -27,6 +27,8 @@ INSTALLED_APPS = [
     'oldcommittee',
     'committee',
     'notice',
+    'divisions',
+    'members',
 ]
 
 

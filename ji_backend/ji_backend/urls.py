@@ -11,6 +11,8 @@ urlpatterns = [
     path('api/oldcommittee/', include('oldcommittee.urls')),
     path('api/committee/', include('committee.urls')),
     path('api/notice/', include('notice.urls')),
+    path('api/divisions/', include('divisions.urls')),
+    path('api/members/', include('members.urls')),
 ]
 
 # ✅ MEDIA SERVING
