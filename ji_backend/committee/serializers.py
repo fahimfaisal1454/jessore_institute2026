@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CommitteeMember,OldCommitteeDocument,SubCommitteeMember, SubCommitteeDocument, ExecutiveCommittee
+from .models import CommitteeMember,OldCommitteeDocument,SubCommitteeMember, SubCommitteeDocument, ExecutiveCommittee, SubCommitteeCategory
 
 
 class ExecutiveCommitteeSerializer(serializers.ModelSerializer):
@@ -16,48 +16,61 @@ class ExecutiveCommitteeSerializer(serializers.ModelSerializer):
         return None
 
 class CommitteeMemberSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+    image = serializers.ImageField(use_url=True)
 
     class Meta:
         model = CommitteeMember
-        fields = ['id', 'name', 'role', 'image', 'role_type']
+        fields = ['id', 'name', 'role', 'image', 'role_type', 'order']
 
-    def get_image(self, obj):
-        request = self.context.get('request')
-        if obj.image:
-            return request.build_absolute_uri(obj.image.url)
-        return None
+    def update(self, instance, validated_data):
+        image = validated_data.get('image', None)
+
+        if not image:
+            validated_data.pop('image', None)
+
+        return super().update(instance, validated_data)
     
 class OldCommitteeDocumentSerializer(serializers.ModelSerializer):
-    file = serializers.SerializerMethodField()
+    file = serializers.FileField(use_url=True)
 
     class Meta:
         model = OldCommitteeDocument
-        fields = ['id', 'year', 'file']
-
-    def get_file(self, obj):
-        request = self.context.get('request')
-        return request.build_absolute_uri(obj.file.url)
+        fields = ['id', 'year', 'file', 'order']
     
 class SubCommitteeMemberSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+    image = serializers.ImageField(use_url=True)
 
     class Meta:
         model = SubCommitteeMember
-        fields = ['id', 'name', 'role', 'image', 'role_type']
+        fields = ['id', 'name', 'role', 'image', 'role_type', 'category', 'order']
 
-    def get_image(self, obj):
-        request = self.context.get('request')
-        return request.build_absolute_uri(obj.image.url)
-
+    def update(self, instance, validated_data):
+        image = validated_data.get('image', None)
+        if not image:
+            validated_data.pop('image', None)
+        return super().update(instance, validated_data)
 
 class SubCommitteeDocumentSerializer(serializers.ModelSerializer):
-    file = serializers.SerializerMethodField()
+    file = serializers.FileField(use_url=True)
 
     class Meta:
         model = SubCommitteeDocument
-        fields = ['id', 'year', 'file']
+        fields = ['id', 'year', 'file', 'category', 'order']
 
-    def get_file(self, obj):
-        request = self.context.get('request')
-        return request.build_absolute_uri(obj.file.url)
+    def update(self, instance, validated_data):
+        file = validated_data.get('file', None)
+
+        if not file:
+            validated_data.pop('file', None)
+
+        return super().update(instance, validated_data)
+    
+class SubCommitteeCategorySerializer(serializers.ModelSerializer):
+    label = serializers.SerializerMethodField()
+
+    class Meta:
+        model = SubCommitteeCategory
+        fields = ["id", "type", "label"]
+
+    def get_label(self, obj):
+        return obj.get_type_display()

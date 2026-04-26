@@ -2,14 +2,17 @@ from rest_framework import serializers
 from .models import Division
 
 class DivisionSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+    image = serializers.ImageField(required=False)
 
     class Meta:
         model = Division
-        fields = '__all__'
+        fields = "__all__"
 
-    def get_image(self, obj):
-        request = self.context.get('request')
-        if obj.image:
-            return request.build_absolute_uri(obj.image.url)
-        return None
+    def update(self, instance, validated_data):
+        image = validated_data.get('image', None)
+
+        # ✅ don't overwrite image if not provided
+        if not image:
+            validated_data.pop('image', None)
+
+        return super().update(instance, validated_data)

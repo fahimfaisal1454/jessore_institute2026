@@ -5,14 +5,16 @@ from .models import Notice
 
 
 class NoticeSerializer(serializers.ModelSerializer):
-    file = serializers.SerializerMethodField()
-
-    def get_file(self, obj):
-        request = self.context.get('request')
-        if obj.file:
-            return request.build_absolute_uri(obj.file.url)
-        return None
+    file = serializers.FileField(use_url=True)
 
     class Meta:
         model = Notice
         fields = ['id', 'title', 'type', 'file', 'content', 'date']
+
+    def update(self, instance, validated_data):
+        file = validated_data.get('file', None)
+
+        if not file:
+            validated_data.pop('file', None)
+
+        return super().update(instance, validated_data)

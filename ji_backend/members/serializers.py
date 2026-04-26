@@ -4,39 +4,33 @@ from rest_framework import serializers
 from .models import Member, VoterList
 
 class MemberSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+    image = serializers.ImageField(use_url=True)
 
     class Meta:
         model = Member
         fields = '__all__'
 
-    def get_image(self, obj):
-        request = self.context.get('request')
-        if obj.image:
-            return request.build_absolute_uri(obj.image.url)
-        return None
+    def update(self, instance, validated_data):
+        image = validated_data.get('image', None)
+
+        if not image:
+            validated_data.pop('image', None)
+
+        return super().update(instance, validated_data)
     
 class VoterListSerializer(serializers.ModelSerializer):
-    donor_pdf = serializers.SerializerMethodField()
-    life_pdf = serializers.SerializerMethodField()
-    general_pdf = serializers.SerializerMethodField()
+    donor_pdf = serializers.FileField(use_url=True)
+    life_pdf = serializers.FileField(use_url=True)
+    general_pdf = serializers.FileField(use_url=True)
 
     class Meta:
         model = VoterList
         fields = '__all__'
 
-    def get_file_url(self, obj, field):
-        request = self.context.get('request')
-        file = getattr(obj, field)
-        if file:
-            return request.build_absolute_uri(file.url)
-        return None
+    def update(self, instance, validated_data):
+        # 🔥 Prevent file overwrite if not updated
+        for field in ['donor_pdf', 'life_pdf', 'general_pdf']:
+            if not validated_data.get(field):
+                validated_data.pop(field, None)
 
-    def get_donor_pdf(self, obj):
-        return self.get_file_url(obj, 'donor_pdf')
-
-    def get_life_pdf(self, obj):
-        return self.get_file_url(obj, 'life_pdf')
-
-    def get_general_pdf(self, obj):
-        return self.get_file_url(obj, 'general_pdf')
+        return super().update(instance, validated_data)

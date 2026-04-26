@@ -72,6 +72,28 @@ import PrimarySchoolPage from "./pages/rightSidebar/PrimarySchoolPage";
 import AnnualReportPage from "./pages/rightSidebar/AnnualReportPage";
 import OpenLibertyStagePage from "./pages/rightSidebar/OpenLibertyStagePage";
 
+// ✅ ADMIN CMS (ADD THESE)
+import AboutUsForm from "./pages/dashboard/about/AboutUsForm";
+import PersonForm from "./pages/dashboard/about/PersonForm";
+import PhotoForm from "./pages/dashboard/about/PhotoForm";
+import AnnualReportForm from "./pages/dashboard/about/AnnualReportForm";
+import ApplicationFormForm from "./pages/dashboard/about/ApplicationFormForm";
+import InfoPageForm from "./pages/dashboard/about/InfoPageForm";
+import VideoForm from "./pages/dashboard/about/VideoForm";
+import ContactMessageAdmin from "./pages/dashboard/about/ContactMessageAdmin";
+import ExecutiveCommitteeForm from "./pages/dashboard/committee/ExecutiveCommitteeForm";
+import CommitteeMemberForm from "./pages/dashboard/committee/CommitteeMemberForm";
+import OldCommitteeForm from "./pages/dashboard/committee/OldCommitteeForm";
+import SubCommitteeMemberForm from "./pages/dashboard/committee/SubCommitteeMemberForm";
+import SubCommitteeDocumentForm from "./pages/dashboard/committee/SubCommitteeDocumentForm";
+import SubCommitteeCategoryForm from "./pages/dashboard/committee/SubCommitteeCategoryForm";
+import NoticeForm from "./pages/dashboard/notice/NoticeForm";
+import MemberForm from "./pages/dashboard/members/MemberForm";
+import VoterForm from "./pages/dashboard/members/VoterForm";
+import DivisionForm from "./pages/dashboard/division/DivisionForm";
+import OldCommitteeForms from "./pages/dashboard/oldcommittee/OldCommitteeForm";
+import OldCommitteeCategory from "./pages/dashboard/oldcommittee/OldCommitteeCategory";
+
 function App() {
   return (
     <BrowserRouter>
@@ -80,15 +102,41 @@ function App() {
         {/* 🔐 LOGIN (NO LAYOUT) */}
         <Route path="/login" element={<Login />} />
 
-        {/* 🔐 DASHBOARD (PROTECTED) */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
-              <Dashboard />
-            </ProtectedRoute>
-          }
-        />
+       {/* 🔐 DASHBOARD (WITH CHILD ROUTES) */}
+<Route
+  path="/dashboard"
+  element={
+    <ProtectedRoute>
+      <Dashboard />
+    </ProtectedRoute>
+  }
+>
+  {/* DEFAULT */}
+  <Route index element={<h2 className="p-4">Welcome Admin</h2>} />
+
+  {/* ABOUT CMS */}
+  <Route path="about" element={<AboutUsForm />} />
+  <Route path="person" element={<PersonForm />} />
+  <Route path="photos" element={<PhotoForm />} />
+  <Route path="reports" element={<AnnualReportForm />} /> 
+  <Route path="forms" element={<ApplicationFormForm />} />
+  <Route path="infopages" element={<InfoPageForm />} />
+  <Route path="videos" element={<VideoForm />} />
+  <Route path="contact" element={<ContactMessageAdmin />} />
+  <Route path="committee/executive" element={<ExecutiveCommitteeForm />} />
+  <Route path="/dashboard/committee/members" element={<CommitteeMemberForm />} />
+
+<Route path="/dashboard/committee/old" element={<OldCommitteeForm />} />
+<Route path="/dashboard/committee/sub-members" element={<SubCommitteeMemberForm />} />
+<Route path="/dashboard/committee/sub-docs" element={<SubCommitteeDocumentForm />} />
+<Route path="committee/sub-categories" element={<SubCommitteeCategoryForm />} />
+<Route path="/dashboard/notices" element={<NoticeForm />} />
+        <Route path="members" element={<MemberForm />} />
+        <Route path="voters" element={<VoterForm />} />
+        <Route path="/dashboard/divisions" element={<DivisionForm />} />
+        <Route path="/dashboard/old-committee" element={<OldCommitteeForms />} />
+        <Route path="/dashboard/old-committee-categories" element={<OldCommitteeCategory />} />
+</Route>
 
         {/* ✅ HOME */}
         <Route element={<MainLayout />}>

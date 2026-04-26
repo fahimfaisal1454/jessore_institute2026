@@ -1,4 +1,5 @@
 from rest_framework import serializers
+
 from .models import AboutUs, Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage
 
 
@@ -19,24 +20,18 @@ class PersonSerializer(serializers.ModelSerializer):
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = ['id', 'image']
+        fields = ["id", "image", "order"]
 
 
 class VideoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Video
-        fields = ['id', 'url']
+        fields = ['id', 'title', 'url', 'order']  # ✅ FIX
         
 class ApplicationFormSerializer(serializers.ModelSerializer):
-    file = serializers.SerializerMethodField()
-
-    def get_file(self, obj):
-        request = self.context.get('request')
-        return request.build_absolute_uri(obj.file.url)
-
     class Meta:
         model = ApplicationForm
-        fields = ['title', 'file']
+        fields = "__all__"
         
 class InfoPageSerializer(serializers.ModelSerializer):
     class Meta:
@@ -44,17 +39,9 @@ class InfoPageSerializer(serializers.ModelSerializer):
         fields = "__all__"
         
 class AnnualReportSerializer(serializers.ModelSerializer):
-    file = serializers.SerializerMethodField()
-
     class Meta:
         model = AnnualReport
         fields = "__all__"
-
-    def get_file(self, obj):
-        request = self.context.get("request")
-        if obj.file:
-            return request.build_absolute_uri(obj.file.url)
-        return None
     
 class ContactMessageSerializer(serializers.ModelSerializer):
     class Meta:

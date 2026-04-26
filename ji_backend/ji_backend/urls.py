@@ -14,6 +14,13 @@ urlpatterns = [
     path('api/divisions/', include('divisions.urls')),
     path('api/members/', include('members.urls')),
     path('api/', include('authentication.urls')),
+        # ✅ ADMIN API (NEW)
+    path('api/admin/', include('aboutus.admin_urls')),
+    path('api/admin/committee/', include('committee.admin_urls')),
+    path('api/admin/', include('notice.admin_urls')),
+    path('api/admin/members/', include('members.admin_urls')),
+    path('api/admin/divisions/', include('divisions.admin_urls')),
+    path('api/admin/oldcommittee/', include('oldcommittee.admin_urls')),
 ]
 
 # ✅ MEDIA SERVING
