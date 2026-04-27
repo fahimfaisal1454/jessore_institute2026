@@ -23,10 +23,28 @@ export default function Sidebar() {
   return (
     <div className="w-64 bg-gray-900 text-white h-full flex flex-col">
 
+     {/* 🔥 LOGO + NAME (CLICKABLE) */}
+<div
+  onClick={() => navigate("/")}
+  className="p-4 border-b border-gray-800 flex items-center gap-3 cursor-pointer hover:bg-gray-800 transition"
+>
+  <img
+    src="/logo.png"
+    alt="Logo"
+    className="w-12 h-12 object-contain"
+  />
+  <div>
+    <p className="text-m font-semibold leading-tight">
+      যশোর ইনস্টিটিউট
+    </p>
+    <p className="text-xs text-gray-400">
+      Admin Panel
+    </p>
+  </div>
+</div>
+
       {/* SCROLLABLE */}
       <div className="flex-1 overflow-y-auto p-4">
-
-        <h2 className="text-lg font-bold mb-6">Admin Panel</h2>
 
         <nav className="flex flex-col gap-1">
 
@@ -91,10 +109,9 @@ export default function Sidebar() {
             Old Committee
           </button>
 
-          {/* 🔥 SUB COMMITTEE GROUP */}
+          {/* SUB COMMITTEE */}
           <p className="text-gray-400 text-xs mt-3 mb-1">Sub Committee</p>
 
-          {/* ✅ NEW CATEGORY PAGE */}
           <button
             onClick={() => navigate("/dashboard/committee/sub-categories")}
             className={linkClass("/dashboard/committee/sub-categories")}
@@ -119,40 +136,44 @@ export default function Sidebar() {
           {/* OTHER */}
           <p className="text-gray-400 text-xs mt-3 mb-1">Other</p>
 
-<button
-  onClick={() => navigate("/dashboard/notices")}
-  className={linkClass("/dashboard/notices")}
->
-  Notices
-</button>
-<p className="text-gray-400 text-xs mt-3 mb-1">Division</p>
+          <button
+            onClick={() => navigate("/dashboard/notices")}
+            className={linkClass("/dashboard/notices")}
+          >
+            Notices
+          </button>
 
-<button
-  onClick={() => navigate("/dashboard/divisions")}
-  className={linkClass("/dashboard/divisions")}
->
-  Divisions
-</button>
+          <p className="text-gray-400 text-xs mt-3 mb-1">Division</p>
 
-<button onClick={() => navigate("/dashboard/members")} className={linkClass("/dashboard/members")}>
-  Members
-</button>
+          <button
+            onClick={() => navigate("/dashboard/divisions")}
+            className={linkClass("/dashboard/divisions")}
+          >
+            Divisions
+          </button>
 
-<button onClick={() => navigate("/dashboard/voters")} className={linkClass("/dashboard/voters")}>
-  Voter Lists
-</button>
-<button
-  onClick={() => navigate("/dashboard/old-committee-categories")}
-  className={linkClass("/dashboard/old-committee-categories")}
->
-  Old Committee Categories
-</button>
-<button
-  onClick={() => navigate("/dashboard/old-committee")}
-  className={linkClass("/dashboard/old-committee")}
->
-  Old Committee
-</button>
+          <button onClick={() => navigate("/dashboard/members")} className={linkClass("/dashboard/members")}>
+            Members
+          </button>
+
+          <button onClick={() => navigate("/dashboard/voters")} className={linkClass("/dashboard/voters")}>
+            Voter Lists
+          </button>
+
+          <button
+            onClick={() => navigate("/dashboard/old-committee-categories")}
+            className={linkClass("/dashboard/old-committee-categories")}
+          >
+            Old Committee Categories
+          </button>
+
+          <button
+            onClick={() => navigate("/dashboard/old-committee")}
+            className={linkClass("/dashboard/old-committee")}
+          >
+            Old Committee
+          </button>
+
         </nav>
       </div>
 
