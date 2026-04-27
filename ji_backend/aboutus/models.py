@@ -22,7 +22,9 @@ class Person(models.Model):
         return self.title
     
     
+# aboutus/models.py
 
+from django.db import models
 
 
 class Photo(models.Model):
