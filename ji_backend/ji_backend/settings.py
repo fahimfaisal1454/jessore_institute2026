@@ -1,15 +1,37 @@
 from pathlib import Path
+from datetime import timedelta
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 
-# SECURITY
-SECRET_KEY = 'django-insecure-vw=dioal+=vf2y)tz=tx+8jxdfpagzphn8x81qf-sn9(*-e96-'
-DEBUG = True
-ALLOWED_HOSTS = []
+# ================================
+# SECURITY SETTINGS
+# ================================
+SECRET_KEY = os.environ.get(
+    "DJANGO_SECRET_KEY",
+    "change-this-immediately-production-secret-key"
+)
+
+DEBUG = False
+
+ALLOWED_HOSTS = [
+    "jashoreinstitute.org.bd",
+    "www.jashoreinstitute.org.bd",
+    "127.0.0.1",
+    "localhost",
+]
 
 
+CSRF_TRUSTED_ORIGINS = [
+    "https://jashoreinstitute.org.bd",
+    "https://www.jashoreinstitute.org.bd",
+]
+
+
+# ================================
 # APPLICATIONS
+# ================================
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -20,9 +42,10 @@ INSTALLED_APPS = [
 
     # Third-party
     'rest_framework',
+    'rest_framework_simplejwt',
     'corsheaders',
 
-    # Your apps
+    # Project apps
     'authentication',
     'aboutus',
     'oldcommittee',
@@ -33,10 +56,14 @@ INSTALLED_APPS = [
 ]
 
 
+# ================================
 # MIDDLEWARE
+# ================================
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',  # IMPORTANT (must be first)
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -49,7 +76,9 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'ji_backend.urls'
 
 
+# ================================
 # TEMPLATES
+# ================================
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
@@ -69,7 +98,9 @@ TEMPLATES = [
 WSGI_APPLICATION = 'ji_backend.wsgi.application'
 
 
+# ================================
 # DATABASE
+# ================================
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -77,67 +108,100 @@ DATABASES = {
     }
 }
 
+# PostgreSQL production example:
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'jashoreinstitute',
+#         'USER': 'dbuser',
+#         'PASSWORD': 'dbpassword',
+#         'HOST': 'localhost',
+#         'PORT': '5432',
+#     }
+# }
 
+
+# ================================
 # PASSWORD VALIDATION
+# ================================
 AUTH_PASSWORD_VALIDATORS = [
-    {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
-    },
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
 
 
+# ================================
 # INTERNATIONALIZATION
+# ================================
 LANGUAGE_CODE = 'en-us'
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Dhaka'
 USE_I18N = True
 USE_TZ = True
 
 
+# ================================
 # STATIC FILES
-STATIC_URL = 'static/'
+# ================================
+STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
 
 # ================================
-# MEDIA FILES (FOR IMAGE UPLOAD)
+# MEDIA FILES
 # ================================
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
 
-# DEFAULT PK
+# ================================
+# DEFAULT PRIMARY KEY
+# ================================
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
 # ================================
-# ✅ CORS SETTINGS (FIXES YOUR ERROR)
+# CORS SETTINGS
 # ================================
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",
+    "https://jashoreinstitute.org.bd",
+    "https://www.jashoreinstitute.org.bd",
 ]
 
-# If still issues, uncomment this (dev only):
-# CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOW_CREDENTIALS = True
 
 
 # ================================
-# ✅ DRF SETTINGS (clean JSON API)
+# REST FRAMEWORK
 # ================================
-from datetime import timedelta
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
 
+
+# ================================
+# JWT SETTINGS
+# ================================
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
 }
+
+
+# ================================
+# SECURITY HEADERS
+# ================================
+SECURE_BROWSER_XSS_FILTER = True
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
+SECURE_SSL_REDIRECT = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
