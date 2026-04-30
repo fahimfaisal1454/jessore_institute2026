@@ -10,7 +10,7 @@ export default function NewsTicker() {
 
         {/* Scrolling text */}
         <marquee behavior="scroll" direction="left" scrollamount="4">
-          ধন্য থেকে আপনাদের সকল তথ্য যশোর ইনস্টিটিউট ওয়েবসাইট থেকে দেখতে পারবেন। (আপডেট চলমান)
+          গত ২৪ এপ্রিল ২০২৬, শুক্রবার, যশোর ইনস্টিটিউটে আগত সকল সম্মানিত সদস্য ও ভোটারদের প্রতি জানাই আন্তরিক ধন্যবাদ ও গভীর কৃতজ্ঞতা।
         </marquee>
 
       </div>
