@@ -13,19 +13,27 @@ SECRET_KEY = os.environ.get(
     "change-this-immediately-production-secret-key"
 )
 
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = [
     "jashoreinstitute.org.bd",
     "www.jashoreinstitute.org.bd",
     "127.0.0.1",
     "localhost",
+    "*",
 ]
 
+#Temporarily allow all origins for development
+
+CORS_ALLOW_ALL_ORIGINS = True
 
 CSRF_TRUSTED_ORIGINS = [
     "https://jashoreinstitute.org.bd",
     "https://www.jashoreinstitute.org.bd",
+
+    # Local development
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 
@@ -169,6 +177,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 CORS_ALLOWED_ORIGINS = [
     "https://jashoreinstitute.org.bd",
     "https://www.jashoreinstitute.org.bd",
+
+    # Local development
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 CORS_ALLOW_CREDENTIALS = True
@@ -196,12 +208,12 @@ SIMPLE_JWT = {
 # ================================
 # SECURITY HEADERS
 # ================================
-SECURE_BROWSER_XSS_FILTER = True
-SECURE_CONTENT_TYPE_NOSNIFF = True
-X_FRAME_OPTIONS = "DENY"
+# SECURE_BROWSER_XSS_FILTER = True
+# SECURE_CONTENT_TYPE_NOSNIFF = True
+# X_FRAME_OPTIONS = "DENY"
 
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
 
-SECURE_SSL_REDIRECT = True
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+# SECURE_SSL_REDIRECT = True
+# SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

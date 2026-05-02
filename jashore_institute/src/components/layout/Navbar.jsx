@@ -14,14 +14,65 @@ export default function Navbar() {
       dropdown: [
         { name: "পরিচিতি/ইতিহাস", path: "/history" },
         { name: "লক্ষ্য ও উদ্দেশ্য", path: "/mission" },
+      ],
+    },
+
+    {
+      name: "কমিটিসমূহ",
+      dropdown: [
         {
-          name: "প্রাক্তন সভাপতি-সাধারণ সম্পাদক",
-          children: [
-            { name: "সভাপতি গণের তালিকা", path: "/president-list" },
-            { name: "সাধারণ সম্পাদক তালিকা.", path: "/secretary-list" },
-          ],
+          name: "পরিচালনা পরিষদ",
+          path: "/committee",
         },
         {
+          name: "পরিচালনা পরিষদ (প্রাক্তন)",
+          path: "/committee-old",
+        },
+
+        { name: "সভাপতিবৃন্দের তালিকা", path: "/president-list" },
+        { name: "সাধারণ সম্পাদকবৃন্দের তালিকা.", path: "/secretary-list" },
+
+        {
+          name: "উপকমিটির তালিকা",
+          children: [
+            {
+              name: "লাইব্রেরি বিভাগ",
+              children: [
+                { name: "লাইব্রেরি বিভাগ", path: "/library" },
+                { name: "লাইব্রেরি বিভাগ – প্রাক্তন", path: "/lib-old" },
+              ],
+            },
+            {
+              name: "ক্রীড়া বিভাগ",
+              children: [
+                { name: "ক্রীড়া বিভাগ", path: "/sports" },
+                { name: "ক্রীড়া বিভাগ – প্রাক্তন", path: "/sports-old" },
+              ],
+            },
+            {
+              name: "নাট্যকলা সংসদ",
+              children: [
+                { name: "নাট্যকলা সংসদ", path: "/drama" },
+                { name: "নাট্যকলা সংসদ – প্রাক্তন", path: "/drama-old" },
+              ],
+            },
+            {
+              name: "টাউন ক্লাব",
+              children: [
+                { name: "টাউন ক্লাব", path: "/town" },
+                { name: "টাউন ক্লাব – প্রাক্তন", path: "/town-old" },
+              ],
+            },
+            {
+              name: "ইস্যু বিভাগ",
+              children: [
+                { name: "ইস্যু বিভাগ", path: "/issue" },
+                { name: "ইস্যু বিভাগ – প্রাক্তন", path: "/issue-old" },
+              ],
+            },
+          ],
+        },
+                {
           name: "প্রাক্তন বিভাগীয় সম্পাদক",
           children: [
             { name: "সম্পাদক, লাইব্রেরি বিভাগ", path: "/library-page" },
@@ -34,59 +85,6 @@ export default function Navbar() {
       ],
     },
 
-    {
-  name: "কমিটিসমূহ",
-  dropdown: [
-    {
-      name: "পরিচালনা পরিষদ",
-      path: "/committee",
-    },
-    {
-      name: "পরিচালনা পরিষদ (প্রাক্তন)",
-      path: "/committee-old",
-    },
-    {
-  name: "উপকমিটির তালিকা",
-  children: [
-    {
-      name: "লাইব্রেরি বিভাগ",
-      children: [
-        { name: "লাইব্রেরি বিভাগ", path: "/library" },
-        { name: "লাইব্রেরি বিভাগ – প্রাক্তন", path: "/lib-old" },
-      ],
-    },
-    {
-      name: "ক্রীড়া বিভাগ",
-      children: [
-        { name: "ক্রীড়া বিভাগ", path: "/sports" },
-        { name: "ক্রীড়া বিভাগ – প্রাক্তন", path: "/sports-old" },
-      ],
-    },
-    {
-      name: "নাট্যকলা সংসদ",
-      children: [
-        { name: "নাট্যকলা সংসদ", path: "/drama" },
-        { name: "নাট্যকলা সংসদ – প্রাক্তন", path: "/drama-old" },
-      ],
-    },
-    {
-      name: "টাউন ক্লাব",
-      children: [
-        { name: "টাউন ক্লাব", path: "/town" },
-        { name: "টাউন ক্লাব – প্রাক্তন", path: "/town-old" },
-      ],
-    },
-{
-  name: "ইস্যু বিভাগ",
-  children: [
-    { name: "ইস্যু বিভাগ", path: "/issue" },
-    { name: "ইস্যু বিভাগ – প্রাক্তন", path: "/issue-old" },
-  ],
-},
-  ],
-}
-  ],
-},
 
     { name: "যদুনাথ মজুমদার", path: "/jadunathmajumdar" },
 
@@ -101,14 +99,14 @@ export default function Navbar() {
     {
       name: "ফরম",
       dropdown: [
-    {
-      name: "মাঠ বরাদ্ধের আবেদন ফরম",
-      path: "/field-application",
-    },
-    {
-      name: "ছুটির আবেদন ফরম",
-      path: "/leave-application",
-    },
+        {
+          name: "মাঠ বরাদ্ধের আবেদন ফরম",
+          path: "/field-application",
+        },
+        {
+          name: "ছুটির আবেদন ফরম",
+          path: "/leave-application",
+        },
       ],
     },
 
@@ -118,7 +116,6 @@ export default function Navbar() {
   return (
     <nav className="bg-[#efefef] border-y">
       <div className="max-w-[1100px] mx-auto flex">
-
         {menu.map((item, i) => (
           <div
             key={i}
@@ -149,7 +146,6 @@ export default function Navbar() {
             {/* Level 1 */}
             {item.dropdown && open === i && (
               <div className="absolute left-0 top-full bg-white shadow min-w-[240px] z-50">
-
                 {item.dropdown.map((sub, j) => (
                   <div
                     key={j}
@@ -176,7 +172,6 @@ export default function Navbar() {
                     {/* Level 2 */}
                     {sub.children && subOpen === j && (
                       <div className="absolute left-full top-0 bg-white shadow min-w-[240px]">
-
                         {sub.children.map((child, k) => (
                           <div
                             key={k}
@@ -213,17 +208,14 @@ export default function Navbar() {
                             )}
                           </div>
                         ))}
-
                       </div>
                     )}
                   </div>
                 ))}
-
               </div>
             )}
           </div>
         ))}
-
       </div>
     </nav>
   );

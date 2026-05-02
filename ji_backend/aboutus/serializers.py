@@ -20,7 +20,7 @@ class PersonSerializer(serializers.ModelSerializer):
 class PhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Photo
-        fields = ["id", "image", "order"]
+        fields = ["id", "image", "order", "category"]
 
 
 class VideoSerializer(serializers.ModelSerializer):

@@ -30,6 +30,7 @@ from django.db import models
 class Photo(models.Model):
     image = models.ImageField(upload_to='gallery/photos/')
     order = models.PositiveIntegerField(default=0)
+    category = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return f"Photo {self.id}"
