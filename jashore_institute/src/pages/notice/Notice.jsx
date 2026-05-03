@@ -3,7 +3,7 @@ import AxiosInstance from "../../api/AxiosInstance";
 
 export default function Notice() {
   const [notices, setNotices] = useState([]);
-  const [selected, setSelected] = useState(null); // 👈 modal state
+  const [selected, setSelected] = useState(null);
 
   useEffect(() => {
     AxiosInstance.get("notice/")
@@ -11,106 +11,149 @@ export default function Notice() {
       .catch(() => {});
   }, []);
 
-  return (
-    <div className="max-w-[1100px] mx-auto">
+  // Convert English numbers to Bangla
+  const toBanglaNumber = (num) => {
+    const banglaDigits = ["০", "১", "২", "৩", "৪", "৫", "৬", "৭", "৮", "৯"];
+    return num
+      .toString()
+      .split("")
+      .map((digit) => banglaDigits[digit] || digit)
+      .join("");
+  };
 
+  // Format Bangla Date
+  const formatBanglaDate = (dateString) => {
+    const date = new Date(dateString);
+    const day = toBanglaNumber(date.getDate().toString().padStart(2, "0"));
+    const month = toBanglaNumber(
+      (date.getMonth() + 1).toString().padStart(2, "0")
+    );
+    const year = toBanglaNumber(date.getFullYear());
+
+    return `${day}-${month}-${year}`;
+  };
+
+  return (
+    <div className="max-w-[1100px] mx-auto px-2 py-4">
       <div className="bg-white border shadow-sm">
 
         {/* Header */}
-        <div className="bg-[#e9e9e9] border-b px-4 py-2 font-semibold">
-          নোটিশ
+        <div className="bg-[#e9e9e9] border-b px-3 py-2 font-bold text-base">
+          নোটিশ বোর্ড
         </div>
 
-        {/* Notice List */}
-        <div className="p-4 space-y-3">
+        {/* Table */}
+        <div className="overflow-x-auto">
+          <table className="w-full border-collapse border border-gray-300 text-sm">
 
-          {notices.map((notice) => (
-            <div
-              key={notice.id}
-              className="flex justify-between items-center border p-3 hover:bg-gray-50"
-            >
+            {/* Header */}
+            <thead>
+              <tr className="bg-gray-100 text-center">
+                <th className="border border-gray-300 px-2 py-2 w-[50px]">
+                  নং
+                </th>
+                <th className="border border-gray-300 px-2 py-2 w-[140px]">
+                  প্রকাশের তারিখ
+                </th>
+                <th className="border border-gray-300 px-3 py-2">
+                  শিরোনাম
+                </th>
+                <th className="border border-gray-300 px-2 py-2 w-[140px]">
+                  ফাইল সমূহ
+                </th>
+              </tr>
+            </thead>
 
-              {/* Left */}
-              <div>
-                <p className="font-medium">{notice.title}</p>
-                <p className="text-xs text-gray-500">
-                  {new Date(notice.date).toLocaleDateString("en-GB", {
-                    day: "2-digit",
-                    month: "short",
-                    year: "numeric",
-                  })}
-                </p>
-              </div>
+            {/* Body */}
+            <tbody>
+              {notices.slice(0, 20).map((notice, index) => (
+                <tr
+                  key={notice.id}
+                  className="hover:bg-gray-50 align-top"
+                >
 
-              {/* Right */}
-              <div className="space-x-3">
+                  {/* Serial */}
+                  <td className="border border-gray-300 px-2 py-2 text-center">
+                    {toBanglaNumber(index + 1)}
+                  </td>
 
-                {/* PDF */}
-                {notice.type === "pdf" && notice.file && (
-                  <a
-                    href={notice.file}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-blue-600 underline"
+                  {/* Date */}
+                  <td className="border border-gray-300 px-2 py-2 text-center whitespace-nowrap">
+                    {formatBanglaDate(notice.date)}
+                  </td>
+
+                  {/* Title */}
+                  <td className="border border-gray-300 px-3 py-2 leading-snug">
+                    <p>{notice.title}</p>
+
+                    {/* Details */}
+                    {notice.content && (
+                      <button
+                        onClick={() => setSelected(notice)}
+                        className="text-xs text-purple-700 underline mt-1"
+                      >
+                        বিস্তারিত
+                      </button>
+                    )}
+                  </td>
+
+                  {/* File */}
+                  <td className="border border-gray-300 px-2 py-2 text-center whitespace-nowrap">
+                    {notice.file ? (
+                      <a
+                        href={notice.file}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-blue-600 underline text-sm"
+                      >
+                        PDF / দেখুন
+                      </a>
+                    ) : (
+                      "-"
+                    )}
+                  </td>
+
+                </tr>
+              ))}
+
+              {/* Empty */}
+              {notices.length === 0 && (
+                <tr>
+                  <td
+                    colSpan="4"
+                    className="text-center text-gray-500 py-6 border"
                   >
-                    দেখুন
-                  </a>
-                )}
+                    কোনো নোটিশ পাওয়া যায়নি
+                  </td>
+                </tr>
+              )}
+            </tbody>
 
-                {/* Image */}
-                {notice.type === "image" && notice.file && (
-                  <a
-                    href={notice.file}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-green-600 underline"
-                  >
-                    ছবি দেখুন
-                  </a>
-                )}
-
-                {/* Details button (for ALL types if content exists) */}
-                {notice.content && (
-                  <button
-                    onClick={() => setSelected(notice)}
-                    className="text-gray-700 underline"
-                  >
-                    বিস্তারিত
-                  </button>
-                )}
-
-              </div>
-
-            </div>
-          ))}
-
-          {notices.length === 0 && (
-            <div className="text-center text-gray-500 py-6">
-              কোনো নোটিশ পাওয়া যায়নি
-            </div>
-          )}
-
+          </table>
         </div>
-
       </div>
 
-      {/* 🔥 Modal */}
+      {/* Modal */}
       {selected && (
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50">
-          <div className="bg-white w-[90%] max-w-[600px] p-6 rounded shadow-lg">
+        <div className="fixed inset-0 bg-black/40 flex items-center justify-center z-50 px-4">
+          <div className="bg-white w-full max-w-[700px] p-6 rounded shadow-lg max-h-[85vh] overflow-y-auto">
 
-            <h2 className="font-semibold text-lg mb-2">
+            {/* Title */}
+            <h2 className="font-bold text-xl mb-2">
               {selected.title}
             </h2>
 
+            {/* Date */}
             <p className="text-sm text-gray-500 mb-4">
-              {new Date(selected.date).toLocaleDateString("en-GB")}
+              {formatBanglaDate(selected.date)}
             </p>
 
-            <div className="text-gray-700 whitespace-pre-line">
+            {/* Content */}
+            <div className="text-gray-700 whitespace-pre-line leading-relaxed">
               {selected.content || "কোনো বিবরণ নেই"}
             </div>
 
+            {/* Close */}
             <div className="mt-6 text-right">
               <button
                 onClick={() => setSelected(null)}
@@ -123,7 +166,6 @@ export default function Notice() {
           </div>
         </div>
       )}
-
     </div>
   );
 }
