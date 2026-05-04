@@ -1,10 +1,23 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { FiMenu, FiX, FiChevronDown, FiChevronRight } from "react-icons/fi";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(null);
-  const [subOpen, setSubOpen] = useState(null);
-  const [childOpen, setChildOpen] = useState(null);
+  const [desktopOpen, setDesktopOpen] = useState(null);
+  const [desktopSubOpen, setDesktopSubOpen] = useState(null);
+  const [desktopChildOpen, setDesktopChildOpen] = useState(null);
+
+  const [mobileMenu, setMobileMenu] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState({});
+  const [mobileSubOpen, setMobileSubOpen] = useState({});
+  const [mobileChildOpen, setMobileChildOpen] = useState({});
+
+  const toggleMobile = (key, setter, state) => {
+    setter({
+      ...state,
+      [key]: !state[key],
+    });
+  };
 
   const menu = [
     { name: "হোম", path: "/" },
@@ -20,15 +33,8 @@ export default function Navbar() {
     {
       name: "কমিটিসমূহ",
       dropdown: [
-        {
-          name: "পরিচালনা পরিষদ",
-          path: "/committee",
-        },
-        {
-          name: "পরিচালনা পরিষদ (প্রাক্তন)",
-          path: "/committee-old",
-        },
-
+        { name: "পরিচালনা পরিষদ", path: "/committee" },
+        { name: "পরিচালনা পরিষদ (প্রাক্তন)", path: "/committee-old" },
         { name: "সভাপতিবৃন্দের তালিকা", path: "/president-list" },
         { name: "সাধারণ সম্পাদকবৃন্দের তালিকা.", path: "/secretary-list" },
 
@@ -72,7 +78,8 @@ export default function Navbar() {
             },
           ],
         },
-                {
+
+        {
           name: "প্রাক্তন বিভাগীয় সম্পাদক",
           children: [
             { name: "সম্পাদক, লাইব্রেরি বিভাগ", path: "/library-page" },
@@ -84,7 +91,6 @@ export default function Navbar() {
         },
       ],
     },
-
 
     { name: "যদুনাথ মজুমদার", path: "/jadunathmajumdar" },
 
@@ -99,125 +105,254 @@ export default function Navbar() {
     {
       name: "ফরম",
       dropdown: [
-        {
-          name: "মাঠ বরাদ্ধের আবেদন ফরম",
-          path: "/field-application",
-        },
-        {
-          name: "ছুটির আবেদন ফরম",
-          path: "/leave-application",
-        },
+        { name: "মাঠ বরাদ্ধের আবেদন ফরম", path: "/field-application" },
+        { name: "ছুটির আবেদন ফরম", path: "/leave-application" },
       ],
     },
 
     { name: "নোটিশ", path: "/notice" },
     { name: "প্রকাশনা", path: "/" },
-    { name: "বিভীন্ন অনুষ্ঠান", path: "/" },
+    { name: "বিভিন্ন অনুষ্ঠান", path: "/" },
   ];
 
   return (
-    <nav className="bg-green-700 border-y">
-      <div className="max-w-[1100px] mx-auto flex  text-[14px] font-semibold">
-        {menu.map((item, i) => (
-          <div
-            key={i}
-            className="relative"
-            onMouseEnter={() => setOpen(i)}
-            onMouseLeave={() => {
-              setOpen(null);
-              setSubOpen(null);
-              setChildOpen(null);
-            }}
+    <nav className="bg-green-700 border-y w-full relative z-50" aria-label="Main navigation">
+      <div className="max-w-screen-xl mx-auto">
+
+        {/* MOBILE HEADER */}
+        <div className="lg:hidden flex justify-between items-center px-4 py-3">
+          <span className="text-white font-bold text-lg">মেনু</span>
+
+          <button
+            onClick={() => setMobileMenu(!mobileMenu)}
+            className="text-white text-2xl"
           >
-            {/* Main Menu */}
-            {item.path ? (
-              <Link
-                to={item.path}
-                className={`px-5 py-3 block font-semibold text-[14px] ${
-                  open === i ? "text-green-600" : "text-white"
-                } hover:text-green-300`}
-              >
-                {item.name}
-              </Link>
-            ) : (
-              <div className="px-5 py-3 flex items-center gap-1 cursor-pointer text-white hover:text-green-300">
-                {item.name} <span>▾</span>
-              </div>
-            )}
+            {mobileMenu ? <FiX /> : <FiMenu />}
+          </button>
+        </div>
 
-            {/* Level 1 */}
-            {item.dropdown && open === i && (
-              <div className="absolute left-0 top-full bg-white shadow min-w-[240px] z-50">
-                {item.dropdown.map((sub, j) => (
-                  <div
-                    key={j}
-                    className="relative"
-                    onMouseEnter={() => setSubOpen(j)}
-                    onMouseLeave={() => {
-                      setSubOpen(null);
-                      setChildOpen(null);
-                    }}
+        {/* MOBILE MENU */}
+        {mobileMenu && (
+          <div className="lg:hidden bg-white border-t shadow-md max-h-[80vh] overflow-y-auto">
+            {menu.map((item, i) => (
+              <div key={i} className="border-b">
+
+                {item.path ? (
+                  <Link
+                    to={item.path}
+                    onClick={() => setMobileMenu(false)}
+                    className="block px-4 py-3 text-sm font-medium hover:bg-gray-100"
                   >
-                    {sub.path ? (
-                      <Link
-                        to={sub.path}
-                        className="block px-4 py-2 hover:bg-gray-100"
-                      >
-                        {sub.name}
-                      </Link>
-                    ) : (
-                      <div className="flex justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                        {sub.name} <span>›</span>
-                      </div>
-                    )}
+                    {item.name}
+                  </Link>
+                ) : (
+                  <>
+                    <button
+                      onClick={() =>
+                        toggleMobile(i, setMobileOpen, mobileOpen)
+                      }
+                      className="w-full flex justify-between items-center px-4 py-3 text-sm font-medium hover:bg-gray-100"
+                    >
+                      {item.name}
+                      <FiChevronDown
+                        className={`transition ${
+                          mobileOpen[i] ? "rotate-180" : ""
+                        }`}
+                      />
+                    </button>
 
-                    {/* Level 2 */}
-                    {sub.children && subOpen === j && (
-                      <div className="absolute left-full top-0 bg-white shadow min-w-[240px]">
-                        {sub.children.map((child, k) => (
-                          <div
-                            key={k}
-                            className="relative"
-                            onMouseEnter={() => setChildOpen(k)}
-                            onMouseLeave={() => setChildOpen(null)}
-                          >
-                            {child.path ? (
-                              <Link
-                                to={child.path}
-                                className="block px-4 py-2 hover:bg-gray-100"
+                    {mobileOpen[i] &&
+                      item.dropdown?.map((sub, j) => (
+                        <div key={j} className="bg-gray-50 border-t">
+
+                          {sub.path ? (
+                            <Link
+                              to={sub.path}
+                              onClick={() => setMobileMenu(false)}
+                              className="block px-8 py-2 text-sm hover:bg-gray-100"
+                            >
+                              {sub.name}
+                            </Link>
+                          ) : (
+                            <>
+                              <button
+                                onClick={() =>
+                                  toggleMobile(
+                                    `${i}-${j}`,
+                                    setMobileSubOpen,
+                                    mobileSubOpen
+                                  )
+                                }
+                                className="w-full flex justify-between px-8 py-2 text-sm hover:bg-gray-100"
                               >
-                                {child.name}
-                              </Link>
-                            ) : (
-                              <div className="flex justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                                {child.name} <span>›</span>
-                              </div>
-                            )}
+                                {sub.name}
+                                <FiChevronRight />
+                              </button>
 
-                            {/* Level 3 */}
-                            {child.children && childOpen === k && (
-                              <div className="absolute left-full top-0 bg-white shadow min-w-[240px]">
-                                {child.children.map((last, x) => (
-                                  <Link
-                                    key={x}
-                                    to={last.path}
-                                    className="block px-4 py-2 hover:bg-gray-100"
-                                  >
-                                    {last.name}
-                                  </Link>
+                              {mobileSubOpen[`${i}-${j}`] &&
+                                sub.children?.map((child, k) => (
+                                  <div key={k} className="bg-gray-100">
+
+                                    {child.path ? (
+                                      <Link
+                                        to={child.path}
+                                        onClick={() => setMobileMenu(false)}
+                                        className="block px-12 py-2 text-sm hover:bg-gray-200"
+                                      >
+                                        {child.name}
+                                      </Link>
+                                    ) : (
+                                      <>
+                                        <button
+                                          onClick={() =>
+                                            toggleMobile(
+                                              `${i}-${j}-${k}`,
+                                              setMobileChildOpen,
+                                              mobileChildOpen
+                                            )
+                                          }
+                                          className="w-full flex justify-between px-12 py-2 text-sm hover:bg-gray-200"
+                                        >
+                                          {child.name}
+                                          <FiChevronRight />
+                                        </button>
+
+                                        {mobileChildOpen[
+                                          `${i}-${j}-${k}`
+                                        ] &&
+                                          child.children?.map((last, x) => (
+                                            <Link
+                                              key={x}
+                                              to={last.path}
+                                              onClick={() =>
+                                                setMobileMenu(false)
+                                              }
+                                              className="block px-16 py-2 text-sm hover:bg-gray-300"
+                                            >
+                                              {last.name}
+                                            </Link>
+                                          ))}
+                                      </>
+                                    )}
+                                  </div>
                                 ))}
-                              </div>
-                            )}
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                ))}
+                            </>
+                          )}
+                        </div>
+                      ))}
+                  </>
+                )}
               </div>
-            )}
+            ))}
           </div>
-        ))}
+        )}
+
+        {/* DESKTOP MENU */}
+        <div className="hidden lg:flex flex-wrap text-sm font-semibold">
+          {menu.map((item, i) => (
+            <div
+              key={i}
+              className="relative"
+              onMouseEnter={() => setDesktopOpen(i)}
+              onMouseLeave={() => {
+                setDesktopOpen(null);
+                setDesktopSubOpen(null);
+                setDesktopChildOpen(null);
+              }}
+            >
+              {item.path ? (
+                <Link
+                  to={item.path}
+                  className="px-4 xl:px-5 py-3 block text-white hover:text-green-300 whitespace-nowrap"
+                >
+                  {item.name}
+                </Link>
+              ) : (
+                <div className="px-4 xl:px-5 py-3 flex items-center gap-1 cursor-pointer text-white hover:text-green-300 whitespace-nowrap">
+                  {item.name}
+                  <FiChevronDown size={14} />
+                </div>
+              )}
+
+              {/* LEVEL 1 */}
+              {item.dropdown && desktopOpen === i && (
+                <div className="absolute left-0 top-full bg-white shadow-lg min-w-[260px] z-50">
+                  {item.dropdown.map((sub, j) => (
+                    <div
+                      key={j}
+                      className="relative"
+                      onMouseEnter={() => setDesktopSubOpen(j)}
+                      onMouseLeave={() => {
+                        setDesktopSubOpen(null);
+                        setDesktopChildOpen(null);
+                      }}
+                    >
+                      {sub.path ? (
+                        <Link
+                          to={sub.path}
+                          className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                        >
+                          {sub.name}
+                        </Link>
+                      ) : (
+                        <div className="flex justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm">
+                          {sub.name}
+                          <FiChevronRight />
+                        </div>
+                      )}
+
+                      {/* LEVEL 2 */}
+                      {sub.children && desktopSubOpen === j && (
+                        <div className="absolute left-full top-0 bg-white shadow-lg min-w-[260px]">
+                          {sub.children.map((child, k) => (
+                            <div
+                              key={k}
+                              className="relative"
+                              onMouseEnter={() => setDesktopChildOpen(k)}
+                              onMouseLeave={() =>
+                                setDesktopChildOpen(null)
+                              }
+                            >
+                              {child.path ? (
+                                <Link
+                                  to={child.path}
+                                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                                >
+                                  {child.name}
+                                </Link>
+                              ) : (
+                                <div className="flex justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm">
+                                  {child.name}
+                                  <FiChevronRight />
+                                </div>
+                              )}
+
+                              {/* LEVEL 3 */}
+                              {child.children &&
+                                desktopChildOpen === k && (
+                                  <div className="absolute left-full top-0 bg-white shadow-lg min-w-[260px]">
+                                    {child.children.map((last, x) => (
+                                      <Link
+                                        key={x}
+                                        to={last.path}
+                                        className="block px-4 py-2 hover:bg-gray-100 text-sm"
+                                      >
+                                        {last.name}
+                                      </Link>
+                                    ))}
+                                  </div>
+                                )}
+                            </div>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
       </div>
     </nav>
   );

@@ -11,39 +11,28 @@ import RightSidebar from "../components/home/RightSidebar";
 
 export default function MainLayout() {
   return (
-    <div className="min-h-screen flex justify-center ">
-
-      <div className="w-[1100px] bg-white shadow-md flex flex-col min-h-screen">
-
+    <div className="min-h-screen w-full">
+      <div className="max-w-screen-xl mx-auto bg-white shadow-md min-h-screen flex flex-col">
         <Header />
         <Navbar />
         <NewsTicker />
 
-        {/* 🔥 MAIN SECTION */}
-        <div className="grid grid-cols-12 gap-3 p-3 flex-1">
-
-          {/* LEFT SIDEBAR */}
-          <div className="col-span-3">
+        <main className="grid grid-cols-1 lg:grid-cols-12 gap-4 p-3 md:p-4 flex-1">
+          <aside className="lg:col-span-3 order-2 lg:order-1">
             <LeftSidebar />
-          </div>
+          </aside>
 
-          {/* MAIN CONTENT (IMPORTANT FIX) */}
-          <div className="col-span-6 flex flex-col">
-            <div className="flex-1">
-              <Outlet />
-            </div>
-          </div>
+          <section className="lg:col-span-6 order-1 lg:order-2 min-w-0">
+            <Outlet />
+          </section>
 
-          {/* RIGHT SIDEBAR */}
-          <div className="col-span-3">
+          <aside className="lg:col-span-3 order-3">
             <RightSidebar />
-          </div>
-
-        </div>
+          </aside>
+        </main>
 
         <MapSection />
         <Footer />
-
       </div>
     </div>
   );
