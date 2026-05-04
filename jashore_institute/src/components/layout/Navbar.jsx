@@ -111,11 +111,13 @@ export default function Navbar() {
     },
 
     { name: "নোটিশ", path: "/notice" },
+    { name: "প্রকাশনা", path: "/" },
+    { name: "বিভীন্ন অনুষ্ঠান", path: "/" },
   ];
 
   return (
-    <nav className="bg-[#efefef] border-y">
-      <div className="max-w-[1100px] mx-auto flex">
+    <nav className="bg-green-700 border-y">
+      <div className="max-w-[1100px] mx-auto flex  text-[14px] font-semibold">
         {menu.map((item, i) => (
           <div
             key={i}
@@ -131,14 +133,14 @@ export default function Navbar() {
             {item.path ? (
               <Link
                 to={item.path}
-                className={`px-5 py-3 block font-medium ${
-                  open === i ? "text-green-600" : "text-gray-700"
-                } hover:text-green-600`}
+                className={`px-5 py-3 block font-semibold text-[14px] ${
+                  open === i ? "text-green-600" : "text-white"
+                } hover:text-green-300`}
               >
                 {item.name}
               </Link>
             ) : (
-              <div className="px-5 py-3 flex items-center gap-1 cursor-pointer text-gray-700 hover:text-green-600">
+              <div className="px-5 py-3 flex items-center gap-1 cursor-pointer text-white hover:text-green-300">
                 {item.name} <span>▾</span>
               </div>
             )}

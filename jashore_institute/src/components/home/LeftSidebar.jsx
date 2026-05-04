@@ -7,7 +7,7 @@ export default function LeftSidebar() {
 
       {/* Founder Section */}
       <div className="border bg-white shadow-sm">
-        <div className="bg-green-700 text-white px-3 py-1 text-sm font-semibold">
+        <div className="bg-green-700 text-white px-3 py-1 প্রতিষ্ঠাতা: রায় বাহাদুর যদুনাথ মজুমদার-১৯২৮ খ্রি. font-semibold">
           প্রতিষ্ঠাতা: রায় বাহাদুর যদুনাথ মজুমদার-১৯২৮ খ্রি.
         </div>
         <div className="p-2">
@@ -29,11 +29,11 @@ export default function LeftSidebar() {
 
       {/* Institute Sections */}
       <div className="border bg-white shadow-sm">
-        <div className="bg-green-700 text-white px-3 py-1 text-sm font-semibold">
+        <div className="bg-green-700 text-white px-3 py-1 text-[14px] font-semibold">
           ইনস্টিটিউট বিভাগসমূহ
         </div>
 
-        <ul className="p-2 text-sm space-y-1">
+        <ul className="p-2 text-[14px] space-y-1">
           {[
             { name: "লাইব্রেরি বিভাগ", path: "/library-division" },
             { name: "ক্রীড়া বিভাগ", path: "/sports-division" },
@@ -61,11 +61,11 @@ export default function LeftSidebar() {
 
       {/* Members Section (FIXED) */}
       <div className="border bg-white shadow-sm">
-        <div className="bg-green-700 text-white px-3 py-1 text-sm font-semibold">
+        <div className="bg-green-700 text-white px-3 py-1 text-[14px] font-semibold">
           ইনস্টিটিউট সদস্য
         </div>
 
-        <ul className="p-2 text-sm space-y-1">
+        <ul className="p-2 text-[14px] space-y-1">
           {[
             { name: "দাতা সদস্য", path: "/donor-member" },
             { name: "আজীবন সদস্য", path: "/lifetime-member" },
@@ -92,8 +92,8 @@ export default function LeftSidebar() {
 
       {/* Cultural Sections */}
 <div className="border bg-white shadow-sm">
-  <div className="bg-green-700 text-white px-3 py-1 text-sm font-semibold">
-    যশোর ইনস্টিটিউট বিভাগীয় সদস্য
+  <div className="bg-green-700 text-white px-3 py-1 text-[14px] font-semibold">
+    যশোর ইনস্টিটিউট বিভাগীয় সদস্য
   </div>
 
   <ul className="p-2 text-sm space-y-1">

@@ -15,10 +15,20 @@ class ExecutiveCommitteeAdmin(admin.ModelAdmin):
 # 🔥 MAIN COMMITTEE
 @admin.register(CommitteeMember)
 class CommitteeMemberAdmin(admin.ModelAdmin):
-    list_display = ['name', 'role', 'role_type', 'order']
-    list_filter = ['role_type']
-    search_fields = ['name', 'role']
-    ordering = ['order']
+    list_display = (
+        "order",
+        "committee_role",
+        "member_name",
+        "member_number",
+    )
+
+    ordering = ("order",)
+
+    search_fields = (
+        "committee_role",
+        "member_name",
+        "member_number",
+    )
 
 
 # 🔥 OLD MAIN COMMITTEE (PDF)

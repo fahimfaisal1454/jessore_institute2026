@@ -3,12 +3,12 @@ from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 
 from .models import (
     AboutUs, Person, Photo, Video,
-    ApplicationForm, InfoPage, AnnualReport, ContactMessage
+    ApplicationForm, InfoPage, AnnualReport, ContactMessage,Library
 )
 from .serializers import (
     AboutUsSerializer, PersonSerializer, PhotoSerializer,
     VideoSerializer, ApplicationFormSerializer,
-    InfoPageSerializer, AnnualReportSerializer,ContactMessageSerializer
+    InfoPageSerializer, AnnualReportSerializer,ContactMessageSerializer,LibrarySerializer
 )
 
 # ✅ AboutUs Admin
@@ -55,3 +55,7 @@ class AnnualReportAdminViewSet(viewsets.ModelViewSet):
 class ContactMessageAdminViewSet(viewsets.ModelViewSet):
     queryset = ContactMessage.objects.all().order_by('-created_at')
     serializer_class = ContactMessageSerializer
+    
+class LibraryAdminViewSet(viewsets.ModelViewSet):
+    queryset = Library.objects.all().order_by("order")
+    serializer_class = LibrarySerializer

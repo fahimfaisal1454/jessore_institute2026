@@ -19,13 +19,15 @@ class ExecutiveCommitteeView(generics.ListAPIView):
 
 class CommitteeView(APIView):
     def get(self, request):
-        head = CommitteeMember.objects.filter(role_type='head').first()
-        members = CommitteeMember.objects.filter(role_type='member')
+        members = CommitteeMember.objects.all()
 
         return Response({
             "title": "পরিচালনা পরিষদ",
-            "head": CommitteeMemberSerializer(head, context={'request': request}).data if head else None,
-            "members": CommitteeMemberSerializer(members, many=True, context={'request': request}).data
+            "members": CommitteeMemberSerializer(
+                members,
+                many=True,
+                context={'request': request}
+            ).data
         })
         
 class OldCommitteeDocumentView(APIView):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AboutUs,Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage
+from .models import AboutUs,Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library
 
 @admin.register(AboutUs)
 class AboutUsAdmin(admin.ModelAdmin):
@@ -36,3 +36,17 @@ class AnnualReportAdmin(admin.ModelAdmin):
 @admin.register(ContactMessage)
 class ContactMessageAdmin(admin.ModelAdmin):
     list_display = ("name", "email", "subject", "created_at")
+    
+@admin.register(Library)
+class LibraryAdmin(admin.ModelAdmin):
+    list_display = (
+        "order",
+        "library_name",
+    )
+
+    ordering = ("order",)
+
+    search_fields = (
+        "library_name",
+        "library_address",
+    )

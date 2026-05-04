@@ -7,7 +7,7 @@ from .admin_views import (
     ApplicationFormAdminViewSet,
     InfoPageAdminViewSet,
     AnnualReportAdminViewSet,
-    ContactMessageAdminViewSet
+    ContactMessageAdminViewSet,LibraryAdminViewSet,
 )
 
 router = DefaultRouter()
@@ -20,5 +20,6 @@ router.register('forms', ApplicationFormAdminViewSet)
 router.register('infopages', InfoPageAdminViewSet)
 router.register('reports', AnnualReportAdminViewSet)
 router.register('contactus', ContactMessageAdminViewSet)
+router.register("libraries", LibraryAdminViewSet)
 
 urlpatterns = router.urls

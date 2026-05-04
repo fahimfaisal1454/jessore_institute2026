@@ -156,3 +156,16 @@ class ContactMessage(models.Model):
 
     def __str__(self):
         return self.name
+    
+    
+class Library(models.Model):
+    library_name = models.CharField(max_length=255)
+    library_address = models.TextField()
+    library_details = models.TextField()
+    order = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.library_name
+
+    class Meta:
+        ordering = ['order']

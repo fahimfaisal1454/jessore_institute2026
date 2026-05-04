@@ -70,6 +70,7 @@ export default function Sidebar() {
           <NavItem to="/dashboard/person" label="Persons" />
           <NavItem to="/dashboard/photos" label="Photos" />
           <NavItem to="/dashboard/videos" label="Videos" />
+          <NavItem to="/dashboard/library" label="Libraries" />
         </Section>
 
         {/* CONTENT */}

@@ -11,7 +11,7 @@ import RightSidebar from "../components/home/RightSidebar";
 
 export default function MainLayout() {
   return (
-    <div className="min-h-screen flex justify-center bg-[#f5f5f5]">
+    <div className="min-h-screen flex justify-center ">
 
       <div className="w-[1100px] bg-white shadow-md flex flex-col min-h-screen">
 

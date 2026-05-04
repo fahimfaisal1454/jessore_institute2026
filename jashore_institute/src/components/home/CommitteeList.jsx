@@ -42,7 +42,7 @@ export default function CommitteeList() {
                            hover:shadow hover:bg-blue-50 transition"
               >
                 <FaUser className="text-blue-600" />
-                <span className="hover:text-blue-600 font-medium">
+                <span className="hover:text-blue-600 text-[14px] font-medium">
                   {item.name}
                 </span>
               </NavLink>
@@ -74,7 +74,7 @@ export default function CommitteeList() {
                            hover:shadow hover:bg-blue-50 transition"
               >
                 <FaUser className="text-blue-600" />
-                <span className="hover:text-blue-600 font-medium">
+                <span className="hover:text-blue-600 text-[14px] font-medium">
                   {item.name}
                 </span>
               </NavLink>

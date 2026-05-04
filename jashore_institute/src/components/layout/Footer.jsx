@@ -13,7 +13,7 @@ export default function Footer() {
           </h3>
 
           <p className="text-sm leading-relaxed text-gray-300">
-            যশোর পাবলিক লাইব্রেরী ১৮৫৪ সালে প্রতিষ্ঠিত।
+            যশোর পাবলিক লাইব্রেরী ১৮৫১ সালে প্রতিষ্ঠিত।
             পরবর্তীতে যশোর ইনস্টিটিউট নামে পরিচিত হয়।
             এটি একটি ঐতিহ্যবাহী সাংস্কৃতিক প্রতিষ্ঠান।
           </p>
@@ -88,7 +88,7 @@ export default function Footer() {
 
       {/* Bottom bar */}
       <div className="bg-gray-900 text-center text-sm py-2 text-gray-400">
-        © 2026 Jashore Institute — All Rights Reserved
+        © 2022 Jashore Institute — All rights reserved | Powered by Utshab Technology Ltd.
       </div>
 
     </footer>

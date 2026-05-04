@@ -38,6 +38,7 @@ import Videos from "./pages/aboutus/Videos";
 import FieldApplication from "./pages/application/FieldApplication";
 import LeaveApplication from "./pages/application/LeaveApplication";
 import JadunathMajumdar from "./pages/aboutus/JadunathMajumdar";
+import LibraryDetails from "./pages/aboutus/LibraryDetails";
 
 // Sidebar pages
 import LibraryDiv from "./pages/leftSidebar/LibraryDiv";
@@ -93,6 +94,7 @@ import VoterForm from "./pages/dashboard/members/VoterForm";
 import DivisionForm from "./pages/dashboard/division/DivisionForm";
 import OldCommitteeForms from "./pages/dashboard/oldcommittee/OldCommitteeForm";
 import OldCommitteeCategory from "./pages/dashboard/oldcommittee/OldCommitteeCategory";
+import LibraryForm from "./pages/dashboard/about/LibraryForm";
 
 function App() {
   return (
@@ -136,6 +138,8 @@ function App() {
         <Route path="/dashboard/divisions" element={<DivisionForm />} />
         <Route path="/dashboard/old-committee" element={<OldCommitteeForms />} />
         <Route path="/dashboard/old-committee-categories" element={<OldCommitteeCategory />} />
+        <Route path="/dashboard/library" element={<LibraryForm />} />
+
 </Route>
 
         {/* ✅ HOME */}
@@ -212,6 +216,7 @@ function App() {
           <Route path="/primary-school" element={<PrimarySchoolPage />} />
           <Route path="/annual-report" element={<AnnualReportPage />} />
           <Route path="/open-liberty-stage" element={<OpenLibertyStagePage />} />
+          <Route path="/library-details" element={<LibraryDetails />} />
         </Route>
 
       </Routes>

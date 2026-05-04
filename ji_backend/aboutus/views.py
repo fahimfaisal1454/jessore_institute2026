@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import AboutUs, Person, Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage
-from .serializers import AboutUsSerializer, PersonSerializer, PhotoSerializer, VideoSerializer,  ApplicationFormSerializer, InfoPageSerializer, AnnualReportSerializer, ContactMessageSerializer
+from .models import AboutUs, Person, Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library
+from .serializers import AboutUsSerializer, PersonSerializer, PhotoSerializer, VideoSerializer,  ApplicationFormSerializer, InfoPageSerializer, AnnualReportSerializer, ContactMessageSerializer, LibrarySerializer
 
 
 class AboutUsView(APIView):
@@ -85,3 +85,12 @@ class ContactMessageView(APIView):
             )
 
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class LibraryListView(APIView):
+    def get(self, request):
+        libraries = Library.objects.all()
+
+        return Response({
+            "title": "দেশ বিদেশের বিভিন্ন লাইব্রেরির ঠিকানা/ওয়েবসাইট",
+            "libraries": LibrarySerializer(libraries, many=True).data
+        })

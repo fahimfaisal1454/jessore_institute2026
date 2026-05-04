@@ -16,19 +16,9 @@ class ExecutiveCommitteeSerializer(serializers.ModelSerializer):
         return None
 
 class CommitteeMemberSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
-
     class Meta:
         model = CommitteeMember
-        fields = ['id', 'name', 'role', 'image', 'role_type', 'order']
-
-    def update(self, instance, validated_data):
-        image = validated_data.get('image', None)
-
-        if not image:
-            validated_data.pop('image', None)
-
-        return super().update(instance, validated_data)
+        fields = '__all__'
     
 class OldCommitteeDocumentSerializer(serializers.ModelSerializer):
     file = serializers.FileField(use_url=True)

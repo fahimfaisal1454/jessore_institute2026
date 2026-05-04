@@ -1,22 +1,21 @@
 import { useEffect, useState } from "react";
 import AxiosInstance from "../../api/AxiosInstance";
-import BottomCards from "./BottomCards";
 import { Link } from "react-router-dom";
 
 export default function RightSidebar() {
   const [leaders, setLeaders] = useState([]);
+  const [libraries, setLibraries] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // EXECUTIVE COMMITTEE
     AxiosInstance.get("committee/executive/")
       .then((res) => {
         let data = res.data;
 
-        // handle pagination / object / array
         if (data?.results) data = data.results;
         if (!Array.isArray(data)) data = data ? [data] : [];
 
-        // sort president first
         data.sort((a, b) =>
           a.position === "president" ? -1 : 1
         );
@@ -28,6 +27,27 @@ export default function RightSidebar() {
         setLeaders([]);
       })
       .finally(() => setLoading(false));
+
+    // LIBRARIES
+    AxiosInstance.get("aboutus/libraries/")
+      .then((res) => {
+        let data = res.data;
+
+        if (data?.results) {
+          setLibraries(data.results);
+        } else if (data?.libraries) {
+          setLibraries(data.libraries);
+        } else if (Array.isArray(data)) {
+          setLibraries(data);
+        } else {
+          setLibraries([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Library fetch error:", err);
+        setLibraries([]);
+      });
+
   }, []);
 
   const getTitle = (pos) => {
@@ -37,36 +57,38 @@ export default function RightSidebar() {
   };
 
   return (
-    <div className="space-y-2 text-[13px]">
+    <div className="space-y-2 text-[14px]">
 
-      {/* 🔥 DYNAMIC সভাপতি + সম্পাদক */}
+      {/* EXECUTIVE LEADERS */}
       {loading ? (
-        <div className="text-center py-4 text-gray-500">Loading...</div>
+        <div className="text-center py-4 text-gray-500">
+          Loading...
+        </div>
       ) : leaders.length > 0 ? (
         leaders.map((item) => (
           <div
-            key={item.id || item.position}  // ✅ FIXED KEY WARNING
+            key={item.id || item.position}
             className="border border-gray-300 bg-white"
           >
             <div className="bg-[#0b6b3a] text-white text-center py-[4px] font-semibold">
               {getTitle(item.position)}
             </div>
 
-<div className="p-4 text-center">
+            <div className="p-4 text-center">
 
-  <div className="w-[150px] h-[160px] mx-auto border border-gray-300 bg-white p-1">
-    <img
-      src={item.image || "/no-image.png"}
-      alt={item.position}
-      className="w-full h-full object-cover"
-    />
-  </div>
+              <div className="w-[150px] h-[160px] mx-auto border border-gray-300 bg-white p-1">
+                <img
+                  src={item.image || "/no-image.png"}
+                  alt={item.position}
+                  className="w-full h-full object-cover"
+                />
+              </div>
 
-  <p className="mt-3 font-medium text-gray-800">
-    {item.name}
-  </p>
+              <p className="mt-3 font-medium text-gray-800">
+                {item.name}
+              </p>
 
-</div>
+            </div>
           </div>
         ))
       ) : (
@@ -75,59 +97,57 @@ export default function RightSidebar() {
         </div>
       )}
 
-      {/* MINI BOXES */}
-      <div className="grid grid-cols-3 gap-[2px]">
-        {["চাকুরি", "টেন্ডার", "বিজ্ঞাপন"].map((item) => (
-          <div
-            key={item}  // ✅ FIXED KEY WARNING
-            className="border border-gray-300 bg-[#f5f5f5] text-center py-2 hover:bg-gray-200 cursor-pointer"
-          >
-            {item}
-          </div>
-        ))}
-      </div>
+      {/* LIBRARIES OF BANGLADESH */}
+      {/* LIBRARIES OF BANGLADESH */}
+<div className="border border-gray-300 bg-white p-2">
 
-      {/* BLUE BUTTON LINKS */}
-      <div className="space-y-1">
-        {[
-          {
-            label: "কেন্দ্রীয় ই-সেবা",
-            link: "https://bangladesh.gov.bd/views/all-eservices-in-bangladesh/",
-          },
-          { label: "জেলা ই-সেবা কেন্দ্র", link: "#" },
-          { label: "আভ্যন্তরীণ ই-সেবা", link: "#" },
-          {
-            label: "ইনোভেশন কর্নার",
-            link: "https://publiclibrary.jessore.gov.bd/pages/innovation-corners/",
-          },
-          { label: "আপনার মতামত", link: "/contact" },
-        ].map((item) =>
-          item.link.startsWith("http") ? (
-            <a
-              key={item.label} // ✅ FIXED KEY
-              href={item.link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 border border-gray-300 px-2 py-1 bg-[url('/btn-bg.png')] bg-cover hover:brightness-95"
-            >
-              <span className="text-purple-700 text-xs">◆</span>
-              <span>{item.label}</span>
-            </a>
-          ) : (
-            <Link
-              key={item.label} // ✅ FIXED KEY
-              to={item.link}
-              className="flex items-center gap-2 border border-gray-300 px-2 py-1 bg-[url('/btn-bg.png')] bg-cover hover:brightness-95"
-            >
-              <span className="text-purple-700 text-xs">◆</span>
-              <span>{item.label}</span>
-            </Link>
-          )
-        )}
+  <div className="bg-[#0b6b3a] text-white text-center py-[5px] font-semibold mb-2">
+    বাংলাদেশের গ্রন্থাগারসমূহ
+  </div>
+
+  <div className="space-y-1">
+
+    {libraries.length > 0 ? (
+      <>
+        {libraries.slice(0, 8).map((library) => (
+          <Link
+            key={library.id}
+            to="/library-details"
+            className="flex items-center gap-2 border border-gray-300 px-2 py-2 bg-[#f8f8f8] hover:bg-gray-100"
+          >
+            <span className="text-purple-700 text-xs">
+              ◆
+            </span>
+
+            <span className="text-[14px] text-gray-800">
+              {library.library_name}
+            </span>
+          </Link>
+        ))}
+
+        {/* SHOW MORE */}
+        <div className="text-center pt-2">
+          <Link
+            to="/library-details"
+            className="text-blue-700  text-[14px] font-medium hover:underline"
+          >
+            Show More...
+          </Link>
+        </div>
+      </>
+    ) : (
+      <div className="text-center text-gray-500 py-3">
+        No library data available
+      </div>
+    )}
+
+  </div>
+
       </div>
 
       {/* CONTACT */}
       <div className="border border-gray-300 bg-white p-2">
+
         <div className="border border-gray-400 text-center text-blue-700 font-semibold py-1 mb-2">
           সেবা পেতে জরুরী প্রয়োজনে যোগাযোগ করুন
         </div>
@@ -136,38 +156,76 @@ export default function RightSidebar() {
           <li>অফিস: 02477-761243</li>
           <li>অফিস: 01977-809210</li>
         </ul>
+
       </div>
 
       {/* BANNER LINKS */}
-      <div className="space-y-2">
+      <div className="space-y-2 ">
+
         {[
-          { label: "উন্মুক্ত স্বাধীনতা মঞ্চ", link: "/open-liberty-stage" },
-          { label: "প্রাথমিক বিদ্যালয়", link: "/primary-school" },
-          { label: "বার্ষিক প্রতিবেদন", link: "/annual-report" },
+          {
+            label: "উন্মুক্ত স্বাধীনতা মঞ্চ",
+            link: "/open-liberty-stage",
+            icon: "🏛️",
+          },
+          {
+            label: "প্রাথমিক বিদ্যালয়",
+            link: "/primary-school",
+            icon: "🏫",
+          },
+          {
+            label: "বার্ষিক প্রতিবেদন",
+            link: "/annual-report",
+            icon: "📄",
+          },
         ].map((item) => (
           <Link
-            key={item.label} // ✅ FIXED KEY
+            key={item.label}
             to={item.link}
-            className="flex items-center gap-2 px-2 py-2 bg-[url('/blue-bg.png')] bg-cover border border-gray-200 hover:brightness-95"
+            className="flex items-center gap-3 px-3 py-3 bg-[#f8f8f8] border border-gray-300 hover:bg-gray-100"
           >
-            <img src="/link-icon.png" alt="icon" className="w-5 h-5" />
-            <span className="font-medium text-gray-800">
+
+            <span className="text-[14px]">
+              {item.icon}
+            </span>
+
+            <span className="font-medium text-gray-800 text-[14px]">
               {item.label}
             </span>
+
           </Link>
         ))}
+
       </div>
 
       {/* E-BOOK */}
       <div className="border border-gray-300 bg-white text-center p-2">
+
         <div className="bg-[#0b6b3a] text-white py-[4px] font-semibold mb-2">
           ই-বুক
         </div>
 
-        <img src="/ebook.png" alt="ebook" className="w-14 mx-auto" />
+        <a
+          href="https://www.ebook.com.bd/"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block hover:opacity-90"
+        >
+
+          <img
+            src="/src/assets/ebook.png"
+            alt="ebook"
+            className="w-16 mx-auto"
+          />
+
+          <p className="text-sm text-blue-700 mt-2 font-medium">
+            ই-বুক দেখুন
+          </p>
+
+        </a>
+
       </div>
 
-      <BottomCards />
     </div>
   );
 }

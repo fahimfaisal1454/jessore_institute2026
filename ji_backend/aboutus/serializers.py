@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import AboutUs, Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage
+from .models import AboutUs, Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library
 
 
 class AboutUsSerializer(serializers.ModelSerializer):
@@ -47,3 +47,9 @@ class ContactMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = ContactMessage
         fields = "__all__"
+        
+        
+class LibrarySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Library
+        fields = '__all__'

@@ -20,21 +20,25 @@ class ExecutiveCommittee(models.Model):
         return self.get_position_display()
 
 class CommitteeMember(models.Model):
-    ROLE_TYPE = [
-        ('head', 'Head'),
-        ('member', 'Member'),
-    ]
-
-    name = models.CharField(max_length=200)
-    role = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='committee/', blank=True, null=True)
-
-    role_type = models.CharField(max_length=10, choices=ROLE_TYPE)
-
+    committee_role = models.CharField(max_length=255)
+    member_name = models.CharField(
+        max_length=255,
+        default=""
+    )
+    member_number = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True
+    )
+    image = models.ImageField(
+        upload_to='committee/',
+        blank=True,
+        null=True
+    )
     order = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"{self.name} ({self.role_type})"
+        return self.member_name
 
     class Meta:
         ordering = ['order']
