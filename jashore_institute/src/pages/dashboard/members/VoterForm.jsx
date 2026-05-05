@@ -71,132 +71,157 @@ export default function VoterForm() {
       .catch(err => console.error(err));
   };
 
-  return (
-    <div className="p-6">
+return (
+  <div className="p-4 sm:p-6">
 
-      <h2 className="text-xl font-bold mb-4">Voter Lists</h2>
+    <h2 className="text-xl sm:text-2xl font-bold mb-6">
+      Voter Lists
+    </h2>
 
-      {/* 🔥 FORM */}
-      <form onSubmit={handleSubmit} className="space-y-4 mb-6">
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-5 mb-8 bg-white border p-4 sm:p-6 rounded shadow-sm"
+    >
 
-        <input
-          name="year"
-          value={form.year}
-          placeholder="Year (e.g. 2023-2024)"
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
+      <input
+        name="year"
+        value={form.year}
+        placeholder="Year (e.g. 2023-2024)"
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      />
 
-        {/* FILE INPUTS */}
-        <div className="grid grid-cols-3 gap-3">
+      {/* FILE INPUTS */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
 
-          <div>
-            <label className="text-sm font-medium">Donor PDF</label>
-            <input
-              type="file"
-              name="donor_pdf"
-              onChange={handleChange}
-              className="border p-2 w-full"
-            />
-            {form.donor_pdf && (
-              <p className="text-xs mt-1">{form.donor_pdf.name}</p>
-            )}
-          </div>
+        <div>
+          <label className="text-sm font-medium block mb-2">
+            Donor PDF
+          </label>
 
-          <div>
-            <label className="text-sm font-medium">Life PDF</label>
-            <input
-              type="file"
-              name="life_pdf"
-              onChange={handleChange}
-              className="border p-2 w-full"
-            />
-            {form.life_pdf && (
-              <p className="text-xs mt-1">{form.life_pdf.name}</p>
-            )}
-          </div>
+          <input
+            type="file"
+            name="donor_pdf"
+            onChange={handleChange}
+            className="border p-3 w-full rounded text-sm"
+          />
 
-          <div>
-            <label className="text-sm font-medium">General PDF</label>
-            <input
-              type="file"
-              name="general_pdf"
-              onChange={handleChange}
-              className="border p-2 w-full"
-            />
-            {form.general_pdf && (
-              <p className="text-xs mt-1">{form.general_pdf.name}</p>
-            )}
-          </div>
-
+          {form.donor_pdf && (
+            <p className="text-xs mt-2 break-words">
+              {form.donor_pdf.name}
+            </p>
+          )}
         </div>
 
-        <button className="bg-purple-600 text-white px-4 py-2">
-          Upload
-        </button>
+        <div>
+          <label className="text-sm font-medium block mb-2">
+            Life PDF
+          </label>
 
-      </form>
+          <input
+            type="file"
+            name="life_pdf"
+            onChange={handleChange}
+            className="border p-3 w-full rounded text-sm"
+          />
 
-      {/* 🔥 LIST */}
-      {data.length === 0 ? (
-        <p className="text-gray-500">No voter lists found.</p>
-      ) : (
-        <div className="space-y-3">
+          {form.life_pdf && (
+            <p className="text-xs mt-2 break-words">
+              {form.life_pdf.name}
+            </p>
+          )}
+        </div>
 
-          {data.map(item => (
-            <div
-              key={item.id}
-              className="border p-4 rounded shadow-sm"
-            >
+        <div>
+          <label className="text-sm font-medium block mb-2">
+            General PDF
+          </label>
 
-              <h3 className="font-semibold text-lg mb-2">
-                {item.year}
-              </h3>
+          <input
+            type="file"
+            name="general_pdf"
+            onChange={handleChange}
+            className="border p-3 w-full rounded text-sm"
+          />
 
-              <div className="flex gap-4 text-sm">
+          {form.general_pdf && (
+            <p className="text-xs mt-2 break-words">
+              {form.general_pdf.name}
+            </p>
+          )}
+        </div>
 
-                <a
-                  href={item.donor_pdf}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-blue-600 underline"
-                >
-                  Donor
-                </a>
+      </div>
 
-                <a
-                  href={item.life_pdf}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-green-600 underline"
-                >
-                  Life
-                </a>
+      <button className="bg-purple-600 text-white px-4 py-3 rounded w-full sm:w-auto">
+        Upload
+      </button>
 
-                <a
-                  href={item.general_pdf}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-purple-600 underline"
-                >
-                  General
-                </a>
+    </form>
 
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="text-red-500 ml-auto"
-                >
-                  Delete
-                </button>
+    {/* LIST */}
+    {data.length === 0 ? (
+      <p className="text-gray-500">
+        No voter lists found.
+      </p>
+    ) : (
+      <div className="space-y-4">
 
-              </div>
+        {data.map((item) => (
+          <div
+            key={item.id}
+            className="border bg-white p-4 sm:p-5 rounded shadow-sm"
+          >
+
+            <h3 className="font-semibold text-lg mb-4 break-words">
+              {item.year}
+            </h3>
+
+            <div className="flex flex-col sm:flex-row sm:flex-wrap gap-3 text-sm">
+
+              <a
+                href={item.donor_pdf}
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-600 underline"
+              >
+                Donor
+              </a>
+
+              <a
+                href={item.life_pdf}
+                target="_blank"
+                rel="noreferrer"
+                className="text-green-600 underline"
+              >
+                Life
+              </a>
+
+              <a
+                href={item.general_pdf}
+                target="_blank"
+                rel="noreferrer"
+                className="text-purple-600 underline"
+              >
+                General
+              </a>
+
+              <button
+                onClick={() => handleDelete(item.id)}
+                className="text-red-500 sm:ml-auto text-left"
+              >
+                Delete
+              </button>
 
             </div>
-          ))}
 
-        </div>
-      )}
+          </div>
+        ))}
 
-    </div>
-  );
+      </div>
+    )}
+
+  </div>
+);
 }

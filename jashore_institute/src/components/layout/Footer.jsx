@@ -1,7 +1,26 @@
-import { NavLink } from "react-router-dom";
-import { FaPhoneAlt, FaEnvelope, FaMapMarkerAlt } from "react-icons/fa";
+import { NavLink, useNavigate } from "react-router-dom";
+import {
+  FaPhoneAlt,
+  FaEnvelope,
+  FaMapMarkerAlt,
+  FaFacebookF,
+  FaYoutube,
+  FaUser,
+} from "react-icons/fa";
+import { useAuth } from "../../auth/AuthContext";
 
 export default function Footer() {
+  const navigate = useNavigate();
+  const { isAuthenticated } = useAuth();
+
+  const handleUserClick = () => {
+    if (isAuthenticated) {
+      navigate("/dashboard");
+    } else {
+      navigate("/login");
+    }
+  };
+
   const departments = [
     { name: "লাইব্রেরি বিভাগ", path: "/library-division" },
     { name: "ক্রীড়া বিভাগ", path: "/sports-division" },
@@ -19,7 +38,7 @@ export default function Footer() {
 
   return (
     <footer className="bg-black text-white mt-8 w-full overflow-x-hidden">
-      
+
       {/* MAIN FOOTER */}
       <div className="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-12 gap-8">
@@ -37,48 +56,57 @@ export default function Footer() {
             </p>
           </div>
 
-          {/* DEPARTMENTS */}
-          <div className="lg:col-span-3">
-            <h3 className="text-orange-400 font-semibold text-lg mb-3">
-              বিভাগসমূহ
-            </h3>
+          {/* DEPARTMENTS + ACTIVITIES */}
+          <div className="lg:col-span-6">
+            <div className="grid grid-cols-2 gap-6">
 
-            <ul className="space-y-1">
-              {departments.map((item, i) => (
-                <li key={i}>
-                  <NavLink
-                    to={item.path}
-                    className={({ isActive }) =>
-                      `block text-sm md:text-base px-2 py-1 rounded transition ${
-                        isActive
-                          ? "text-orange-400 font-semibold"
-                          : "text-gray-300 hover:text-orange-300"
-                      }`
-                    }
-                  >
-                    {item.name}
-                  </NavLink>
-                </li>
-              ))}
-            </ul>
-          </div>
+              {/* DEPARTMENTS */}
+              <div>
+                <h3 className="text-orange-400 font-semibold text-lg mb-3">
+                  বিভাগসমূহ
+                </h3>
 
-          {/* ACTIVITIES */}
-          <div className="lg:col-span-3">
-            <h3 className="text-orange-400 font-semibold text-lg mb-3">
-              সাম্প্রতিক অনুষ্ঠান
-            </h3>
+                <ul className="space-y-2">
+                  {departments.map((item, i) => (
+                    <li key={i}>
+                      <NavLink
+                        to={item.path}
+                        className={({ isActive }) =>
+                          `block text-sm md:text-base text-gray-300 hover:text-orange-300 transition ${
+                            isActive
+                              ? "text-orange-400 font-semibold"
+                              : ""
+                          }`
+                        }
+                      >
+                        {item.name}
+                      </NavLink>
+                    </li>
+                  ))}
+                </ul>
+              </div>
 
-            <ul className="space-y-2">
-              {activities.map((activity, i) => (
-                <li
-                  key={i}
-                  className="text-sm md:text-base text-gray-300"
-                >
-                  {activity}
-                </li>
-              ))}
-            </ul>
+              {/* ACTIVITIES */}
+              <div>
+                <h3 className="text-orange-400 font-semibold text-lg mb-3">
+                  সাম্প্রতিক অনুষ্ঠান
+                </h3>
+
+                <ul className="space-y-2">
+                  {activities.map((activity, i) => (
+                    <li
+                      key={i}
+                      className="text-sm md:text-base text-gray-300"
+                    >
+                      {activity}
+                    </li>
+                  ))}
+                </ul>
+
+              
+              </div>
+
+            </div>
           </div>
 
           {/* CONTACT */}
@@ -103,9 +131,37 @@ export default function Footer() {
                 <FaEnvelope className="mt-1 flex-shrink-0" />
                 <span>info@jashoreinstitute.gov.bd</span>
               </div>
+{/* SOCIAL ICONS - MOBILE ONLY */}
+<div className="flex gap-3 mt-5 lg:hidden">
 
+  {/* FACEBOOK */}
+  <a
+    href="#"
+    className="bg-blue-600 text-white p-2 rounded hover:scale-105 transition"
+  >
+    <FaFacebookF size={14} />
+  </a>
+
+  {/* YOUTUBE */}
+  <a
+    href="#"
+    className="bg-red-600 text-white p-2 rounded hover:scale-105 transition"
+  >
+    <FaYoutube size={14} />
+  </a>
+
+  {/* USER */}
+  <button
+    onClick={handleUserClick}
+    className="bg-gray-700 text-white p-2 rounded hover:bg-gray-600 hover:scale-105 transition"
+  >
+    <FaUser size={14} />
+  </button>
+
+</div>
             </div>
           </div>
+
         </div>
       </div>
 
@@ -118,6 +174,7 @@ export default function Footer() {
           </p>
         </div>
       </div>
+
     </footer>
   );
 }

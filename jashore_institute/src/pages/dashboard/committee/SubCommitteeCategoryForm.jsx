@@ -51,56 +51,62 @@ export default function SubCommitteeCategoryForm() {
       .catch(console.error);
   };
 
-  return (
-    <div className="p-6">
+return (
+  <div className="p-4 sm:p-6">
 
-      <h2 className="text-xl font-bold mb-4">
-        Sub Committee Categories
-      </h2>
+    <h2 className="text-xl sm:text-2xl font-bold mb-6">
+      Sub Committee Categories
+    </h2>
 
-      {/* FORM */}
-      <form onSubmit={handleSubmit} className="flex gap-3 mb-6">
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="flex flex-col sm:flex-row gap-3 mb-8 bg-white border p-4 sm:p-6 rounded shadow-sm"
+    >
 
-        <select
-          value={type}
-          onChange={(e) => setType(e.target.value)}
-          className="border p-2"
-        >
-          <option value="">Select Category</option>
-          {TYPE_OPTIONS.map((t) => (
-            <option key={t.value} value={t.value}>
-              {t.label}
-            </option>
-          ))}
-        </select>
+      <select
+        value={type}
+        onChange={(e) => setType(e.target.value)}
+        className="border p-3 rounded w-full"
+      >
+        <option value="">Select Category</option>
 
-        <button className="bg-green-600 text-white px-4 py-2">
-          Add
-        </button>
-
-      </form>
-
-      {/* LIST */}
-      <div className="space-y-2">
-
-        {data.map((c) => (
-          <div
-            key={c.id}
-            className="flex justify-between items-center border p-3"
-          >
-            <p>{c.label}</p>
-
-            <button
-              onClick={() => handleDelete(c.id)}
-              className="text-red-500"
-            >
-              Delete
-            </button>
-          </div>
+        {TYPE_OPTIONS.map((t) => (
+          <option key={t.value} value={t.value}>
+            {t.label}
+          </option>
         ))}
+      </select>
 
-      </div>
+      <button className="bg-green-600 text-white px-4 py-3 rounded w-full sm:w-auto">
+        Add
+      </button>
+
+    </form>
+
+    {/* LIST */}
+    <div className="space-y-3">
+
+      {data.map((c) => (
+        <div
+          key={c.id}
+          className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3 border bg-white p-4 rounded shadow-sm"
+        >
+          <p className="break-words font-medium">
+            {c.label}
+          </p>
+
+          <button
+            onClick={() => handleDelete(c.id)}
+            className="text-red-500 w-full sm:w-auto text-left"
+          >
+            Delete
+          </button>
+        </div>
+      ))}
 
     </div>
-  );
+
+  </div>
+);
 }

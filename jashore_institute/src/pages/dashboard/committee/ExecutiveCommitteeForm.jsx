@@ -10,7 +10,7 @@ const ExecutiveCommitteeForm = () => {
 
   const [loading, setLoading] = useState(false);
 
-  // ✅ FETCH DATA
+  // FETCH DATA
   const fetchData = async () => {
     try {
       const res = await axios.get("/committee/executive/");
@@ -25,18 +25,18 @@ const ExecutiveCommitteeForm = () => {
         if (item.position === "president") {
           newData.president = {
             id: item.id,
-            name: item.name,
+            name: item.name || "",
             image: null,
-            preview: item.image,
+            preview: item.image || "",
           };
         }
 
         if (item.position === "secretary") {
           newData.secretary = {
             id: item.id,
-            name: item.name,
+            name: item.name || "",
             image: null,
-            preview: item.image,
+            preview: item.image || "",
           };
         }
       });
@@ -51,7 +51,7 @@ const ExecutiveCommitteeForm = () => {
     fetchData();
   }, []);
 
-  // ✅ INPUT CHANGE
+  // INPUT CHANGE
   const handleChange = (type, field, value) => {
     setData((prev) => ({
       ...prev,
@@ -62,53 +62,75 @@ const ExecutiveCommitteeForm = () => {
     }));
   };
 
-  // ✅ IMAGE
+  // IMAGE CHANGE
   const handleImage = (type, file) => {
+    if (!file) return;
+
     setData((prev) => ({
       ...prev,
       [type]: {
         ...prev[type],
         image: file,
-        preview: file ? URL.createObjectURL(file) : prev[type].preview,
+        preview: URL.createObjectURL(file),
       },
     }));
   };
 
-  // ✅ SAVE WITH ALERT
+  // SAVE
   const handleSave = async (type) => {
     setLoading(true);
 
-    const formData = new FormData();
-    formData.append("position", type);
-    formData.append("name", data[type].name);
-
-    if (data[type].image) {
-      formData.append("image", data[type].image);
-    }
-
     try {
+      const formData = new FormData();
+
+      formData.append("position", type);
+      formData.append("name", data[type].name);
+
+      // Always append new image if selected
+      if (data[type].image) {
+        formData.append("image", data[type].image);
+      }
+
       if (data[type].id) {
         // UPDATE
-        await axios.patch(
+        await axios.put(
           `/admin/committee/executive/${data[type].id}/`,
           formData,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
 
         alert("Updated successfully ✅");
       } else {
         // CREATE
-        await axios.post(`/admin/committee/executive/`, formData, {
-          headers: { "Content-Type": "multipart/form-data" },
-        });
+        await axios.post(
+          `/admin/committee/executive/`,
+          formData,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
         alert("Saved successfully ✅");
       }
 
+      // Reset file state
+      setData((prev) => ({
+        ...prev,
+        [type]: {
+          ...prev[type],
+          image: null,
+        },
+      }));
+
       fetchData();
     } catch (err) {
-      console.error(err.response?.data || err);
-
+      console.error("UPLOAD ERROR:", err.response?.data || err);
       alert("Something went wrong ❌");
     }
 
@@ -117,11 +139,13 @@ const ExecutiveCommitteeForm = () => {
 
   return (
     <FormWrapper title="Executive Committee">
-      <div className="grid md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
         {/* PRESIDENT */}
-        <div className="bg-white p-4 rounded shadow space-y-3">
-          <h3 className="font-semibold">President</h3>
+        <div className="bg-white p-4 sm:p-6 rounded shadow space-y-4">
+          <h3 className="font-semibold text-lg">
+            President
+          </h3>
 
           <input
             type="text"
@@ -130,36 +154,43 @@ const ExecutiveCommitteeForm = () => {
               handleChange("president", "name", e.target.value)
             }
             placeholder="Name"
-            className="w-full border p-2 rounded"
+            className="w-full border p-3 rounded"
           />
 
           <input
             type="file"
-            onChange={(e) =>
-              handleImage("president", e.target.files[0])
-            }
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                handleImage("president", file);
+              }
+            }}
+            className="w-full text-sm"
           />
 
           {data.president.preview && (
             <img
               src={data.president.preview}
               className="w-32 h-32 object-cover rounded border"
-              alt=""
+              alt="President"
             />
           )}
 
           <button
             onClick={() => handleSave("president")}
             disabled={loading}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
+            className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
           >
             {loading ? "Saving..." : "Save"}
           </button>
         </div>
 
         {/* SECRETARY */}
-        <div className="bg-white p-4 rounded shadow space-y-3">
-          <h3 className="font-semibold">Secretary</h3>
+        <div className="bg-white p-4 sm:p-6 rounded shadow space-y-4">
+          <h3 className="font-semibold text-lg">
+            Secretary
+          </h3>
 
           <input
             type="text"
@@ -168,28 +199,33 @@ const ExecutiveCommitteeForm = () => {
               handleChange("secretary", "name", e.target.value)
             }
             placeholder="Name"
-            className="w-full border p-2 rounded"
+            className="w-full border p-3 rounded"
           />
 
           <input
             type="file"
-            onChange={(e) =>
-              handleImage("secretary", e.target.files[0])
-            }
+            accept="image/*"
+            onChange={(e) => {
+              const file = e.target.files[0];
+              if (file) {
+                handleImage("secretary", file);
+              }
+            }}
+            className="w-full text-sm"
           />
 
           {data.secretary.preview && (
             <img
               src={data.secretary.preview}
               className="w-32 h-32 object-cover rounded border"
-              alt=""
+              alt="Secretary"
             />
           )}
 
           <button
             onClick={() => handleSave("secretary")}
             disabled={loading}
-            className="bg-blue-600 text-white px-4 py-2 rounded"
+            className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
           >
             {loading ? "Saving..." : "Save"}
           </button>

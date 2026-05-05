@@ -125,122 +125,138 @@ export default function OldCommitteeForm() {
     ? data.filter(item => item.category === Number(filterCategory))
     : data;
 
-  return (
-    <div className="p-6 max-w-5xl mx-auto">
+return (
+  <div className="p-4 sm:p-6 max-w-5xl mx-auto">
 
-      <h2 className="text-2xl font-bold mb-6">
-        Old Committee CMS
-      </h2>
+    <h2 className="text-xl sm:text-2xl font-bold mb-6">
+      Old Committee CMS
+    </h2>
 
-      {/* FORM */}
-      <form onSubmit={handleSubmit} className="bg-white p-5 rounded shadow mb-6 space-y-3">
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-4 sm:p-6 rounded shadow mb-8 space-y-4"
+    >
 
-        <select
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        >
-          <option value="">Select Category</option>
-          {categories.map(c => (
-            <option key={c.id} value={c.id}>
-              {c.type}
-            </option>
-          ))}
-        </select>
+      <select
+        name="category"
+        value={form.category}
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      >
+        <option value="">Select Category</option>
 
-        <input
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Name"
-          className="border p-2 w-full"
-        />
-
-        <input
-          name="year"
-          value={form.year}
-          onChange={handleChange}
-          placeholder="Year (e.g. 2000-2001)"
-          className="border p-2 w-full"
-        />
-
-        <input
-          type="file"
-          name="image"
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
-
-        <div className="flex gap-3">
-          <button className="bg-blue-600 text-white px-4 py-2">
-            {editId ? "Update" : "Create"}
-          </button>
-
-          {editId && (
-            <button
-              type="button"
-              onClick={resetForm}
-              className="bg-gray-400 text-white px-4 py-2"
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-      </form>
-
-      {/* 🔥 FILTER DROPDOWN */}
-      <div className="mb-4">
-        <select
-          value={filterCategory}
-          onChange={(e) => setFilterCategory(e.target.value)}
-          className="border p-2"
-        >
-          <option value="">All Categories</option>
-          {categories.map(c => (
-            <option key={c.id} value={c.id}>
-              {c.type}
-            </option>
-          ))}
-        </select>
-      </div>
-
-      {/* LIST */}
-      <div className="grid grid-cols-3 gap-4">
-        {filteredData.map(item => (
-          <div key={item.id} className="border p-3 text-center rounded shadow-sm">
-
-            {item.image && (
-              <img
-                src={item.image}
-                alt={item.name}
-                className="w-full h-32 object-cover mb-2 rounded"
-              />
-            )}
-
-            <p className="font-semibold">{item.name}</p>
-            <p className="text-sm text-gray-500">{item.year}</p>
-
-            <div className="flex justify-center gap-3 mt-2">
-              <button
-                onClick={() => handleEdit(item)}
-                className="text-blue-600 text-sm"
-              >
-                Edit
-              </button>
-
-              <button
-                onClick={() => handleDelete(item.id)}
-                className="text-red-500 text-sm"
-              >
-                Delete
-              </button>
-            </div>
-
-          </div>
+        {categories.map((c) => (
+          <option key={c.id} value={c.id}>
+            {c.type}
+          </option>
         ))}
+      </select>
+
+      <input
+        name="name"
+        value={form.name}
+        onChange={handleChange}
+        placeholder="Name"
+        className="border p-3 w-full rounded"
+      />
+
+      <input
+        name="year"
+        value={form.year}
+        onChange={handleChange}
+        placeholder="Year (e.g. 2000-2001)"
+        className="border p-3 w-full rounded"
+      />
+
+      <input
+        type="file"
+        name="image"
+        onChange={handleChange}
+        className="border p-3 w-full rounded text-sm"
+      />
+
+      <div className="flex flex-col sm:flex-row gap-3">
+        <button className="bg-blue-600 text-white px-4 py-3 rounded w-full sm:w-auto">
+          {editId ? "Update" : "Create"}
+        </button>
+
+        {editId && (
+          <button
+            type="button"
+            onClick={resetForm}
+            className="bg-gray-400 text-white px-4 py-3 rounded w-full sm:w-auto"
+          >
+            Cancel
+          </button>
+        )}
       </div>
+
+    </form>
+
+    {/* FILTER */}
+    <div className="mb-6">
+      <select
+        value={filterCategory}
+        onChange={(e) => setFilterCategory(e.target.value)}
+        className="border p-3 rounded w-full sm:w-auto"
+      >
+        <option value="">All Categories</option>
+
+        {categories.map((c) => (
+          <option key={c.id} value={c.id}>
+            {c.type}
+          </option>
+        ))}
+      </select>
+    </div>
+
+    {/* LIST */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+
+      {filteredData.map((item) => (
+        <div
+          key={item.id}
+          className="border bg-white p-4 text-center rounded shadow-sm"
+        >
+
+          {item.image && (
+            <img
+              src={item.image}
+              alt={item.name}
+              className="w-full h-48 object-cover mb-3 rounded"
+            />
+          )}
+
+          <p className="font-semibold break-words">
+            {item.name}
+          </p>
+
+          <p className="text-sm text-gray-500 break-words">
+            {item.year}
+          </p>
+
+          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-4">
+            <button
+              onClick={() => handleEdit(item)}
+              className="text-blue-600 text-sm w-full sm:w-auto"
+            >
+              Edit
+            </button>
+
+            <button
+              onClick={() => handleDelete(item.id)}
+              className="text-red-500 text-sm w-full sm:w-auto"
+            >
+              Delete
+            </button>
+          </div>
+
+        </div>
+      ))}
 
     </div>
-  );
+
+  </div>
+);
 }

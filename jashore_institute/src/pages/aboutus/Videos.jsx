@@ -51,30 +51,33 @@ export default function Videos() {
     );
   }
 
-  return (
-    <div className="max-w-[1100px] mx-auto">
-      <div className="bg-white border shadow-sm">
+ return (
+  <div className="max-w-[1100px] mx-auto">
+    <div className="bg-white border shadow-sm">
 
-        {/* Header */}
-        <div className="bg-[#e9e9e9] border-b px-4 py-2 font-semibold">
-          {title}
-        </div>
-
-        {/* Video Grid */}
-        <div className="p-6 grid grid-cols-2 gap-6">
-          {videos.map((video) => (
-            <div key={video.id} className="aspect-video">
-              <iframe
-                src={video.url}
-                title="video"
-                className="w-full h-full"
-                allowFullScreen
-              ></iframe>
-            </div>
-          ))}
-        </div>
-
+      {/* Header */}
+      <div className="bg-[#e9e9e9] border-b px-3 sm:px-4 py-3 font-semibold text-sm sm:text-base break-words">
+        {title}
       </div>
+
+      {/* Video Grid */}
+      <div className="p-4 sm:p-6 grid grid-cols-1 sm:grid-cols-2 gap-5 sm:gap-6">
+        {videos.map((video) => (
+          <div
+            key={video.id}
+            className="aspect-video rounded overflow-hidden shadow-sm"
+          >
+            <iframe
+              src={video.url}
+              title={`video-${video.id}`}
+              className="w-full h-full"
+              allowFullScreen
+            ></iframe>
+          </div>
+        ))}
+      </div>
+
     </div>
-  );
+  </div>
+);
 }

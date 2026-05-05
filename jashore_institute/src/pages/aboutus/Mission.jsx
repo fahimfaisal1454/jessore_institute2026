@@ -14,28 +14,33 @@ export default function Mission() {
     return <p className="text-center mt-10">Loading...</p>;
   }
 
-  return (
-    <div className="max-w-[1100px] mx-auto">
+ return (
+  <div className="max-w-[1100px] mx-auto">
 
-      {/* Page Box */}
-      <div className="bg-white border shadow-sm">
+    {/* Page Box */}
+    <div className="bg-white border shadow-sm">
 
-        {/* Header */}
-        <div className="bg-[#e9e9e9] border-b px-4 py-2 font-semibold text-gray-800">
-          {data.title}
-        </div>
+      {/* Header */}
+      <div className="bg-[#e9e9e9] border-b px-3 sm:px-4 py-3 font-semibold text-gray-800 text-sm sm:text-base break-words">
+        {data.title}
+      </div>
 
-        {/* Content */}
-        <div className="p-5 text-[15px] leading-7 text-gray-800 text-justify space-y-4">
+      {/* Content */}
+      <div className="p-4 sm:p-5 text-sm sm:text-[15px] leading-7 text-gray-800 text-justify space-y-4">
 
-          {data.content.split("\n").map((para, index) => (
-            <p key={index}>{para}</p>
-          ))}
-
-        </div>
+        {data.content.split("\n").map((para, index) => (
+          <p
+            key={index}
+            className="break-words whitespace-pre-line"
+          >
+            {para}
+          </p>
+        ))}
 
       </div>
 
     </div>
-  );
+
+  </div>
+);
 }

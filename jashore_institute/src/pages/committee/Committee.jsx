@@ -31,11 +31,11 @@ export default function Committee() {
         {/* HEADER */}
         <thead>
           <tr className="bg-[#f1f1f1] text-center font-bold">
-            <th className="border border-black px-2 py-4 min-w-[60px]">
+            <th className="border border-black px-0 py-4 min-w-[10px]">
               ক্রম.
             </th>
 
-            <th className="border border-black px-3 py-4 min-w-[220px]">
+            <th className="border border-black px-3 py-4 min-w-[100px]">
               পদবী
             </th>
 
@@ -82,27 +82,26 @@ export default function Committee() {
                 {member.member_number || ""}
               </td>
 
-              {/* IMAGE */}
-              <td className="border border-black py-2 text-center">
-                {member.image ? (
-                  <a
-                    href={member.image}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="block"
-                  >
-                    <div className="w-[25mm] h-[30mm] mx-auto overflow-hidden border border-gray-400 bg-white flex items-start justify-center">
-                      <img
-                        src={member.image}
-                        alt={member.member_name}
-                        className="w-full h-full object-cover object-top hover:scale-105 transition duration-200 cursor-pointer"
-                      />
-                    </div>
-                  </a>
-                ) : (
-                  <div className="w-[25mm] h-[30mm] mx-auto border border-gray-300 bg-white" />
-                )}
-              </td>
+{/* IMAGE */}
+{/* IMAGE */}
+<td className="border border-black p-0 text-center align-middle w-20 h-20">
+  {member.image ? (
+    <a
+      href={member.image}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="block w-full h-full"
+    >
+      <img
+        src={member.image}
+        alt={member.member_name}
+        className="w-full h-full object-cover block"
+      />
+    </a>
+  ) : (
+    <div className="w-full h-full bg-white" />
+  )}
+</td>
 
             </tr>
           ))}

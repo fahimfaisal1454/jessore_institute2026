@@ -103,55 +103,118 @@ export default function SubCommitteeMemberForm() {
   };
 
   return (
-    <div className="p-6">
+  <div className="p-4 sm:p-6">
 
-      <h2 className="font-bold mb-4">Sub Committee Members</h2>
+    <h2 className="text-xl sm:text-2xl font-bold mb-6">
+      Sub Committee Members
+    </h2>
 
-      {/* CATEGORY */}
+    {/* CATEGORY */}
+    <div className="mb-6">
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(Number(e.target.value))}
-        className="border p-2 mb-4"
+        className="border p-3 rounded w-full sm:w-auto"
       >
         {categories.map((c) => (
-          <option key={c.id} value={c.id}>{c.type}</option>
+          <option key={c.id} value={c.id}>
+            {c.type}
+          </option>
         ))}
       </select>
-
-      {/* FORM */}
-      <form onSubmit={handleSubmit} className="space-y-3 mb-6">
-        <input name="name" value={form.name} onChange={handleChange} placeholder="Name" className="border p-2 w-full" />
-        <input name="role" value={form.role} onChange={handleChange} placeholder="Role" className="border p-2 w-full" />
-
-        <select name="role_type" value={form.role_type} onChange={handleChange} className="border p-2 w-full">
-          <option value="head">Head</option>
-          <option value="member">Member</option>
-        </select>
-
-        <input type="number" name="order" value={form.order} onChange={handleChange} className="border p-2 w-full" />
-        <input type="file" name="image" onChange={handleChange} />
-
-        <button className="bg-blue-600 text-white px-4 py-2">
-          {editingId ? "Update" : "Add"}
-        </button>
-      </form>
-
-      {/* LIST */}
-      <div className="grid grid-cols-4 gap-4">
-        {data.map((m) => (
-          <div key={m.id} className="border p-3 text-center">
-            <img src={m.image} className="w-20 h-24 mx-auto mb-2" />
-            <p>{m.name}</p>
-            <p className="text-xs">{m.role}</p>
-
-            <div className="flex gap-2 justify-center mt-2">
-              <button onClick={() => handleEdit(m)}>Edit</button>
-              <button onClick={() => handleDelete(m.id)}>Delete</button>
-            </div>
-          </div>
-        ))}
-      </div>
-
     </div>
-  );
+
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 mb-8 bg-white border p-4 sm:p-6 rounded shadow-sm"
+    >
+      <input
+        name="name"
+        value={form.name}
+        onChange={handleChange}
+        placeholder="Name"
+        className="border p-3 w-full rounded"
+      />
+
+      <input
+        name="role"
+        value={form.role}
+        onChange={handleChange}
+        placeholder="Role"
+        className="border p-3 w-full rounded"
+      />
+
+      <select
+        name="role_type"
+        value={form.role_type}
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      >
+        <option value="head">Head</option>
+        <option value="member">Member</option>
+      </select>
+
+      <input
+        type="number"
+        name="order"
+        value={form.order}
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      />
+
+      <input
+        type="file"
+        name="image"
+        onChange={handleChange}
+        className="w-full text-sm"
+      />
+
+      <button className="bg-blue-600 text-white px-4 py-3 rounded w-full sm:w-auto">
+        {editingId ? "Update" : "Add"}
+      </button>
+    </form>
+
+    {/* LIST */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
+      {data.map((m) => (
+        <div
+          key={m.id}
+          className="border bg-white p-4 rounded shadow-sm text-center"
+        >
+          <img
+            src={m.image}
+            alt={m.name}
+            className="w-24 h-28 mx-auto mb-3 object-cover rounded border"
+          />
+
+          <p className="font-semibold break-words">
+            {m.name}
+          </p>
+
+          <p className="text-sm text-gray-600 break-words">
+            {m.role}
+          </p>
+
+          <div className="flex flex-col sm:flex-row gap-2 justify-center mt-4">
+            <button
+              onClick={() => handleEdit(m)}
+              className="text-blue-600 w-full sm:w-auto"
+            >
+              Edit
+            </button>
+
+            <button
+              onClick={() => handleDelete(m.id)}
+              className="text-red-500 w-full sm:w-auto"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ))}
+    </div>
+
+  </div>
+);
 }

@@ -100,131 +100,141 @@ export default function NoticeForm() {
   };
 
   return (
-    <div className="p-6">
+  <div className="p-4 sm:p-6">
 
-      <h2 className="text-xl font-bold mb-4">
-        {editingId ? "Edit Notice" : "Add Notice"}
-      </h2>
+    <h2 className="text-xl sm:text-2xl font-bold mb-6">
+      {editingId ? "Edit Notice" : "Add Notice"}
+    </h2>
 
-      {/* FORM */}
-      <form onSubmit={handleSubmit} className="space-y-3 mb-6">
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 mb-8 bg-white border p-4 sm:p-6 rounded shadow-sm"
+    >
 
+      <input
+        name="title"
+        value={form.title}
+        placeholder="Title"
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      />
+
+      <select
+        name="type"
+        value={form.type}
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      >
+        <option value="pdf">PDF</option>
+        <option value="image">Image</option>
+        <option value="text">Text</option>
+      </select>
+
+      {/* FILE */}
+      {(form.type === "pdf" || form.type === "image") && (
         <input
-          name="title"
-          value={form.title}
-          placeholder="Title"
+          type="file"
+          name="file"
           onChange={handleChange}
-          className="border p-2 w-full"
+          className="border p-3 w-full rounded text-sm"
         />
+      )}
 
-        <select
-          name="type"
-          value={form.type}
+      {/* TEXT */}
+      {form.type === "text" && (
+        <textarea
+          name="content"
+          value={form.content}
+          placeholder="Write notice content..."
           onChange={handleChange}
-          className="border p-2 w-full"
-        >
-          <option value="pdf">PDF</option>
-          <option value="image">Image</option>
-          <option value="text">Text</option>
-        </select>
-
-        {/* FILE */}
-        {(form.type === "pdf" || form.type === "image") && (
-          <input
-            type="file"
-            name="file"
-            onChange={handleChange}
-            className="border p-2 w-full"
-          />
-        )}
-
-        {/* TEXT */}
-        {form.type === "text" && (
-          <textarea
-            name="content"
-            value={form.content}
-            placeholder="Write notice content..."
-            onChange={handleChange}
-            className="border p-2 w-full"
-          />
-        )}
-
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          className="border p-2 w-full"
+          className="border p-3 w-full rounded min-h-[150px]"
         />
+      )}
 
-        <div className="flex gap-3">
-          <button className="bg-blue-600 text-white px-4 py-2">
-            {editingId ? "Update" : "Create"}
-          </button>
+      <input
+        type="date"
+        name="date"
+        value={form.date}
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      />
 
-          {editingId && (
-            <button
-              type="button"
-              onClick={resetForm}
-              className="bg-gray-400 px-4 py-2"
-            >
-              Cancel
-            </button>
-          )}
-        </div>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <button className="bg-blue-600 text-white px-4 py-3 rounded w-full sm:w-auto">
+          {editingId ? "Update" : "Create"}
+        </button>
 
-      </form>
-
-      {/* LIST */}
-      <div className="space-y-3">
-
-        {data.map((n) => (
-          <div
-            key={n.id}
-            className="border p-3 flex justify-between items-center"
+        {editingId && (
+          <button
+            type="button"
+            onClick={resetForm}
+            className="bg-gray-400 text-white px-4 py-3 rounded w-full sm:w-auto"
           >
-            <div>
-              <p className="font-semibold">{n.title}</p>
-              <p className="text-xs text-gray-500">{n.date}</p>
-
-              {/* FILE */}
-              {n.file && (
-                <a
-                  href={n.file}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="text-blue-600 text-sm"
-                >
-                  View File
-                </a>
-              )}
-
-              {/* TEXT */}
-              {n.type === "text" && (
-                <p className="text-sm mt-1">{n.content}</p>
-              )}
-            </div>
-
-            <div className="flex gap-4 text-sm">
-              <button
-                onClick={() => handleEdit(n)}
-                className="text-blue-600"
-              >
-                Edit
-              </button>
-
-              <button
-                onClick={() => handleDelete(n.id)}
-                className="text-red-500"
-              >
-                Delete
-              </button>
-            </div>
-          </div>
-        ))}
-
+            Cancel
+          </button>
+        )}
       </div>
 
+    </form>
+
+    {/* LIST */}
+    <div className="space-y-4">
+
+      {data.map((n) => (
+        <div
+          key={n.id}
+          className="border bg-white p-4 rounded shadow-sm flex flex-col sm:flex-row sm:justify-between sm:items-start gap-4"
+        >
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold break-words">
+              {n.title}
+            </p>
+
+            <p className="text-xs text-gray-500 mb-2">
+              {n.date}
+            </p>
+
+            {/* FILE */}
+            {n.file && (
+              <a
+                href={n.file}
+                target="_blank"
+                rel="noreferrer"
+                className="text-blue-600 text-sm break-words"
+              >
+                View File
+              </a>
+            )}
+
+            {/* TEXT */}
+            {n.type === "text" && (
+              <p className="text-sm mt-2 whitespace-pre-line break-words">
+                {n.content}
+              </p>
+            )}
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 text-sm w-full sm:w-auto">
+            <button
+              onClick={() => handleEdit(n)}
+              className="text-blue-600 w-full sm:w-auto text-left"
+            >
+              Edit
+            </button>
+
+            <button
+              onClick={() => handleDelete(n.id)}
+              className="text-red-500 w-full sm:w-auto text-left"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ))}
+
     </div>
-  );
+
+  </div>
+);
 }

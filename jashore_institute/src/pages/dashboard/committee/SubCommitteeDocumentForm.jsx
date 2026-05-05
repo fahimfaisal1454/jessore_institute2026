@@ -115,18 +115,19 @@ export default function SubCommitteeDocumentForm() {
     setEditingId(null);
   };
 
-  return (
-    <div className="p-6">
+return (
+  <div className="p-4 sm:p-6">
 
-      <h2 className="text-xl font-bold mb-4">
-        Sub Committee Old Documents
-      </h2>
+    <h2 className="text-xl sm:text-2xl font-bold mb-6">
+      Sub Committee Old Documents
+    </h2>
 
-      {/* CATEGORY SELECT */}
+    {/* CATEGORY SELECT */}
+    <div className="mb-6">
       <select
         value={selectedCategory}
         onChange={(e) => setSelectedCategory(Number(e.target.value))}
-        className="border p-2 mb-4"
+        className="border p-3 rounded w-full sm:w-auto"
       >
         {categories.map((c) => (
           <option key={c.id} value={c.id}>
@@ -134,94 +135,98 @@ export default function SubCommitteeDocumentForm() {
           </option>
         ))}
       </select>
+    </div>
 
-      {/* FORM */}
-      <form onSubmit={handleSubmit} className="space-y-3 mb-6">
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 mb-8 bg-white border p-4 sm:p-6 rounded shadow-sm"
+    >
 
-        <input
-          name="year"
-          value={form.year}
-          placeholder="Year (e.g. 2020-2021)"
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
+      <input
+        name="year"
+        value={form.year}
+        placeholder="Year (e.g. 2020-2021)"
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      />
 
-        <input
-          type="number"
-          name="order"
-          value={form.order}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
+      <input
+        type="number"
+        name="order"
+        value={form.order}
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      />
 
-        <input
-          type="file"
-          name="file"
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
+      <input
+        type="file"
+        name="file"
+        onChange={handleChange}
+        className="border p-3 w-full rounded text-sm"
+      />
 
-        <div className="flex gap-3">
-          <button className="bg-purple-600 text-white px-4 py-2">
-            {editingId ? "Update" : "Upload"}
-          </button>
+      <div className="flex flex-col sm:flex-row gap-3">
+        <button className="bg-purple-600 text-white px-4 py-3 rounded w-full sm:w-auto">
+          {editingId ? "Update" : "Upload"}
+        </button>
 
-          {editingId && (
-            <button
-              type="button"
-              onClick={resetForm}
-              className="bg-gray-400 text-white px-4 py-2"
-            >
-              Cancel
-            </button>
-          )}
-        </div>
-
-      </form>
-
-      {/* LIST */}
-      <div className="space-y-3">
-
-        {data.map((d) => (
-          <div
-            key={d.id}
-            className="flex justify-between items-center border p-3"
+        {editingId && (
+          <button
+            type="button"
+            onClick={resetForm}
+            className="bg-gray-400 text-white px-4 py-3 rounded w-full sm:w-auto"
           >
-            <div>
-              <p className="font-semibold">{d.year}</p>
-
-              <a
-                href={d.file}
-                target="_blank"
-                rel="noreferrer"
-                className="text-blue-600 text-sm"
-              >
-                View PDF
-              </a>
-            </div>
-
-            <div className="flex gap-4 text-sm">
-
-              <button
-                onClick={() => handleEdit(d)}
-                className="text-blue-600"
-              >
-                Edit
-              </button>
-
-              <button
-                onClick={() => handleDelete(d.id)}
-                className="text-red-500"
-              >
-                Delete
-              </button>
-
-            </div>
-          </div>
-        ))}
-
+            Cancel
+          </button>
+        )}
       </div>
 
+    </form>
+
+    {/* LIST */}
+    <div className="space-y-4">
+
+      {data.map((d) => (
+        <div
+          key={d.id}
+          className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 border bg-white p-4 rounded shadow-sm"
+        >
+          <div className="min-w-0">
+            <p className="font-semibold break-words">
+              {d.year}
+            </p>
+
+            <a
+              href={d.file}
+              target="_blank"
+              rel="noreferrer"
+              className="text-blue-600 text-sm break-words"
+            >
+              View PDF
+            </a>
+          </div>
+
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 text-sm w-full sm:w-auto">
+            <button
+              onClick={() => handleEdit(d)}
+              className="text-blue-600 w-full sm:w-auto text-left"
+            >
+              Edit
+            </button>
+
+            <button
+              onClick={() => handleDelete(d.id)}
+              className="text-red-500 w-full sm:w-auto text-left"
+            >
+              Delete
+            </button>
+          </div>
+        </div>
+      ))}
+
     </div>
-  );
+
+  </div>
+);
 }

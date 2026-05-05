@@ -3,17 +3,23 @@ from .models import CommitteeMember,OldCommitteeDocument,SubCommitteeMember, Sub
 
 
 class ExecutiveCommitteeSerializer(serializers.ModelSerializer):
-    image = serializers.SerializerMethodField()
+    image = serializers.ImageField(required=False, allow_null=True)
 
     class Meta:
         model = ExecutiveCommittee
-        fields = '__all__'
+        fields = "__all__"
 
-    def get_image(self, obj):
-        request = self.context.get('request')
-        if obj.image:
-            return request.build_absolute_uri(obj.image.url)
-        return None
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        request = self.context.get("request")
+
+        if instance.image:
+            representation["image"] = request.build_absolute_uri(
+                instance.image.url
+            )
+
+        return representation
 
 class CommitteeMemberSerializer(serializers.ModelSerializer):
     class Meta:

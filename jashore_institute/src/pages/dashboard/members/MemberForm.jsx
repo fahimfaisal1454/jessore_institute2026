@@ -114,17 +114,65 @@ export default function MemberForm() {
   };
 
   return (
-    <div className="p-6">
+  <div className="p-4 sm:p-6">
 
-      <h2 className="text-xl font-bold mb-4">Members</h2>
+    <h2 className="text-xl sm:text-2xl font-bold mb-6">
+      Members
+    </h2>
 
-      {/* 🔥 FILTER */}
+    {/* FILTER */}
+    <select
+      value={filter}
+      onChange={(e) => setFilter(e.target.value)}
+      className="border p-3 rounded mb-6 w-full sm:w-auto"
+    >
+      <option value="all">All</option>
+      <option value="donor">Donor</option>
+      <option value="lifetime">Lifetime</option>
+      <option value="general">General</option>
+      <option value="library">Library</option>
+      <option value="sports">Sports</option>
+      <option value="drama">Drama</option>
+      <option value="town">Town</option>
+      <option value="child">Child</option>
+    </select>
+
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 mb-8 bg-white border p-4 sm:p-6 rounded shadow-sm"
+    >
+
+      <input
+        name="member_no"
+        value={form.member_no}
+        placeholder="Member No"
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      />
+
+      <textarea
+        name="name"
+        value={form.name}
+        placeholder="Name + Address"
+        onChange={handleChange}
+        className="border p-3 w-full rounded min-h-[120px]"
+      />
+
+      <input
+        type="date"
+        name="date"
+        value={form.date}
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      />
+
       <select
-        value={filter}
-        onChange={(e) => setFilter(e.target.value)}
-        className="border p-2 mb-4"
+        name="member_type"
+        value={form.member_type}
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
       >
-        <option value="all">All</option>
         <option value="donor">Donor</option>
         <option value="lifetime">Lifetime</option>
         <option value="general">General</option>
@@ -135,116 +183,82 @@ export default function MemberForm() {
         <option value="child">Child</option>
       </select>
 
-      {/* 🔥 FORM */}
-      <form onSubmit={handleSubmit} className="space-y-3 mb-6">
+      <input
+        name="mobile"
+        value={form.mobile}
+        placeholder="Mobile"
+        onChange={handleChange}
+        className="border p-3 w-full rounded"
+      />
 
-        <input
-          name="member_no"
-          value={form.member_no}
-          placeholder="Member No"
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
+      <input
+        type="file"
+        name="image"
+        onChange={handleChange}
+        className="border p-3 w-full rounded text-sm"
+      />
 
-        <textarea
-          name="name"
-          value={form.name}
-          placeholder="Name + Address"
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
+      <button className="bg-blue-600 text-white px-4 py-3 rounded w-full sm:w-auto">
+        {editId ? "Update" : "Create"}
+      </button>
 
-        <input
-          type="date"
-          name="date"
-          value={form.date}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
+    </form>
 
-        <select
-          name="member_type"
-          value={form.member_type}
-          onChange={handleChange}
-          className="border p-2 w-full"
-        >
-          <option value="donor">Donor</option>
-          <option value="lifetime">Lifetime</option>
-          <option value="general">General</option>
-          <option value="library">Library</option>
-          <option value="sports">Sports</option>
-          <option value="drama">Drama</option>
-          <option value="town">Town</option>
-          <option value="child">Child</option>
-        </select>
+    {/* LIST */}
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
 
-        <input
-          name="mobile"
-          value={form.mobile}
-          placeholder="Mobile"
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
+      {data
+        .filter(
+          (item) =>
+            filter === "all" || item.member_type === filter
+        )
+        .map((item) => (
 
-        <input
-          type="file"
-          name="image"
-          onChange={handleChange}
-          className="border p-2 w-full"
-        />
+          <div
+            key={item.id}
+            className="border bg-white p-4 rounded shadow-sm text-center"
+          >
 
-        <button className="bg-blue-600 text-white px-4 py-2">
-          {editId ? "Update" : "Create"}
-        </button>
+            <img
+              src={getImage(item.image)}
+              alt={item.name}
+              className="w-24 h-28 mx-auto mb-3 object-cover border rounded"
+            />
 
-      </form>
+            <p className="font-semibold text-sm break-words">
+              {item.member_no}
+            </p>
 
-      {/* 🔥 LIST */}
-      <div className="grid grid-cols-4 gap-4">
+            <p className="text-xs text-gray-600 capitalize">
+              {item.member_type}
+            </p>
 
-        {data
-          .filter(item => filter === "all" || item.member_type === filter)
-          .map(item => (
+            <p className="text-xs mt-2 whitespace-pre-line break-words">
+              {item.name}
+            </p>
 
-            <div key={item.id} className="border p-3 text-center">
-
-              <img
-                src={getImage(item.image)}
-                className="w-24 h-28 mx-auto mb-2 object-cover border"
-              />
-
-              <p className="font-semibold text-sm">
-                {item.member_no}
-              </p>
-
-              <p className="text-xs text-gray-600">
-                {item.member_type}
-              </p>
-
-              <p className="text-xs mt-1 whitespace-pre-line">
-                {item.name}
-              </p>
-
+            <div className="flex flex-col sm:flex-row justify-center gap-2 mt-4">
               <button
                 onClick={() => handleEdit(item)}
-                className="text-blue-500 text-xs mt-2"
+                className="text-blue-500 text-sm w-full sm:w-auto"
               >
                 Edit
               </button>
 
               <button
                 onClick={() => handleDelete(item.id)}
-                className="text-red-500 text-xs ml-2"
+                className="text-red-500 text-sm w-full sm:w-auto"
               >
                 Delete
               </button>
-
             </div>
 
-          ))}
+          </div>
 
-      </div>
+        ))}
 
     </div>
-  );
+
+  </div>
+);
 }

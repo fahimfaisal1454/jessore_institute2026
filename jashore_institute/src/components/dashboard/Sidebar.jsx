@@ -66,47 +66,47 @@ export default function Sidebar() {
 
         {/* ABOUT */}
         <Section title="About" open={open.about} toggle={() => toggle("about")}>
-          <NavItem to="/dashboard/about" label="About Us" />
-          <NavItem to="/dashboard/person" label="Persons" />
-          <NavItem to="/dashboard/photos" label="Photos" />
-          <NavItem to="/dashboard/videos" label="Videos" />
-          <NavItem to="/dashboard/library" label="Libraries" />
+          <NavItem to="/dashboard/about" label="আমাদের সম্পর্কে" />
+          <NavItem to="/dashboard/person" label="যদুনাথ মজুমদার" />
+          <NavItem to="/dashboard/photos" label="ছবিঘর" />
+          <NavItem to="/dashboard/videos" label="ভিডিওঘর" />
+          <NavItem to="/dashboard/library" label="লাইব্রেরি" />
         </Section>
 
         {/* CONTENT */}
         <Section title="Content" open={open.content} toggle={() => toggle("content")}>
-          <NavItem to="/dashboard/reports" label="Annual Reports" />
-          <NavItem to="/dashboard/forms" label="Application Forms" />
-          <NavItem to="/dashboard/infopages" label="Info Pages" />
+          <NavItem to="/dashboard/reports" label="📄বার্ষিক প্রতিবেদন" />
+          <NavItem to="/dashboard/forms" label="ফরম" />
+          <NavItem to="/dashboard/infopages" label="🏛️উন্মুক্ত স্বাধীনতা মঞ্চ/🏫প্রাথমিক বিদ্যালয়" />
           <NavItem to="/dashboard/contact" label="Contact Messages" />
         </Section>
 
         {/* COMMITTEE */}
         <Section title="Committee" open={open.committee} toggle={() => toggle("committee")}>
-          <NavItem to="/dashboard/committee/executive" label="Executive Committee" />
-          <NavItem to="/dashboard/committee/members" label="Committee Members" />
-          <NavItem to="/dashboard/committee/old" label="Old Committee" />
+          <NavItem to="/dashboard/committee/executive" label="নির্বাহী কমিটি" />
+          <NavItem to="/dashboard/committee/members" label="পরিচালনা পরিষদ" />
+          <NavItem to="/dashboard/committee/old" label="পরিচালনা পরিষদ-প্রাক্তন" />
         </Section>
 
         {/* SUB */}
         <Section title="Sub Committee" open={open.sub} toggle={() => toggle("sub")}>
-          <NavItem to="/dashboard/committee/sub-categories" label="Categories" />
-          <NavItem to="/dashboard/committee/sub-members" label="Members" />
-          <NavItem to="/dashboard/committee/sub-docs" label="Documents" />
+          <NavItem to="/dashboard/committee/sub-categories" label="উপ-কমিটির ক্যাটাগরি " />
+          <NavItem to="/dashboard/committee/sub-members" label="উপ-কমিটির সদস্য" />
+          <NavItem to="/dashboard/committee/sub-docs" label="উপ-কমিটির সদস্য প্রাক্তন" />
         </Section>
 
         {/* OTHER */}
         <Section title="Other" open={open.other} toggle={() => toggle("other")}>
-          <NavItem to="/dashboard/notices" label="Notices" />
+          <NavItem to="/dashboard/notices" label="নোটিশ" />
         </Section>
 
         {/* DIVISION */}
         <Section title="Division" open={open.division} toggle={() => toggle("division")}>
-          <NavItem to="/dashboard/divisions" label="Divisions" />
-          <NavItem to="/dashboard/members" label="Members" />
-          <NavItem to="/dashboard/voters" label="Voter Lists" />
-          <NavItem to="/dashboard/old-committee-categories" label="Old Committee Categories" />
-          <NavItem to="/dashboard/old-committee" label="Old Committee" />
+          <NavItem to="/dashboard/divisions" label="বিভাগসমূহ " />
+          <NavItem to="/dashboard/members" label="বিভাগসমূহ সদস্য" />
+          <NavItem to="/dashboard/voters" label="ভোটার তালিকা" />
+          <NavItem to="/dashboard/old-committee-categories" label="প্রাক্তন কমিটির ক্যাটাগরি" />
+          <NavItem to="/dashboard/old-committee" label="সভাপতি/সাধারণ সম্পাদকবৃন্দের তালিকা" />
         </Section>
 
       </div>
