@@ -69,84 +69,89 @@ const InfoPageForm = () => {
     }
   };
 
-  return (
-    <FormWrapper title="Info Pages">
+ return (
+  <FormWrapper title="Info Pages">
 
-      {/* FORM */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-4 rounded shadow space-y-3"
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-4 sm:p-6 rounded shadow space-y-4"
+    >
+      {/* TYPE */}
+      <select
+        name="page_type"
+        value={form.page_type}
+        onChange={handleChange}
+        className="w-full border p-3 rounded"
       >
-        {/* TYPE */}
-        <select
-          name="page_type"
-          value={form.page_type}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        >
-          <option value="open_liberty_stage">
-            Open Liberty Stage
-          </option>
-          <option value="primary_school">
-            Primary School
-          </option>
-        </select>
+        <option value="open_liberty_stage">
+          Open Liberty Stage
+        </option>
+        <option value="primary_school">
+          Primary School
+        </option>
+      </select>
 
-        {/* TITLE */}
-        <input
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="Title"
-          className="w-full border p-2 rounded"
-        />
+      {/* TITLE */}
+      <input
+        name="title"
+        value={form.title}
+        onChange={handleChange}
+        placeholder="Title"
+        className="w-full border p-3 rounded"
+      />
 
-        {/* CONTENT */}
-        <textarea
-          name="content"
-          value={form.content}
-          onChange={handleChange}
-          placeholder="Content"
-          className="w-full border p-2 rounded h-40"
-        />
+      {/* CONTENT */}
+      <textarea
+        name="content"
+        value={form.content}
+        onChange={handleChange}
+        placeholder="Content"
+        className="w-full border p-3 rounded min-h-[180px]"
+      />
 
-        <button className="bg-green-600 text-white px-4 py-2 rounded">
-          Save
-        </button>
-      </form>
+      <button className="bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto">
+        Save
+      </button>
+    </form>
 
-      {/* LIST */}
-      <div className="mt-6 bg-white p-4 rounded shadow">
-        <h3 className="mb-4 font-semibold">Existing Pages</h3>
+    {/* LIST */}
+    <div className="mt-6 bg-white p-4 sm:p-6 rounded shadow">
+      <h3 className="mb-4 font-semibold">Existing Pages</h3>
 
-        {pages.length === 0 && (
-          <p className="text-gray-500">No pages found</p>
-        )}
+      {pages.length === 0 && (
+        <p className="text-gray-500">No pages found</p>
+      )}
 
+      <div className="space-y-3">
         {pages.map((item) => (
           <div
             key={item.id}
-            className="border p-3 mb-2 flex justify-between items-center"
+            className="border p-4 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
           >
             <div>
-              <p className="font-bold">{item.title}</p>
-              <p className="text-sm text-gray-500">
+              <p className="font-bold break-words">
+                {item.title}
+              </p>
+
+              <p className="text-sm text-gray-500 break-words">
                 {item.page_type}
               </p>
             </div>
 
             <button
               onClick={() => handleDelete(item.id)}
-              className="bg-red-500 text-white px-3 py-1 rounded"
+              className="bg-red-500 text-white px-3 py-2 rounded w-full sm:w-auto"
             >
               Delete
             </button>
           </div>
         ))}
       </div>
+    </div>
 
-    </FormWrapper>
-  );
+  </FormWrapper>
+);
 };
 
 export default InfoPageForm;

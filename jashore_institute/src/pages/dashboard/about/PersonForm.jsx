@@ -56,31 +56,32 @@ const PersonForm = () => {
   };
 
   return (
-    <FormWrapper title="Person">
-      <form onSubmit={handleSubmit} className="space-y-4">
+ <FormWrapper title="Person">
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 p-4 sm:p-6"
+    >
+      <input
+        name="title"
+        placeholder="Name"
+        value={form.title}
+        className="w-full border p-3 rounded"
+        onChange={handleChange}
+      />
 
-        <input
-          name="title"
-          placeholder="Name"
-          value={form.title}
-          className="w-full border p-2 rounded"
-          onChange={handleChange}
-        />
+      <textarea
+        name="content"
+        placeholder="Description"
+        value={form.content}
+        className="w-full border p-3 rounded min-h-[180px]"
+        onChange={handleChange}
+      />
 
-        <textarea
-          name="content"
-          placeholder="Description"
-          value={form.content}
-          className="w-full border p-2 rounded"
-          onChange={handleChange}
-        />
-
-        <button className="bg-green-600 text-white px-4 py-2 rounded">
-          {editingId ? "Update" : "Save"}
-        </button>
-
-      </form>
-    </FormWrapper>
+      <button className="bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto">
+        {editingId ? "Update" : "Save"}
+      </button>
+    </form>
+  </FormWrapper>
   );
 };
 

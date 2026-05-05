@@ -12,23 +12,32 @@ import RightSidebar from "../components/home/RightSidebar";
 export default function MainLayout() {
   return (
     <div className="min-h-screen w-full">
-      <div className="max-w-screen-xl mx-auto bg-white shadow-md min-h-screen flex flex-col">
+      
+      {/* 🔥 MAIN CENTER BOX */}
+      <div className="max-w-[1100px] mx-auto bg-white shadow-md min-h-screen flex flex-col">
+        
         <Header />
         <Navbar />
         <NewsTicker />
 
-        <main className="grid grid-cols-1 lg:grid-cols-12 gap-4 p-3 md:p-4 flex-1">
-          <aside className="lg:col-span-3 order-2 lg:order-1">
+        {/* Main Content */}
+        <main className="grid grid-cols-1 lg:grid-cols-12 gap-4 p-3 sm:p-4 md:p-5 flex-1">
+          
+          {/* Left Sidebar */}
+          <aside className="lg:col-span-3 order-2 lg:order-1 min-w-0">
             <LeftSidebar />
           </aside>
 
+          {/* Main Content Section */}
           <section className="lg:col-span-6 order-1 lg:order-2 min-w-0">
             <Outlet />
           </section>
 
-          <aside className="lg:col-span-3 order-3">
+          {/* Right Sidebar */}
+          <aside className="lg:col-span-3 order-3 min-w-0">
             <RightSidebar />
           </aside>
+
         </main>
 
         <MapSection />

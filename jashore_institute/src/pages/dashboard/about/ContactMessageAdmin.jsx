@@ -29,41 +29,49 @@ const ContactMessageAdmin = () => {
     }
   };
 
-  return (
-    <FormWrapper title="Contact Messages">
+ return (
+  <FormWrapper title="Contact Messages">
 
-      <div className="bg-white p-4 rounded shadow">
+    <div className="bg-white p-4 sm:p-6 rounded shadow">
 
-        {messages.length === 0 && (
-          <p className="text-gray-500">No messages found</p>
-        )}
+      {messages.length === 0 && (
+        <p className="text-gray-500">No messages found</p>
+      )}
 
+      <div className="space-y-4">
         {messages.map((msg) => (
           <div
             key={msg.id}
-            className="border p-4 mb-3 rounded space-y-2"
+            className="border p-4 rounded space-y-3"
           >
-            <div className="flex justify-between items-center">
-              <p className="font-bold">{msg.name}</p>
+            <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
+              <p className="font-bold break-words">
+                {msg.name}
+              </p>
+
               <button
                 onClick={() => handleDelete(msg.id)}
-                className="bg-red-500 text-white px-3 py-1 rounded text-sm"
+                className="bg-red-500 text-white px-3 py-2 rounded text-sm w-full sm:w-auto"
               >
                 Delete
               </button>
             </div>
 
-            <p className="text-sm text-gray-600">{msg.email}</p>
+            <p className="text-sm text-gray-600 break-words">
+              {msg.email}
+            </p>
 
             {msg.phone && (
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-gray-600 break-words">
                 Phone: {msg.phone}
               </p>
             )}
 
-            <p className="font-semibold">{msg.subject}</p>
+            <p className="font-semibold break-words">
+              {msg.subject}
+            </p>
 
-            <p className="text-gray-700 whitespace-pre-line">
+            <p className="text-gray-700 whitespace-pre-line break-words">
               {msg.message}
             </p>
 
@@ -72,11 +80,12 @@ const ContactMessageAdmin = () => {
             </p>
           </div>
         ))}
-
       </div>
 
-    </FormWrapper>
-  );
+    </div>
+
+  </FormWrapper>
+);
 };
 
 export default ContactMessageAdmin;

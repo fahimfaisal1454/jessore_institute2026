@@ -85,73 +85,83 @@ const ApplicationFormForm = () => {
     }
   };
 
-  return (
-    <FormWrapper title="Application Forms">
+ return (
+  <FormWrapper title="Application Forms">
 
-      {/* FORM */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-4 rounded shadow space-y-3"
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-4 sm:p-6 rounded shadow space-y-4"
+    >
+      {/* TYPE */}
+      <select
+        name="type"
+        value={form.type}
+        onChange={handleChange}
+        className="w-full border p-3 rounded"
       >
-        {/* TYPE */}
-        <select
-          name="type"
-          value={form.type}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        >
-          <option value="field">Field Application</option>
-          <option value="leave">Leave Application</option>
-        </select>
+        <option value="field">Field Application</option>
+        <option value="leave">Leave Application</option>
+      </select>
 
-        {/* TITLE */}
-        <input
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="Title"
-          className="w-full border p-2 rounded"
-        />
+      {/* TITLE */}
+      <input
+        name="title"
+        value={form.title}
+        onChange={handleChange}
+        placeholder="Title"
+        className="w-full border p-3 rounded"
+      />
 
-        {/* FILE */}
-        <input type="file" onChange={handleFile} />
+      {/* FILE */}
+      <input
+        type="file"
+        onChange={handleFile}
+        className="w-full text-sm"
+      />
 
-        <button className="bg-green-600 text-white px-4 py-2 rounded">
-          Save
-        </button>
-      </form>
+      <button className="bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto">
+        Save
+      </button>
+    </form>
 
-      {/* LIST */}
-      <div className="mt-6 bg-white p-4 rounded shadow">
-        <h3 className="mb-4 font-semibold">Existing Forms</h3>
+    {/* LIST */}
+    <div className="mt-6 bg-white p-4 sm:p-6 rounded shadow">
+      <h3 className="mb-4 font-semibold">Existing Forms</h3>
 
-        {forms.length === 0 && (
-          <p className="text-gray-500">No forms found</p>
-        )}
+      {forms.length === 0 && (
+        <p className="text-gray-500">No forms found</p>
+      )}
 
+      <div className="space-y-3">
         {forms.map((item) => (
           <div
             key={item.id}
-            className="border p-3 mb-2 flex justify-between items-center"
+            className="border p-4 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
           >
             <div>
-              <p className="font-bold">{item.title}</p>
-              <p className="text-sm text-gray-500">{item.type}</p>
+              <p className="font-bold break-words">
+                {item.title}
+              </p>
+
+              <p className="text-sm text-gray-500">
+                {item.type}
+              </p>
             </div>
 
-            <div className="flex gap-2">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
               <a
                 href={item.file}
                 target="_blank"
                 rel="noreferrer"
-                className="bg-blue-500 text-white px-3 py-1 rounded"
+                className="bg-blue-500 text-white px-3 py-2 rounded text-center w-full sm:w-auto"
               >
                 View
               </a>
 
               <button
                 onClick={() => handleDelete(item.id)}
-                className="bg-red-500 text-white px-3 py-1 rounded"
+                className="bg-red-500 text-white px-3 py-2 rounded w-full sm:w-auto"
               >
                 Delete
               </button>
@@ -159,9 +169,10 @@ const ApplicationFormForm = () => {
           </div>
         ))}
       </div>
+    </div>
 
-    </FormWrapper>
-  );
+  </FormWrapper>
+);
 };
 
 export default ApplicationFormForm;

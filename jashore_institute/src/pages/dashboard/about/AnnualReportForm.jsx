@@ -78,42 +78,47 @@ const AnnualReportForm = () => {
     }
   };
 
-  return (
-    <FormWrapper title="Annual Reports">
+return (
+  <FormWrapper title="Annual Reports">
 
-      {/* 🔼 FORM */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-4 rounded shadow space-y-3"
-      >
-        <input
-          name="title"
-          value={form.title}
-          onChange={handleChange}
-          placeholder="Title"
-          className="w-full border p-2 rounded"
-        />
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-4 sm:p-6 rounded shadow space-y-4"
+    >
+      <input
+        name="title"
+        value={form.title}
+        onChange={handleChange}
+        placeholder="Title"
+        className="w-full border p-3 rounded"
+      />
 
-        <input
-          type="date"
-          name="publish_date"
-          value={form.publish_date}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        />
+      <input
+        type="date"
+        name="publish_date"
+        value={form.publish_date}
+        onChange={handleChange}
+        className="w-full border p-3 rounded"
+      />
 
-        <input type="file" onChange={handleFileChange} />
+      <input
+        type="file"
+        onChange={handleFileChange}
+        className="w-full text-sm"
+      />
 
-        <button className="bg-green-600 text-white px-4 py-2 rounded">
-          Upload
-        </button>
-      </form>
+      <button className="bg-green-600 text-white px-4 py-2 rounded w-full sm:w-auto">
+        Upload
+      </button>
+    </form>
 
-      {/* 📄 LIST */}
-      <div className="mt-6 bg-white p-4 rounded shadow">
-        <h3 className="mb-4 font-semibold">All Reports</h3>
+    {/* LIST */}
+    <div className="mt-6 bg-white p-4 sm:p-6 rounded shadow">
+      <h3 className="mb-4 font-semibold">All Reports</h3>
 
-        <table className="w-full text-sm border">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[700px] text-sm border">
           <thead className="bg-gray-200">
             <tr>
               <th className="border p-2">#</th>
@@ -128,11 +133,15 @@ const AnnualReportForm = () => {
             {reports.length > 0 ? (
               reports.map((item, index) => (
                 <tr key={item.id}>
-                  <td className="border p-2 text-center">{index + 1}</td>
+                  <td className="border p-2 text-center">
+                    {index + 1}
+                  </td>
 
-                  <td className="border p-2">{item.title}</td>
+                  <td className="border p-2 break-words">
+                    {item.title}
+                  </td>
 
-                  <td className="border p-2">
+                  <td className="border p-2 text-center">
                     {item.publish_date}
                   </td>
 
@@ -150,7 +159,7 @@ const AnnualReportForm = () => {
                   <td className="border p-2 text-center">
                     <button
                       onClick={() => handleDelete(item.id)}
-                      className="bg-red-500 text-white px-3 py-1 rounded"
+                      className="bg-red-500 text-white px-3 py-1 rounded w-full sm:w-auto"
                     >
                       Delete
                     </button>
@@ -159,7 +168,10 @@ const AnnualReportForm = () => {
               ))
             ) : (
               <tr>
-                <td colSpan="5" className="text-center py-4 text-gray-500">
+                <td
+                  colSpan="5"
+                  className="text-center py-4 text-gray-500"
+                >
                   No reports found
                 </td>
               </tr>
@@ -167,9 +179,10 @@ const AnnualReportForm = () => {
           </tbody>
         </table>
       </div>
+    </div>
 
-    </FormWrapper>
-  );
+  </FormWrapper>
+);
 };
 
 export default AnnualReportForm;

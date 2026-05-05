@@ -3,7 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 // Layouts
 import MainLayout from "./layouts/MainLayout";
 import PageLayout from "./layouts/PageLayout";
-
+import AdminLayout from "./layouts/AdminLayout";
 // 🔐 NEW IMPORTS (ADD THESE)
 import Login from "./pages/auth/Login";
 import Dashboard from "./pages/dashboard/Dashboard";
@@ -109,7 +109,7 @@ function App() {
   path="/dashboard"
   element={
     <ProtectedRoute>
-      <Dashboard />
+      <AdminLayout />
     </ProtectedRoute>
   }
 >

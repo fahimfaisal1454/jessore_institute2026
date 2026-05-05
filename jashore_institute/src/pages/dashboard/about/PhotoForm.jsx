@@ -199,210 +199,216 @@ const PhotoForm = () => {
     );
   }, [photos, activeFolder]);
 
-  return (
-    <FormWrapper title="Photo Gallery">
+return (
+  <FormWrapper title="Photo Gallery">
+    
+    {/* Upload Form */}
+    <form
+      onSubmit={handleSubmit}
+      className="bg-white p-4 sm:p-6 rounded-xl shadow space-y-4 max-w-full overflow-hidden"
+    >
+      <h2 className="text-lg sm:text-xl font-bold">
+        📸 Upload Photos
+      </h2>
 
-      {/* Upload Form */}
-      <form
-        onSubmit={handleSubmit}
-        className="bg-white p-6 rounded-xl shadow space-y-4"
-      >
-        <h2 className="text-xl font-bold">📸 Upload Photos</h2>
+      {/* Folder Name */}
+      <input
+        type="text"
+        value={folderName}
+        onChange={(e) => setFolderName(e.target.value)}
+        placeholder="Folder Name (e.g. Annual Sports Day)"
+        className="border p-3 w-full rounded-lg text-sm sm:text-base"
+      />
 
-        {/* Folder Name */}
-        <input
-          type="text"
-          value={folderName}
-          onChange={(e) => setFolderName(e.target.value)}
-          placeholder="Folder Name (e.g. Annual Sports Day)"
-          className="border p-3 w-full rounded-lg"
-        />
+      {/* Multiple File Input */}
+      <input
+        type="file"
+        multiple
+        accept="image/*"
+        onChange={handleFilesSelect}
+        className="border p-3 w-full rounded-lg text-sm"
+      />
 
-        {/* Multiple File Input */}
-        <input
-          type="file"
-          multiple
-          accept="image/*"
-          onChange={handleFilesSelect}
-          className="border p-3 w-full rounded-lg"
-        />
+      {/* Preview Selected */}
+      {selectedFiles.length > 0 && (
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+          {selectedFiles.map((item, index) => (
+            <div
+              key={index}
+              className="border rounded-lg p-2 relative"
+            >
+              <img
+                src={item.preview}
+                alt=""
+                className="w-full h-24 sm:h-32 object-cover rounded"
+              />
 
-        {/* Preview Selected */}
-        {selectedFiles.length > 0 && (
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {selectedFiles.map((item, index) => (
-              <div
-                key={index}
-                className="border rounded-lg p-2 relative"
+              <button
+                type="button"
+                onClick={() => handleRemoveSelected(index)}
+                className="absolute top-2 right-2 bg-red-500 text-white px-2 rounded-full text-xs"
               >
-                <img
-                  src={item.preview}
-                  alt=""
-                  className="w-full h-32 object-cover rounded"
-                />
+                ✕
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
 
-                <button
-                  type="button"
-                  onClick={() => handleRemoveSelected(index)}
-                  className="absolute top-2 right-2 bg-red-500 text-white px-2 rounded-full"
-                >
-                  ✕
-                </button>
-              </div>
-            ))}
-          </div>
-        )}
+      <button className="bg-purple-600 text-white px-6 py-2 rounded-lg w-full sm:w-auto">
+        Upload Gallery
+      </button>
+    </form>
 
-        <button className="bg-purple-600 text-white px-6 py-2 rounded-lg">
-          Upload Gallery
+    {/* Folder Filters */}
+    <div className="mt-6 bg-white p-4 rounded-xl shadow">
+      <div className="flex flex-wrap gap-2">
+        <button
+          onClick={() => setActiveFolder("All")}
+          className={`px-3 py-2 rounded-full text-sm ${
+            activeFolder === "All"
+              ? "bg-blue-600 text-white"
+              : "bg-gray-200"
+          }`}
+        >
+          All ({photos.length})
         </button>
-      </form>
 
-      {/* Folder Filters */}
-      <div className="mt-6 bg-white p-4 rounded-xl shadow">
-        <div className="flex flex-wrap gap-2">
+        {folders.map(([name, count]) => (
           <button
-            onClick={() => setActiveFolder("All")}
-            className={`px-3 py-1 rounded-full ${
-              activeFolder === "All"
+            key={name}
+            onClick={() => setActiveFolder(name)}
+            className={`px-3 py-2 rounded-full text-sm ${
+              activeFolder === name
                 ? "bg-blue-600 text-white"
                 : "bg-gray-200"
             }`}
           >
-            All ({photos.length})
+            {name} ({count})
           </button>
+        ))}
+      </div>
+    </div>
 
-          {folders.map(([name, count]) => (
-            <button
-              key={name}
-              onClick={() => setActiveFolder(name)}
-              className={`px-3 py-1 rounded-full ${
-                activeFolder === name
-                  ? "bg-blue-600 text-white"
-                  : "bg-gray-200"
-              }`}
+    {/* Photo List */}
+    <div className="mt-6 bg-white p-4 rounded-xl shadow">
+      <h3 className="mb-4 font-semibold text-lg">
+        Photos
+      </h3>
+
+      {loading ? (
+        <p>Loading...</p>
+      ) : filteredPhotos.length === 0 ? (
+        <p className="text-gray-500">No photos found</p>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
+          {filteredPhotos.map((photo) => (
+            <div
+              key={photo.id}
+              className="border rounded-lg p-3 flex flex-col"
             >
-              {name} ({count})
-            </button>
+              <img
+                src={photo.image}
+                alt=""
+                className="w-full h-40 sm:h-32 object-cover rounded"
+              />
+
+              <p className="text-xs text-gray-500 mt-2 break-words">
+                📁 {folderKey(photo.category)}
+              </p>
+
+              <input
+                type="number"
+                value={photo.order}
+                onChange={(e) =>
+                  setPhotos((prev) =>
+                    prev.map((p) =>
+                      p.id === photo.id
+                        ? {
+                            ...p,
+                            order: Number(e.target.value),
+                          }
+                        : p
+                    )
+                  )
+                }
+                className="w-full mt-2 border p-2 rounded text-sm"
+              />
+
+              <div className="flex flex-col sm:flex-row gap-2 mt-3">
+                <button
+                  onClick={() => openEditModal(photo)}
+                  className="flex-1 bg-blue-500 text-white py-2 rounded text-sm"
+                >
+                  Edit
+                </button>
+
+                <button
+                  onClick={() => handleDelete(photo.id)}
+                  className="flex-1 bg-red-500 text-white py-2 rounded text-sm"
+                >
+                  Delete
+                </button>
+              </div>
+            </div>
           ))}
         </div>
-      </div>
+      )}
+    </div>
 
-      {/* Photo List */}
-      <div className="mt-6 bg-white p-4 rounded-xl shadow">
-        <h3 className="mb-4 font-semibold text-lg">Photos</h3>
+    {/* Edit Modal */}
+    {isModalOpen && (
+      <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white rounded-xl p-4 sm:p-6 w-full max-w-md">
+          <h3 className="text-lg font-bold mb-4">
+            Edit Photo
+          </h3>
 
-        {loading ? (
-          <p>Loading...</p>
-        ) : filteredPhotos.length === 0 ? (
-          <p className="text-gray-500">No photos found</p>
-        ) : (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
-            {filteredPhotos.map((photo) => (
-              <div
-                key={photo.id}
-                className="border rounded-lg p-2"
-              >
-                <img
-                  src={photo.image}
-                  alt=""
-                  className="w-full h-32 object-cover rounded"
-                />
+          <input
+            type="number"
+            name="order"
+            value={editForm.order}
+            onChange={handleEditChange}
+            placeholder="Order"
+            className="border p-3 w-full rounded mb-3"
+          />
 
-                <p className="text-xs text-gray-500 mt-2">
-                  📁 {folderKey(photo.category)}
-                </p>
+          <input
+            type="text"
+            name="category"
+            value={editForm.category}
+            onChange={handleEditChange}
+            placeholder="Folder Name"
+            className="border p-3 w-full rounded mb-3"
+          />
 
-                <input
-                  type="number"
-                  value={photo.order}
-                  onChange={(e) =>
-                    setPhotos((prev) =>
-                      prev.map((p) =>
-                        p.id === photo.id
-                          ? {
-                              ...p,
-                              order: Number(e.target.value),
-                            }
-                          : p
-                      )
-                    )
-                  }
-                  className="w-full mt-2 border p-1 rounded"
-                />
+          <input
+            type="file"
+            name="image"
+            onChange={handleEditChange}
+            className="mb-4 w-full text-sm"
+          />
 
-                <div className="flex gap-2 mt-2">
-                  <button
-                    onClick={() => openEditModal(photo)}
-                    className="flex-1 bg-blue-500 text-white py-1 rounded text-sm"
-                  >
-                    Edit
-                  </button>
+          <div className="flex flex-col sm:flex-row gap-2">
+            <button
+              onClick={handleUpdate}
+              className="flex-1 bg-blue-600 text-white py-2 rounded"
+            >
+              Save
+            </button>
 
-                  <button
-                    onClick={() => handleDelete(photo.id)}
-                    className="flex-1 bg-red-500 text-white py-1 rounded text-sm"
-                  >
-                    Delete
-                  </button>
-                </div>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* Edit Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md">
-            <h3 className="text-lg font-bold mb-4">Edit Photo</h3>
-
-            <input
-              type="number"
-              name="order"
-              value={editForm.order}
-              onChange={handleEditChange}
-              placeholder="Order"
-              className="border p-2 w-full rounded mb-3"
-            />
-
-            <input
-              type="text"
-              name="category"
-              value={editForm.category}
-              onChange={handleEditChange}
-              placeholder="Folder Name"
-              className="border p-2 w-full rounded mb-3"
-            />
-
-            <input
-              type="file"
-              name="image"
-              onChange={handleEditChange}
-              className="mb-4"
-            />
-
-            <div className="flex gap-2">
-              <button
-                onClick={handleUpdate}
-                className="flex-1 bg-blue-600 text-white py-2 rounded"
-              >
-                Save
-              </button>
-
-              <button
-                onClick={closeEditModal}
-                className="flex-1 bg-gray-300 py-2 rounded"
-              >
-                Cancel
-              </button>
-            </div>
+            <button
+              onClick={closeEditModal}
+              className="flex-1 bg-gray-300 py-2 rounded"
+            >
+              Cancel
+            </button>
           </div>
         </div>
-      )}
-    </FormWrapper>
-  );
+      </div>
+    )}
+  </FormWrapper>
+);
 };
 
 export default PhotoForm;

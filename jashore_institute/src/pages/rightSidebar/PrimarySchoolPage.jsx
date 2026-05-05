@@ -28,23 +28,21 @@ export default function PrimarySchoolPage() {
     );
   }
 
-  return (
-    <div className="max-w-[900px] mx-auto">
+ return (
+  <div className="max-w-[900px] mx-auto">
 
-      {/* 🔥 HEADER */}
-      <div className="bg-[#0b6b3a] text-white text-center py-2 font-semibold text-lg rounded-t">
-        {data.title}
-      </div>
-
-      {/* 🔥 CONTENT */}
-      <div className="bg-white border border-gray-300 p-5 shadow-sm">
-
-        <div className="prose max-w-none text-gray-800 whitespace-pre-line leading-relaxed text-[14px]">
-          {data.content}
-        </div>
-
-      </div>
-
+    {/* HEADER */}
+    <div className="bg-[#0b6b3a] text-white text-center py-2 px-4 font-semibold text-base sm:text-lg rounded-t break-words">
+      {data.title}
     </div>
-  );
+
+    {/* CONTENT */}
+    <div className="bg-white border border-gray-300 p-4 sm:p-5 shadow-sm">
+      <div className="prose max-w-none text-gray-800 whitespace-pre-line leading-relaxed text-sm sm:text-[14px] break-words">
+        {data.content}
+      </div>
+    </div>
+
+  </div>
+);
 }

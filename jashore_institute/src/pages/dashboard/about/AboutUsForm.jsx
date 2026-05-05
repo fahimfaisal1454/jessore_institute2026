@@ -74,82 +74,85 @@ const AboutUsForm = () => {
     setEditingId(item.id);
   };
 
-  return (
-    <div className="p-6 space-y-6">
-      <h2 className="text-xl font-bold">About Us</h2>
+return (
+  <div className="p-4 sm:p-6 space-y-6">
+    <h2 className="text-xl font-bold">About Us</h2>
 
-      {/* FORM */}
-      <form
-        onSubmit={handleSubmit}
-        className="space-y-4 bg-white p-4 rounded shadow"
+    {/* FORM */}
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-4 bg-white p-4 sm:p-6 rounded shadow"
+    >
+      <select
+        name="page_type"
+        value={form.page_type}
+        onChange={handleChange}
+        className="w-full border p-3 rounded"
       >
-        <select
-          name="page_type"
-          value={form.page_type}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        >
-          <option value="history">History</option>
-          <option value="mission">Mission</option>
-        </select>
+        <option value="history">History</option>
+        <option value="mission">Mission</option>
+      </select>
 
-        <input
-          name="title"
-          placeholder="Title"
-          value={form.title}
-          onChange={handleChange}
-          className="w-full border p-2 rounded"
-        />
+      <input
+        name="title"
+        placeholder="Title"
+        value={form.title}
+        onChange={handleChange}
+        className="w-full border p-3 rounded"
+      />
 
-        <textarea
-          name="content"
-          placeholder="Content"
-          value={form.content}
-          onChange={handleChange}
-          className="w-full border p-2 rounded h-32"
-        />
+      <textarea
+        name="content"
+        placeholder="Content"
+        value={form.content}
+        onChange={handleChange}
+        className="w-full border p-3 rounded min-h-[150px]"
+      />
 
-        <button
-          disabled={loading}
-          className="bg-blue-600 text-white px-4 py-2 rounded"
-        >
-          {loading
-            ? "Saving..."
-            : editingId
-            ? "Update"
-            : "Save"}
-        </button>
-      </form>
+      <button
+        disabled={loading}
+        className="bg-blue-600 text-white px-4 py-2 rounded w-full sm:w-auto"
+      >
+        {loading
+          ? "Saving..."
+          : editingId
+          ? "Update"
+          : "Save"}
+      </button>
+    </form>
 
-      {/* LIST */}
-      <div className="bg-white p-4 rounded shadow">
-        <h3 className="font-semibold mb-2">Saved Data</h3>
+    {/* LIST */}
+    <div className="bg-white p-4 sm:p-6 rounded shadow">
+      <h3 className="font-semibold mb-4">Saved Data</h3>
 
-        {data.length === 0 && (
-          <p className="text-gray-500 text-sm">No data found</p>
-        )}
+      {data.length === 0 && (
+        <p className="text-gray-500 text-sm">No data found</p>
+      )}
 
+      <div className="space-y-3">
         {data.map((item) => (
           <div
             key={item.id}
-            className="border p-3 mb-2 flex justify-between items-center"
+            className="border p-4 rounded flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3"
           >
             <div>
-              <p className="font-bold">{item.title}</p>
-              <p className="text-sm text-gray-500">{item.page_type}</p>
+              <p className="font-bold break-words">{item.title}</p>
+              <p className="text-sm text-gray-500">
+                {item.page_type}
+              </p>
             </div>
 
-            <div className="space-x-2">
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
               <button
                 onClick={() => handleEdit(item)}
-                className="bg-yellow-500 text-white px-3 py-1 rounded"
+                className="bg-yellow-500 text-white px-3 py-2 rounded w-full sm:w-auto"
               >
                 Edit
               </button>
 
               <button
                 onClick={() => handleDelete(item.id)}
-                className="bg-red-500 text-white px-3 py-1 rounded"
+                className="bg-red-500 text-white px-3 py-2 rounded w-full sm:w-auto"
               >
                 Delete
               </button>
@@ -158,7 +161,8 @@ const AboutUsForm = () => {
         ))}
       </div>
     </div>
-  );
+  </div>
+);
 };
 
 export default AboutUsForm;
