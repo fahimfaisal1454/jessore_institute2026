@@ -6,17 +6,29 @@ from .models import (
     SubCommitteeCategory,
     SubCommitteeMember,
     SubCommitteeDocument,
-    ExecutiveCommittee
+    ExecutiveCommittee, Committee
 )
 
 @admin.register(ExecutiveCommittee)
 class ExecutiveCommitteeAdmin(admin.ModelAdmin):
     list_display = ('position', 'name')
 # 🔥 MAIN COMMITTEE
+@admin.register(Committee)
+class CommitteeAdmin(admin.ModelAdmin):
+    list_display = (
+        "title",
+    )
+
+    search_fields = (
+        "title",
+    )
+
+
 @admin.register(CommitteeMember)
 class CommitteeMemberAdmin(admin.ModelAdmin):
     list_display = (
         "order",
+        "committee",
         "committee_role",
         "member_name",
         "member_number",
@@ -25,9 +37,14 @@ class CommitteeMemberAdmin(admin.ModelAdmin):
     ordering = ("order",)
 
     search_fields = (
+        "committee__title",
         "committee_role",
         "member_name",
         "member_number",
+    )
+
+    list_filter = (
+        "committee",
     )
 
 

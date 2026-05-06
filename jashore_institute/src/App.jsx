@@ -95,7 +95,7 @@ import DivisionForm from "./pages/dashboard/division/DivisionForm";
 import OldCommitteeForms from "./pages/dashboard/oldcommittee/OldCommitteeForm";
 import OldCommitteeCategory from "./pages/dashboard/oldcommittee/OldCommitteeCategory";
 import LibraryForm from "./pages/dashboard/about/LibraryForm";
-
+import CommitteeList from "./pages/dashboard/committee/CommitteeList";
 function App() {
   return (
     <BrowserRouter>
@@ -127,7 +127,7 @@ function App() {
   <Route path="contact" element={<ContactMessageAdmin />} />
   <Route path="committee/executive" element={<ExecutiveCommitteeForm />} />
   <Route path="/dashboard/committee/members" element={<CommitteeMemberForm />} />
-
+<Route path="/dashboard/committee/list" element={<CommitteeList />} />
 <Route path="/dashboard/committee/old" element={<OldCommitteeForm />} />
 <Route path="/dashboard/committee/sub-members" element={<SubCommitteeMemberForm />} />
 <Route path="/dashboard/committee/sub-docs" element={<SubCommitteeDocumentForm />} />

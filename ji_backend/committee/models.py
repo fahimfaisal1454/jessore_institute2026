@@ -19,22 +19,42 @@ class ExecutiveCommittee(models.Model):
     def __str__(self):
         return self.get_position_display()
 
+class Committee(models.Model):
+    title = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+
 class CommitteeMember(models.Model):
+    committee = models.ForeignKey(
+        Committee,
+        on_delete=models.CASCADE,
+        related_name="members",
+        null=True,   # temporary for existing data migration
+        blank=True
+    )
+
     committee_role = models.CharField(max_length=255)
+
     member_name = models.CharField(
         max_length=255,
         default=""
     )
+
     member_number = models.CharField(
         max_length=50,
         blank=True,
         null=True
     )
+
     image = models.ImageField(
         upload_to='committee/',
         blank=True,
         null=True
     )
+
     order = models.PositiveIntegerField(default=0)
 
     def __str__(self):

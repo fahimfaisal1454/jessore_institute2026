@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import CommitteeMember,OldCommitteeDocument,SubCommitteeMember, SubCommitteeDocument, ExecutiveCommittee, SubCommitteeCategory
+from .models import CommitteeMember,OldCommitteeDocument,SubCommitteeMember, SubCommitteeDocument, ExecutiveCommittee, SubCommitteeCategory, Committee
 
 
 class ExecutiveCommitteeSerializer(serializers.ModelSerializer):
@@ -22,9 +22,39 @@ class ExecutiveCommitteeSerializer(serializers.ModelSerializer):
         return representation
 
 class CommitteeMemberSerializer(serializers.ModelSerializer):
+    committee_title = serializers.CharField(
+        source="committee.title",
+        read_only=True
+    )
+
     class Meta:
         model = CommitteeMember
-        fields = '__all__'
+        fields = [
+            "id",
+            "committee",
+            "committee_title",
+            "committee_role",
+            "member_name",
+            "member_number",
+            "image",
+            "order",
+        ]
+
+
+class CommitteeSerializer(serializers.ModelSerializer):
+    members = CommitteeMemberSerializer(
+        many=True,
+        read_only=True
+    )
+
+    class Meta:
+        model = Committee
+        fields = [
+            "id",
+            "title",
+            "is_active",
+            "members",
+        ]
     
 class OldCommitteeDocumentSerializer(serializers.ModelSerializer):
     file = serializers.FileField(use_url=True)
