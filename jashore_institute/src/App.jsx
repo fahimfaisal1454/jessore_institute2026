@@ -39,6 +39,7 @@ import FieldApplication from "./pages/application/FieldApplication";
 import LeaveApplication from "./pages/application/LeaveApplication";
 import JadunathMajumdar from "./pages/aboutus/JadunathMajumdar";
 import LibraryDetails from "./pages/aboutus/LibraryDetails";
+import OldCommitteeList from "./pages/committee/OldCommitteeList";
 
 // Sidebar pages
 import LibraryDiv from "./pages/leftSidebar/LibraryDiv";
@@ -96,6 +97,7 @@ import OldCommitteeForms from "./pages/dashboard/oldcommittee/OldCommitteeForm";
 import OldCommitteeCategory from "./pages/dashboard/oldcommittee/OldCommitteeCategory";
 import LibraryForm from "./pages/dashboard/about/LibraryForm";
 import CommitteeList from "./pages/dashboard/committee/CommitteeList";
+
 function App() {
   return (
     <BrowserRouter>
@@ -217,6 +219,7 @@ function App() {
           <Route path="/annual-report" element={<AnnualReportPage />} />
           <Route path="/open-liberty-stage" element={<OpenLibertyStagePage />} />
           <Route path="/library-details" element={<LibraryDetails />} />
+          <Route path="/committee-old/:committeeId"element={<OldCommitteeList />}/>
         </Route>
 
       </Routes>
