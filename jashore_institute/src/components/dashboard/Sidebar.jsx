@@ -63,6 +63,14 @@ export default function Sidebar() {
         >
           Dashboard
         </button>
+        {localStorage.getItem("role") === "superadmin" && (
+  <button
+    onClick={() => navigate("/dashboard/users")}
+    className={linkClass("/dashboard/users")}
+  >
+    User Management
+  </button>
+)}
 
         {/* ABOUT */}
         <Section title="About" open={open.about} toggle={() => toggle("about")}>

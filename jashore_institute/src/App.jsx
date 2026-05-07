@@ -97,6 +97,7 @@ import OldCommitteeForms from "./pages/dashboard/oldcommittee/OldCommitteeForm";
 import OldCommitteeCategory from "./pages/dashboard/oldcommittee/OldCommitteeCategory";
 import LibraryForm from "./pages/dashboard/about/LibraryForm";
 import CommitteeList from "./pages/dashboard/committee/CommitteeList";
+import UserManagement from "./pages/dashboard/users/UserManagement";
 
 function App() {
   return (
@@ -110,9 +111,9 @@ function App() {
 <Route
   path="/dashboard"
   element={
-    <ProtectedRoute>
-      <AdminLayout />
-    </ProtectedRoute>
+<ProtectedRoute allowedRoles={["superadmin", "admin"]}>
+  <AdminLayout />
+</ProtectedRoute>
   }
 >
   {/* DEFAULT */}
@@ -140,7 +141,16 @@ function App() {
         <Route path="/dashboard/divisions" element={<DivisionForm />} />
         <Route path="/dashboard/old-committee" element={<OldCommitteeForms />} />
         <Route path="/dashboard/old-committee-categories" element={<OldCommitteeCategory />} />
-        <Route path="/dashboard/library" element={<LibraryForm />} />
+<Route path="/dashboard/library" element={<LibraryForm />} />
+
+<Route
+  path="users"
+  element={
+    <ProtectedRoute allowedRoles={["superadmin"]}>
+      <UserManagement />
+    </ProtectedRoute>
+  }
+/>
 
 </Route>
 

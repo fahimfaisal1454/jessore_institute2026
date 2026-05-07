@@ -105,6 +105,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'ji_backend.wsgi.application'
 
+AUTH_USER_MODEL = 'authentication.User'
 
 # ================================
 # DATABASE
