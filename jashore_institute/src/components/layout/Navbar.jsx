@@ -88,8 +88,8 @@ export default function Navbar() {
     },
 
     { name: "নোটিশ", path: "/notice" },
-    { name: "প্রকাশনা", path: "/publications" },
-    { name: "বিভিন্ন অনুষ্ঠান", path: "/events" },
+    { name: "প্রকাশনা", path: "/" },
+    { name: "বিভিন্ন অনুষ্ঠান", path: "/" },
   ];
 
   return (
