@@ -39,10 +39,11 @@ export default function Navbar() {
     {
       name: "কমিটিসমূহ",
       dropdown: [
-        { name: "পরিচালনা পরিষদ", path: "/committee" },
-        { name: "পরিচালনা পরিষদ (প্রাক্তন)", path: "/committee-old" },
+        
+        // { name: "পরিচালনা পরিষদ (প্রাক্তন)", path: "/committee-old" },
         { name: "সভাপতিবৃন্দের তালিকা", path: "/president-list" },
         { name: "সাধারণ সম্পাদকবৃন্দের তালিকা", path: "/secretary-list" },
+        { name: "পরিচালনা পরিষদ", path: "/committee" },
 
       {
   name: "উপকমিটির তালিকা",
@@ -56,7 +57,7 @@ export default function Navbar() {
 },
 
         {
-          name: "প্রাক্তন বিভাগীয় সম্পাদক",
+          name: "বিভাগীয় সম্পাদক",
           children: [
             { name: "সম্পাদক, লাইব্রেরি বিভাগ", path: "/library-page" },
             { name: "সম্পাদক, ক্রীড়া সংসদ", path: "/sports-page" },
