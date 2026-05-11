@@ -1,7 +1,19 @@
 from rest_framework import serializers
-from .models import CommitteeMember,OldCommitteeDocument,SubCommitteeMember, SubCommitteeDocument, ExecutiveCommittee, SubCommitteeCategory, Committee
+from .models import (
+    CommitteeMember,
+    OldCommitteeDocument,
+    SubCommitteeMember,
+    SubCommitteeDocument,
+    ExecutiveCommittee,
+    SubCommitteeCategory,
+    Committee,
+    SubCommittee,
+)
 
 
+# =========================
+# EXECUTIVE COMMITTEE
+# =========================
 class ExecutiveCommitteeSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False, allow_null=True)
 
@@ -11,16 +23,19 @@ class ExecutiveCommitteeSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-
         request = self.context.get("request")
 
-        if instance.image:
+        if instance.image and request:
             representation["image"] = request.build_absolute_uri(
                 instance.image.url
             )
 
         return representation
 
+
+# =========================
+# MAIN COMMITTEE MEMBERS
+# =========================
 class CommitteeMemberSerializer(serializers.ModelSerializer):
     committee_title = serializers.CharField(
         source="committee.title",
@@ -41,6 +56,9 @@ class CommitteeMemberSerializer(serializers.ModelSerializer):
         ]
 
 
+# =========================
+# MAIN COMMITTEE
+# =========================
 class CommitteeSerializer(serializers.ModelSerializer):
     members = CommitteeMemberSerializer(
         many=True,
@@ -55,48 +73,132 @@ class CommitteeSerializer(serializers.ModelSerializer):
             "is_active",
             "members",
         ]
-    
+
+
+# =========================
+# OLD COMMITTEE PDF
+# =========================
 class OldCommitteeDocumentSerializer(serializers.ModelSerializer):
     file = serializers.FileField(use_url=True)
 
     class Meta:
         model = OldCommitteeDocument
-        fields = ['id', 'year', 'file', 'order']
-    
+        fields = [
+            "id",
+            "year",
+            "file",
+            "order"
+        ]
+
+
+# =========================
+# SUB COMMITTEE MEMBER
+# =========================
 class SubCommitteeMemberSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
+    image = serializers.ImageField(
+        use_url=True,
+        required=False,
+        allow_null=True
+    )
+
+    category_type = serializers.CharField(
+        source="category.get_type_display",
+        read_only=True
+    )
+
+    subcommittee_title = serializers.CharField(
+        source="category.subcommittee.title",
+        read_only=True
+    )
 
     class Meta:
         model = SubCommitteeMember
-        fields = ['id', 'name', 'role', 'image', 'role_type', 'category', 'order']
+        fields = [
+            "id",
+            "category",
+            "category_type",
+            "subcommittee_title",
+            "member_role",
+            "member_name",
+            "member_number",
+            "image",
+            "order",
+        ]
 
     def update(self, instance, validated_data):
-        image = validated_data.get('image', None)
+        image = validated_data.get("image", None)
+
         if not image:
-            validated_data.pop('image', None)
+            validated_data.pop("image", None)
+
         return super().update(instance, validated_data)
 
+
+# =========================
+# SUB COMMITTEE DOCUMENT
+# =========================
 class SubCommitteeDocumentSerializer(serializers.ModelSerializer):
     file = serializers.FileField(use_url=True)
 
+    category_type = serializers.CharField(
+        source="category.get_type_display",
+        read_only=True
+    )
+
     class Meta:
         model = SubCommitteeDocument
-        fields = ['id', 'year', 'file', 'category', 'order']
+        fields = [
+            "id",
+            "year",
+            "file",
+            "category",
+            "category_type",
+            "order",
+        ]
 
     def update(self, instance, validated_data):
-        file = validated_data.get('file', None)
+        file = validated_data.get("file", None)
 
         if not file:
-            validated_data.pop('file', None)
+            validated_data.pop("file", None)
 
         return super().update(instance, validated_data)
-    
+
+
+# =========================
+# SUB COMMITTEE CATEGORY
+# =========================
 class SubCommitteeCategorySerializer(serializers.ModelSerializer):
     label = serializers.SerializerMethodField()
 
+    subcommittee_title = serializers.CharField(
+        source="subcommittee.title",
+        read_only=True
+    )
+
     class Meta:
         model = SubCommitteeCategory
-        fields = ["id", "type", "label"]
+        fields = [
+            "id",
+            "subcommittee",
+            "subcommittee_title",
+            "type",
+            "label",
+            "order",
+        ]
 
     def get_label(self, obj):
         return obj.get_type_display()
+
+
+# =========================
+# SUB COMMITTEE TITLE
+# =========================
+class SubCommitteeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubCommittee
+        fields = [
+            "id",
+            "title",
+            "is_active",
+        ]

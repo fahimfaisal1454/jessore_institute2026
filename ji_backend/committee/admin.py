@@ -66,14 +66,34 @@ class SubCommitteeCategoryAdmin(admin.ModelAdmin):
 # 🔥 SUB COMMITTEE MEMBERS (IMAGE)
 @admin.register(SubCommitteeMember)
 class SubCommitteeMemberAdmin(admin.ModelAdmin):
-    # ✅ FIXED: Added category + role to remove empty space
-    list_display = ['name', 'category', 'role', 'role_type', 'order', 'preview']
+    # ✅ Updated for new model fields
+    list_display = [
+        'member_name',
+        'category',
+        'member_role',
+        'member_number',
+        'order',
+        'preview'
+    ]
 
-    list_filter = ['category', 'role_type']
-    search_fields = ['name', 'role']
-    ordering = ['category', 'order']
+    list_filter = [
+        'category',
+    ]
 
-    list_display_links = ['name']
+    search_fields = [
+        'member_name',
+        'member_role',
+        'member_number'
+    ]
+
+    ordering = [
+        'category',
+        'order'
+    ]
+
+    list_display_links = [
+        'member_name'
+    ]
 
     # 🔥 Image preview
     def preview(self, obj):

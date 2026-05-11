@@ -77,7 +77,31 @@ class OldCommitteeDocument(models.Model):
         ordering = ['order']
         
         
+# =========================
+# SUB COMMITTEE TITLE
+# =========================
+class SubCommittee(models.Model):
+    title = models.CharField(max_length=255)
+    is_active = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.title
+
+
+# =========================
+# SUB COMMITTEE CATEGORY
+# Example:
+# Library / Sports / Drama / Town Club
+# =========================
 class SubCommitteeCategory(models.Model):
+    subcommittee = models.ForeignKey(
+    SubCommittee,
+    on_delete=models.CASCADE,
+    related_name="categories",
+    null=True,
+    blank=True
+)
+
     TYPE_CHOICES = [
         ('library', 'লাইব্রেরি বিভাগ'),
         ('sports', 'ক্রীড়া বিভাগ'),
@@ -86,40 +110,68 @@ class SubCommitteeCategory(models.Model):
         ('issue', 'ইস্যু বিভাগ'),
     ]
 
-    type = models.CharField(max_length=50, choices=TYPE_CHOICES, unique=True)
-
-    def __str__(self):
-        return dict(self.TYPE_CHOICES).get(self.type)
-
-
-# 🔥 CURRENT (IMAGE MEMBERS)
-class SubCommitteeMember(models.Model):
-    ROLE_TYPE = [
-        ('head', 'Head'),
-        ('member', 'Member'),
-    ]
-
-    category = models.ForeignKey(
-        SubCommitteeCategory,
-        on_delete=models.CASCADE,
-        related_name='members'
+    type = models.CharField(
+        max_length=50,
+        choices=TYPE_CHOICES
     )
 
-    name = models.CharField(max_length=200)
-    role = models.CharField(max_length=200)
-    image = models.ImageField(upload_to='subcommittee/')
-
-    role_type = models.CharField(max_length=10, choices=ROLE_TYPE)
     order = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return self.name
+        return f"{self.subcommittee.title} - {self.get_type_display()}"
 
     class Meta:
         ordering = ['order']
 
 
-# 🔥 OLD (PDF)
+# =========================
+# SUB COMMITTEE MEMBERS
+# =========================
+class SubCommitteeMember(models.Model):
+    category = models.ForeignKey(
+    SubCommitteeCategory,
+    on_delete=models.CASCADE,
+    related_name="members",
+    null=True,
+    blank=True
+)
+
+    member_role = models.CharField(
+    max_length=255,
+    blank=True,
+    null=True,
+    default=""
+)
+
+    member_name = models.CharField(
+        max_length=255,
+        default=""
+    )
+
+    member_number = models.CharField(
+        max_length=50,
+        blank=True,
+        null=True
+    )
+
+    image = models.ImageField(
+        upload_to='subcommittee/',
+        blank=True,
+        null=True
+    )
+
+    order = models.PositiveIntegerField(default=0)
+
+    def __str__(self):
+        return self.member_name
+
+    class Meta:
+        ordering = ['order']
+
+
+# =========================
+# OLD SUB COMMITTEE DOCUMENTS
+# =========================
 class SubCommitteeDocument(models.Model):
     category = models.ForeignKey(
         SubCommitteeCategory,
@@ -128,11 +180,15 @@ class SubCommitteeDocument(models.Model):
     )
 
     year = models.CharField(max_length=20)
-    file = models.FileField(upload_to='subcommittee_pdfs/')
+
+    file = models.FileField(
+        upload_to='subcommittee_pdfs/'
+    )
+
     order = models.PositiveIntegerField(default=0)
 
     def __str__(self):
-        return f"{self.category} - {self.year}"
+        return f"{self.category.get_type_display()} - {self.year}"
 
     class Meta:
         ordering = ['order']

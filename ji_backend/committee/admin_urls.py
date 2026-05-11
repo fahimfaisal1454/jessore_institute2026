@@ -5,60 +5,93 @@ from .admin_views import (
     ExecutiveCommitteeAdminViewSet,
     CommitteeMemberAdminViewSet,
     OldCommitteeDocumentAdminViewSet,
+    SubCommitteeAdminViewSet,
+    SubCommitteeCategoryAdminViewSet,
     SubCommitteeMemberAdminViewSet,
     SubCommitteeDocumentAdminViewSet,
-    SubCommitteeCategoryAdminViewSet,
 )
 
 router = DefaultRouter()
 
-# ✅ MAIN COMMITTEE TITLES
+
+# =========================
+# MAIN COMMITTEE TITLES
+# =========================
 router.register(
     r"committees",
     CommitteeAdminViewSet,
     basename="committees"
 )
 
-# ✅ MAIN COMMITTEE MEMBERS
+
+# =========================
+# MAIN COMMITTEE MEMBERS
+# =========================
 router.register(
     r"members",
     CommitteeMemberAdminViewSet,
     basename="members"
 )
 
-# ✅ EXECUTIVE COMMITTEE
+
+# =========================
+# EXECUTIVE COMMITTEE
+# =========================
 router.register(
     r"executive",
     ExecutiveCommitteeAdminViewSet,
     basename="executive"
 )
 
-# ✅ OLD MAIN COMMITTEE DOCUMENTS
+
+# =========================
+# OLD MAIN COMMITTEE DOCUMENTS
+# =========================
 router.register(
     r"old-docs",
     OldCommitteeDocumentAdminViewSet,
     basename="old-docs"
 )
 
-# ✅ SUB COMMITTEE CATEGORIES
+
+# =========================
+# SUB COMMITTEE TITLES
+# =========================
+router.register(
+    r"subcommittees",
+    SubCommitteeAdminViewSet,
+    basename="subcommittees"
+)
+
+
+# =========================
+# SUB COMMITTEE CATEGORIES
+# =========================
 router.register(
     r"sub-categories",
     SubCommitteeCategoryAdminViewSet,
     basename="sub-categories"
 )
 
-# ✅ SUB COMMITTEE MEMBERS
+
+# =========================
+# SUB COMMITTEE MEMBERS
+# =========================
 router.register(
     r"sub-members",
     SubCommitteeMemberAdminViewSet,
     basename="sub-members"
 )
 
-# ✅ SUB COMMITTEE DOCUMENTS
+
+# =========================
+# SUB COMMITTEE DOCUMENTS
+# =========================
 router.register(
     r"sub-docs",
     SubCommitteeDocumentAdminViewSet,
     basename="sub-docs"
 )
+
 
 urlpatterns = router.urls

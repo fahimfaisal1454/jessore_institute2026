@@ -44,46 +44,16 @@ export default function Navbar() {
         { name: "সভাপতিবৃন্দের তালিকা", path: "/president-list" },
         { name: "সাধারণ সম্পাদকবৃন্দের তালিকা", path: "/secretary-list" },
 
-        {
-          name: "উপকমিটির তালিকা",
-          children: [
-            {
-              name: "লাইব্রেরি বিভাগ",
-              children: [
-                { name: "লাইব্রেরি বিভাগ", path: "/library" },
-                { name: "লাইব্রেরি বিভাগ – প্রাক্তন", path: "/lib-old" },
-              ],
-            },
-            {
-              name: "ক্রীড়া বিভাগ",
-              children: [
-                { name: "ক্রীড়া বিভাগ", path: "/sports" },
-                { name: "ক্রীড়া বিভাগ – প্রাক্তন", path: "/sports-old" },
-              ],
-            },
-            {
-              name: "নাট্যকলা সংসদ",
-              children: [
-                { name: "নাট্যকলা সংসদ", path: "/drama" },
-                { name: "নাট্যকলা সংসদ – প্রাক্তন", path: "/drama-old" },
-              ],
-            },
-            {
-              name: "টাউন ক্লাব",
-              children: [
-                { name: "টাউন ক্লাব", path: "/town" },
-                { name: "টাউন ক্লাব – প্রাক্তন", path: "/town-old" },
-              ],
-            },
-            {
-              name: "ইস্যু বিভাগ",
-              children: [
-                { name: "ইস্যু বিভাগ", path: "/issue" },
-                { name: "ইস্যু বিভাগ – প্রাক্তন", path: "/issue-old" },
-              ],
-            },
-          ],
-        },
+      {
+  name: "উপকমিটির তালিকা",
+  children: [
+    { name: "লাইব্রেরি বিভাগ", path: "/library" },
+    { name: "ক্রীড়া বিভাগ", path: "/sports" },
+    { name: "নাট্যকলা সংসদ", path: "/drama" },
+    { name: "টাউন ক্লাব", path: "/town" },
+    { name: "ইস্যু বিভাগ", path: "/issue" },
+  ],
+},
 
         {
           name: "প্রাক্তন বিভাগীয় সম্পাদক",

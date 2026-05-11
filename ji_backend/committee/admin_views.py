@@ -1,11 +1,16 @@
 from rest_framework import viewsets
-from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
+from rest_framework.parsers import (
+    MultiPartParser,
+    FormParser,
+    JSONParser
+)
 
 from .models import (
     Committee,
     ExecutiveCommittee,
     CommitteeMember,
     OldCommitteeDocument,
+    SubCommittee,
     SubCommitteeMember,
     SubCommitteeDocument,
     SubCommitteeCategory,
@@ -16,6 +21,7 @@ from .serializers import (
     ExecutiveCommitteeSerializer,
     CommitteeMemberSerializer,
     OldCommitteeDocumentSerializer,
+    SubCommitteeSerializer,
     SubCommitteeMemberSerializer,
     SubCommitteeDocumentSerializer,
     SubCommitteeCategorySerializer,
@@ -28,7 +34,11 @@ from .serializers import (
 class CommitteeAdminViewSet(viewsets.ModelViewSet):
     queryset = Committee.objects.all()
     serializer_class = CommitteeSerializer
-    parser_classes = [JSONParser, FormParser, MultiPartParser]
+    parser_classes = [
+        JSONParser,
+        FormParser,
+        MultiPartParser
+    ]
 
     def get_serializer_context(self):
         return {"request": self.request}
@@ -40,7 +50,13 @@ class CommitteeAdminViewSet(viewsets.ModelViewSet):
 class ExecutiveCommitteeAdminViewSet(viewsets.ModelViewSet):
     queryset = ExecutiveCommittee.objects.all()
     serializer_class = ExecutiveCommitteeSerializer
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [
+        MultiPartParser,
+        FormParser
+    ]
+
+    def get_serializer_context(self):
+        return {"request": self.request}
 
 
 # =========================
@@ -49,7 +65,11 @@ class ExecutiveCommitteeAdminViewSet(viewsets.ModelViewSet):
 class CommitteeMemberAdminViewSet(viewsets.ModelViewSet):
     queryset = CommitteeMember.objects.all().order_by("order")
     serializer_class = CommitteeMemberSerializer
-    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    parser_classes = [
+        MultiPartParser,
+        FormParser,
+        JSONParser
+    ]
 
     def get_serializer_context(self):
         return {"request": self.request}
@@ -61,7 +81,44 @@ class CommitteeMemberAdminViewSet(viewsets.ModelViewSet):
 class OldCommitteeDocumentAdminViewSet(viewsets.ModelViewSet):
     queryset = OldCommitteeDocument.objects.all().order_by("order")
     serializer_class = OldCommitteeDocumentSerializer
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [
+        MultiPartParser,
+        FormParser
+    ]
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+
+# =========================
+# SUB COMMITTEE TITLE ADMIN
+# =========================
+class SubCommitteeAdminViewSet(viewsets.ModelViewSet):
+    queryset = SubCommittee.objects.all()
+    serializer_class = SubCommitteeSerializer
+    parser_classes = [
+        JSONParser,
+        FormParser,
+        MultiPartParser
+    ]
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+
+
+# =========================
+# SUB COMMITTEE CATEGORY ADMIN
+# =========================
+class SubCommitteeCategoryAdminViewSet(viewsets.ModelViewSet):
+    queryset = SubCommitteeCategory.objects.all().order_by("order")
+    serializer_class = SubCommitteeCategorySerializer
+    parser_classes = [
+        JSONParser,
+        FormParser
+    ]
+
+    def get_serializer_context(self):
+        return {"request": self.request}
 
 
 # =========================
@@ -70,7 +127,14 @@ class OldCommitteeDocumentAdminViewSet(viewsets.ModelViewSet):
 class SubCommitteeMemberAdminViewSet(viewsets.ModelViewSet):
     queryset = SubCommitteeMember.objects.all().order_by("order")
     serializer_class = SubCommitteeMemberSerializer
-    parser_classes = [MultiPartParser, FormParser, JSONParser]
+    parser_classes = [
+        MultiPartParser,
+        FormParser,
+        JSONParser
+    ]
+
+    def get_serializer_context(self):
+        return {"request": self.request}
 
 
 # =========================
@@ -79,12 +143,10 @@ class SubCommitteeMemberAdminViewSet(viewsets.ModelViewSet):
 class SubCommitteeDocumentAdminViewSet(viewsets.ModelViewSet):
     queryset = SubCommitteeDocument.objects.all().order_by("order")
     serializer_class = SubCommitteeDocumentSerializer
-    parser_classes = [MultiPartParser, FormParser]
+    parser_classes = [
+        MultiPartParser,
+        FormParser
+    ]
 
-
-# =========================
-# SUB COMMITTEE CATEGORY ADMIN
-# =========================
-class SubCommitteeCategoryAdminViewSet(viewsets.ModelViewSet):
-    queryset = SubCommitteeCategory.objects.all()
-    serializer_class = SubCommitteeCategorySerializer
+    def get_serializer_context(self):
+        return {"request": self.request}

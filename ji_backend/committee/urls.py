@@ -15,4 +15,5 @@ urlpatterns = [
     path('executive/', ExecutiveCommitteeView.as_view()),
     path('subcommittee/<str:type>/', SubCommitteeView.as_view()),
     path('subcommittee/<str:type>/old/', SubCommitteeOldView.as_view()),
+    
 ]
