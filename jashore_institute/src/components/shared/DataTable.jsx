@@ -54,10 +54,10 @@ export default function DataTable({ title, data }) {
                     key={item.id || i}
                     className="hover:bg-gray-100 align-middle"
                   >
-                    {/* SERIAL (NORMAL ORDER) */}
-                    <td className="border px-2 sm:px-3 py-2 text-center">
-                      {i + 1}
-                    </td>
+{/* SERIAL (BANGLA NUMBER) */}
+<td className="border px-2 sm:px-3 py-2 text-center">
+  {(i + 1).toLocaleString("bn-BD")}
+</td>
 
                     {/* NAME */}
                     <td className="border px-2 sm:px-3 py-2 break-words whitespace-pre-line">
