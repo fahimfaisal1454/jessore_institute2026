@@ -10,23 +10,19 @@ export default function DataTable({ title, data }) {
   );
 
   // =========================
-  // REVERSE DATA (BOTTOM TO TOP)
+  // REVERSE DISPLAY ORDER ONLY
   // =========================
   const reversedData = data ? [...data].reverse() : [];
 
   return (
     <div className="max-w-[800px] mx-auto">
       <div className="bg-white border shadow-sm">
-        {/* =========================
-            HEADER
-        ========================= */}
+        {/* HEADER */}
         <div className="bg-[#e9e9e9] border-b px-3 sm:px-4 py-3 font-semibold text-center text-sm sm:text-base break-words">
           {title}
         </div>
 
-        {/* =========================
-            TABLE
-        ========================= */}
+        {/* TABLE */}
         <div className="p-3 sm:p-4 overflow-x-auto">
           <table className="w-full min-w-[650px] text-xs sm:text-sm border">
             {/* HEAD */}
@@ -58,9 +54,9 @@ export default function DataTable({ title, data }) {
                     key={item.id || i}
                     className="hover:bg-gray-100 align-middle"
                   >
-                    {/* SERIAL (TOP = NEWEST) */}
+                    {/* SERIAL (NORMAL ORDER) */}
                     <td className="border px-2 sm:px-3 py-2 text-center">
-                      {reversedData.length - i}
+                      {i + 1}
                     </td>
 
                     {/* NAME */}
