@@ -2,21 +2,37 @@ import React from "react";
 
 export default function DataTable({ title, data }) {
   // =========================
-  // BASE URL from .env
+  // BASE URL
   // =========================
   const BASE_URL = import.meta.env.VITE_API_BASE_URL_LOCAL.replace(
     "/api/",
-    "/"
+    ""
   );
 
   // =========================
-  // REVERSE DISPLAY ORDER ONLY
+  // REVERSE DISPLAY ORDER
   // =========================
   const reversedData = data ? [...data].reverse() : [];
+
+  // =========================
+  // IMAGE URL FIX
+  // =========================
+  const getImageUrl = (image) => {
+    if (!image) return null;
+
+    // If already full URL
+    if (image.startsWith("http")) {
+      return image;
+    }
+
+    // Relative media path
+    return `${BASE_URL}${image}`;
+  };
 
   return (
     <div className="max-w-[800px] mx-auto">
       <div className="bg-white border shadow-sm">
+
         {/* HEADER */}
         <div className="bg-[#e9e9e9] border-b px-3 sm:px-4 py-3 font-semibold text-center text-sm sm:text-base break-words">
           {title}
@@ -25,6 +41,7 @@ export default function DataTable({ title, data }) {
         {/* TABLE */}
         <div className="p-3 sm:p-4 overflow-x-auto">
           <table className="w-full min-w-[650px] text-xs sm:text-sm border">
+
             {/* HEAD */}
             <thead className="bg-[#d9e3ea]">
               <tr>
@@ -54,10 +71,10 @@ export default function DataTable({ title, data }) {
                     key={item.id || i}
                     className="hover:bg-gray-100 align-middle"
                   >
-{/* SERIAL (BANGLA NUMBER) */}
-<td className="border px-2 sm:px-3 py-2 text-center">
-  {(i + 1).toLocaleString("bn-BD")}
-</td>
+                    {/* SERIAL */}
+                    <td className="border px-2 sm:px-3 py-2 text-center">
+                      {(i + 1).toLocaleString("bn-BD")}
+                    </td>
 
                     {/* NAME */}
                     <td className="border px-2 sm:px-3 py-2 break-words whitespace-pre-line">
@@ -73,14 +90,17 @@ export default function DataTable({ title, data }) {
                     <td className="border px-2 sm:px-3 py-2 text-center">
                       {item.image ? (
                         <a
-                          href={`${BASE_URL}${item.image}`}
+                          href={getImageUrl(item.image)}
                           target="_blank"
                           rel="noopener noreferrer"
                         >
                           <img
-                            src={`${BASE_URL}${item.image}`}
+                            src={getImageUrl(item.image)}
                             alt="member"
                             className="w-12 h-12 sm:w-14 sm:h-14 object-cover mx-auto rounded cursor-pointer hover:scale-110 transition"
+                            onError={(e) => {
+                              e.target.style.display = "none";
+                            }}
                           />
                         </a>
                       ) : (
@@ -100,8 +120,10 @@ export default function DataTable({ title, data }) {
                 </tr>
               )}
             </tbody>
+
           </table>
         </div>
+
       </div>
     </div>
   );
