@@ -4,21 +4,47 @@ import FormWrapper from "../../../components/admin/FormWrapper";
 
 const ExecutiveCommitteeForm = () => {
   const [data, setData] = useState({
-    president: { id: null, name: "", image: null, preview: "" },
-    secretary: { id: null, name: "", image: null, preview: "" },
+    president: {
+      id: null,
+      name: "",
+      details: "",
+      image: null,
+      preview: "",
+    },
+    secretary: {
+      id: null,
+      name: "",
+      details: "",
+      image: null,
+      preview: "",
+    },
   });
 
   const [loading, setLoading] = useState(false);
 
+  // =========================
   // FETCH DATA
+  // =========================
   const fetchData = async () => {
     try {
       const res = await axios.get("/committee/executive/");
       const list = res.data || [];
 
       const newData = {
-        president: { id: null, name: "", image: null, preview: "" },
-        secretary: { id: null, name: "", image: null, preview: "" },
+        president: {
+          id: null,
+          name: "",
+          details: "",
+          image: null,
+          preview: "",
+        },
+        secretary: {
+          id: null,
+          name: "",
+          details: "",
+          image: null,
+          preview: "",
+        },
       };
 
       list.forEach((item) => {
@@ -26,6 +52,7 @@ const ExecutiveCommitteeForm = () => {
           newData.president = {
             id: item.id,
             name: item.name || "",
+            details: item.details || "",
             image: null,
             preview: item.image || "",
           };
@@ -35,6 +62,7 @@ const ExecutiveCommitteeForm = () => {
           newData.secretary = {
             id: item.id,
             name: item.name || "",
+            details: item.details || "",
             image: null,
             preview: item.image || "",
           };
@@ -51,7 +79,9 @@ const ExecutiveCommitteeForm = () => {
     fetchData();
   }, []);
 
+  // =========================
   // INPUT CHANGE
+  // =========================
   const handleChange = (type, field, value) => {
     setData((prev) => ({
       ...prev,
@@ -62,7 +92,9 @@ const ExecutiveCommitteeForm = () => {
     }));
   };
 
+  // =========================
   // IMAGE CHANGE
+  // =========================
   const handleImage = (type, file) => {
     if (!file) return;
 
@@ -76,7 +108,9 @@ const ExecutiveCommitteeForm = () => {
     }));
   };
 
+  // =========================
   // SAVE
+  // =========================
   const handleSave = async (type) => {
     setLoading(true);
 
@@ -85,8 +119,8 @@ const ExecutiveCommitteeForm = () => {
 
       formData.append("position", type);
       formData.append("name", data[type].name);
+      formData.append("details", data[type].details || "");
 
-      // Always append new image if selected
       if (data[type].image) {
         formData.append("image", data[type].image);
       }
@@ -119,7 +153,7 @@ const ExecutiveCommitteeForm = () => {
         alert("Saved successfully ✅");
       }
 
-      // Reset file state
+      // Reset only file state
       setData((prev) => ({
         ...prev,
         [type]: {
@@ -129,8 +163,12 @@ const ExecutiveCommitteeForm = () => {
       }));
 
       fetchData();
+
     } catch (err) {
-      console.error("UPLOAD ERROR:", err.response?.data || err);
+      console.error(
+        "UPLOAD ERROR:",
+        err.response?.data || err
+      );
       alert("Something went wrong ❌");
     }
 
@@ -141,22 +179,45 @@ const ExecutiveCommitteeForm = () => {
     <FormWrapper title="Executive Committee">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-        {/* PRESIDENT */}
+        {/* =========================
+            PRESIDENT
+        ========================= */}
         <div className="bg-white p-4 sm:p-6 rounded shadow space-y-4">
           <h3 className="font-semibold text-lg">
             President
           </h3>
 
+          {/* NAME */}
           <input
             type="text"
             value={data.president.name}
             onChange={(e) =>
-              handleChange("president", "name", e.target.value)
+              handleChange(
+                "president",
+                "name",
+                e.target.value
+              )
             }
             placeholder="Name"
             className="w-full border p-3 rounded"
           />
 
+          {/* DETAILS */}
+          <textarea
+            value={data.president.details}
+            onChange={(e) =>
+              handleChange(
+                "president",
+                "details",
+                e.target.value
+              )
+            }
+            placeholder="Small details/designation under the name"
+            rows={3}
+            className="w-full border p-3 rounded resize-none"
+          />
+
+          {/* IMAGE */}
           <input
             type="file"
             accept="image/*"
@@ -169,6 +230,7 @@ const ExecutiveCommitteeForm = () => {
             className="w-full text-sm"
           />
 
+          {/* PREVIEW */}
           {data.president.preview && (
             <img
               src={data.president.preview}
@@ -177,6 +239,7 @@ const ExecutiveCommitteeForm = () => {
             />
           )}
 
+          {/* BUTTON */}
           <button
             onClick={() => handleSave("president")}
             disabled={loading}
@@ -186,22 +249,45 @@ const ExecutiveCommitteeForm = () => {
           </button>
         </div>
 
-        {/* SECRETARY */}
+        {/* =========================
+            SECRETARY
+        ========================= */}
         <div className="bg-white p-4 sm:p-6 rounded shadow space-y-4">
           <h3 className="font-semibold text-lg">
             Secretary
           </h3>
 
+          {/* NAME */}
           <input
             type="text"
             value={data.secretary.name}
             onChange={(e) =>
-              handleChange("secretary", "name", e.target.value)
+              handleChange(
+                "secretary",
+                "name",
+                e.target.value
+              )
             }
             placeholder="Name"
             className="w-full border p-3 rounded"
           />
 
+          {/* DETAILS */}
+          <textarea
+            value={data.secretary.details}
+            onChange={(e) =>
+              handleChange(
+                "secretary",
+                "details",
+                e.target.value
+              )
+            }
+            placeholder="Small details/designation under the name"
+            rows={3}
+            className="w-full border p-3 rounded resize-none"
+          />
+
+          {/* IMAGE */}
           <input
             type="file"
             accept="image/*"
@@ -214,6 +300,7 @@ const ExecutiveCommitteeForm = () => {
             className="w-full text-sm"
           />
 
+          {/* PREVIEW */}
           {data.secretary.preview && (
             <img
               src={data.secretary.preview}
@@ -222,6 +309,7 @@ const ExecutiveCommitteeForm = () => {
             />
           )}
 
+          {/* BUTTON */}
           <button
             onClick={() => handleSave("secretary")}
             disabled={loading}

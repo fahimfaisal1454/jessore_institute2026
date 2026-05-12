@@ -1,11 +1,18 @@
+# FIX YOUR SERIALIZER ONLY
+
 from rest_framework import serializers
 from .models import OldCommitteeMember, OldCommitteeCategory
 
 
 class OldCommitteeCategorySerializer(serializers.ModelSerializer):
+    type_display = serializers.CharField(
+        source="get_type_display",
+        read_only=True
+    )
+
     class Meta:
         model = OldCommitteeCategory
-        fields = "__all__"
+        fields = ["id", "type", "type_display"]
 
 
 class OldCommitteeSerializer(serializers.ModelSerializer):
@@ -29,7 +36,6 @@ class OldCommitteeSerializer(serializers.ModelSerializer):
         return data
 
     def update(self, instance, validated_data):
-        # ✅ keep old image if not updating
         if 'image' not in validated_data:
             validated_data.pop('image', None)
 

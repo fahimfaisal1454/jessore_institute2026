@@ -17,20 +17,42 @@ from .models import (
 class ExecutiveCommitteeSerializer(serializers.ModelSerializer):
     image = serializers.ImageField(required=False, allow_null=True)
 
+    # Bangla position label
+    position_display = serializers.CharField(
+        source="get_position_display",
+        read_only=True
+    )
+
     class Meta:
         model = ExecutiveCommittee
-        fields = "__all__"
+        fields = [
+            "id",
+            "position",
+            "position_display",
+            "name",
+            "details",
+            "image",
+        ]
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
         request = self.context.get("request")
 
-        if instance.image and request:
-            representation["image"] = request.build_absolute_uri(
-                instance.image.url
+        if instance.image:
+            representation["image"] = (
+                request.build_absolute_uri(instance.image.url)
+                if request
+                else instance.image.url
             )
 
         return representation
+
+    def update(self, instance, validated_data):
+        # Keep old image if no new image uploaded
+        if "image" not in validated_data:
+            validated_data.pop("image", None)
+
+        return super().update(instance, validated_data)
 
 
 # =========================

@@ -14,7 +14,19 @@ class ExecutiveCommittee(models.Model):
         unique=True
     )
     name = models.CharField(max_length=255)
-    image = models.ImageField(upload_to='committee/', blank=True, null=True)
+
+    # NEW FIELD
+    details = models.TextField(
+        blank=True,
+        null=True,
+        help_text="Small details/designation under the name"
+    )
+
+    image = models.ImageField(
+        upload_to='committee/',
+        blank=True,
+        null=True
+    )
 
     def __str__(self):
         return self.get_position_display()

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import AxiosInstance from "../../../api/AxiosInstance";
+import { Pencil, Trash2 } from "lucide-react";
 
 export default function OldCommitteeForm() {
   const [form, setForm] = useState({
@@ -12,19 +13,23 @@ export default function OldCommitteeForm() {
   const [categories, setCategories] = useState([]);
   const [data, setData] = useState([]);
   const [editId, setEditId] = useState(null);
-
-  // ✅ NEW (FILTER STATE)
   const [filterCategory, setFilterCategory] = useState("");
 
+  // =========================
+  // FETCH CATEGORIES
+  // =========================
   const fetchCategories = () => {
     AxiosInstance.get("admin/oldcommittee/old-categories/")
-      .then(res => setCategories(res.data))
+      .then((res) => setCategories(res.data))
       .catch(console.error);
   };
 
+  // =========================
+  // FETCH MEMBERS
+  // =========================
   const fetchData = () => {
     AxiosInstance.get("admin/oldcommittee/old-members/")
-      .then(res => setData(res.data))
+      .then((res) => setData(res.data))
       .catch(console.error);
   };
 
@@ -33,22 +38,28 @@ export default function OldCommitteeForm() {
     fetchData();
   }, []);
 
+  // =========================
+  // HANDLE FORM CHANGE
+  // =========================
   const handleChange = (e) => {
     const { name, value, files } = e.target;
 
     if (files) {
-      setForm(prev => ({
+      setForm((prev) => ({
         ...prev,
         [name]: files[0],
       }));
     } else {
-      setForm(prev => ({
+      setForm((prev) => ({
         ...prev,
         [name]: value,
       }));
     }
   };
 
+  // =========================
+  // RESET FORM
+  // =========================
   const resetForm = () => {
     setForm({
       category: "",
@@ -56,9 +67,25 @@ export default function OldCommitteeForm() {
       year: "",
       image: null,
     });
+
     setEditId(null);
   };
 
+  // =========================
+  // CATEGORY LABEL
+  // =========================
+  const getCategoryLabel = (category) => {
+    return (
+      category.type_display ||
+      category.get_type_display ||
+      category.type_label ||
+      category.type
+    );
+  };
+
+  // =========================
+  // SUBMIT FORM
+  // =========================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -82,13 +109,21 @@ export default function OldCommitteeForm() {
         await AxiosInstance.patch(
           `admin/oldcommittee/old-members/${editId}/`,
           fd,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
       } else {
         await AxiosInstance.post(
           "admin/oldcommittee/old-members/",
           fd,
-          { headers: { "Content-Type": "multipart/form-data" } }
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
       }
 
@@ -101,6 +136,9 @@ export default function OldCommitteeForm() {
     }
   };
 
+  // =========================
+  // EDIT
+  // =========================
   const handleEdit = (item) => {
     setEditId(item.id);
 
@@ -110,153 +148,231 @@ export default function OldCommitteeForm() {
       year: item.year,
       image: null,
     });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
+  // =========================
+  // DELETE
+  // =========================
   const handleDelete = (id) => {
-    if (!confirm("Delete this member?")) return;
+    if (!window.confirm("Delete this member?")) return;
 
     AxiosInstance.delete(`admin/oldcommittee/old-members/${id}/`)
       .then(fetchData)
       .catch(console.error);
   };
 
-  // ✅ FILTERED DATA
+  // =========================
+  // FILTER DATA
+  // =========================
   const filteredData = filterCategory
-    ? data.filter(item => item.category === Number(filterCategory))
+    ? data.filter(
+        (item) => item.category === Number(filterCategory)
+      )
     : data;
 
-return (
-  <div className="p-4 sm:p-6 max-w-5xl mx-auto">
+  return (
+    <div className="p-4 sm:p-6 max-w-7xl mx-auto">
+      {/* TITLE */}
+      <h2 className="text-2xl font-bold mb-6 text-blue-900">
+        Old Committee CMS
+      </h2>
 
-    <h2 className="text-xl sm:text-2xl font-bold mb-6">
-      Old Committee CMS
-    </h2>
-
-    {/* FORM */}
-    <form
-      onSubmit={handleSubmit}
-      className="bg-white p-4 sm:p-6 rounded shadow mb-8 space-y-4"
-    >
-
-      <select
-        name="category"
-        value={form.category}
-        onChange={handleChange}
-        className="border p-3 w-full rounded"
+      {/* =========================
+          FORM
+      ========================= */}
+      <form
+        onSubmit={handleSubmit}
+        className="bg-white p-6 rounded shadow mb-8 space-y-4"
       >
-        <option value="">Select Category</option>
+        {/* CATEGORY */}
+        <select
+          name="category"
+          value={form.category}
+          onChange={handleChange}
+          className="border p-3 w-full rounded"
+        >
+          <option value="">Select Category</option>
 
-        {categories.map((c) => (
-          <option key={c.id} value={c.id}>
-            {c.type}
-          </option>
-        ))}
-      </select>
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {getCategoryLabel(c)}
+            </option>
+          ))}
+        </select>
 
-      <input
-        name="name"
-        value={form.name}
-        onChange={handleChange}
-        placeholder="Name"
-        className="border p-3 w-full rounded"
-      />
+        {/* NAME */}
+        <input
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Name"
+          className="border p-3 w-full rounded"
+        />
 
-      <input
-        name="year"
-        value={form.year}
-        onChange={handleChange}
-        placeholder="Year (e.g. 2000-2001)"
-        className="border p-3 w-full rounded"
-      />
+        {/* YEAR */}
+        <input
+          name="year"
+          value={form.year}
+          onChange={handleChange}
+          placeholder="Year (e.g. 2000-2001)"
+          className="border p-3 w-full rounded"
+        />
 
-      <input
-        type="file"
-        name="image"
-        onChange={handleChange}
-        className="border p-3 w-full rounded text-sm"
-      />
+        {/* IMAGE */}
+        <input
+          type="file"
+          name="image"
+          onChange={handleChange}
+          className="border p-3 w-full rounded text-sm"
+        />
 
-      <div className="flex flex-col sm:flex-row gap-3">
-        <button className="bg-blue-600 text-white px-4 py-3 rounded w-full sm:w-auto">
-          {editId ? "Update" : "Create"}
-        </button>
-
-        {editId && (
-          <button
-            type="button"
-            onClick={resetForm}
-            className="bg-gray-400 text-white px-4 py-3 rounded w-full sm:w-auto"
-          >
-            Cancel
+        {/* BUTTONS */}
+        <div className="flex flex-col sm:flex-row gap-3">
+          <button className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700">
+            {editId ? "Update" : "Create"}
           </button>
-        )}
+
+          {editId && (
+            <button
+              type="button"
+              onClick={resetForm}
+              className="bg-gray-500 text-white px-6 py-3 rounded hover:bg-gray-600"
+            >
+              Cancel
+            </button>
+          )}
+        </div>
+      </form>
+
+      {/* =========================
+          FILTER
+      ========================= */}
+      <div className="mb-6">
+        <select
+          value={filterCategory}
+          onChange={(e) =>
+            setFilterCategory(e.target.value)
+          }
+          className="border p-3 rounded w-full sm:w-auto"
+        >
+          <option value="">All Categories</option>
+
+          {categories.map((c) => (
+            <option key={c.id} value={c.id}>
+              {getCategoryLabel(c)}
+            </option>
+          ))}
+        </select>
       </div>
 
-    </form>
+      {/* =========================
+          TABLE LIST
+      ========================= */}
+      <div className="bg-white rounded shadow overflow-x-auto">
+        <table className="min-w-full border border-gray-300 text-sm">
+          <thead className="bg-gray-300 text-black font-extrabold">
+            <tr>
+              <th className="border px-4 py-3">SL</th>
+              <th className="border px-4 py-3">ছবি</th>
+              <th className="border px-4 py-3">ক্যাটাগরি</th>
+              <th className="border px-4 py-3">নাম</th>
+              <th className="border px-4 py-3">সাল</th>
+              <th className="border px-4 py-3">Actions</th>
+            </tr>
+          </thead>
 
-    {/* FILTER */}
-    <div className="mb-6">
-      <select
-        value={filterCategory}
-        onChange={(e) => setFilterCategory(e.target.value)}
-        className="border p-3 rounded w-full sm:w-auto"
-      >
-        <option value="">All Categories</option>
+          <tbody>
+            {filteredData.length > 0 ? (
+              filteredData.map((item, index) => {
+                const categoryObj = categories.find(
+                  (c) => c.id === item.category
+                );
 
-        {categories.map((c) => (
-          <option key={c.id} value={c.id}>
-            {c.type}
-          </option>
-        ))}
-      </select>
+                return (
+                  <tr
+                    key={item.id}
+                    className="hover:bg-gray-50 text-center"
+                  >
+                    {/* SL */}
+                    <td className="border px-4 py-3">
+                      {index + 1}
+                    </td>
+
+                    {/* IMAGE */}
+                    <td className="border px-4 py-3">
+                      {item.image ? (
+                        <img
+                          src={item.image}
+                          alt={item.name}
+                          className="w-16 h-16 object-cover rounded mx-auto"
+                        />
+                      ) : (
+                        <div className="w-16 h-16 bg-gray-200 rounded flex items-center justify-center mx-auto text-xs text-gray-500">
+                          No Image
+                        </div>
+                      )}
+                    </td>
+
+                    {/* CATEGORY */}
+                    <td className="border px-4 py-3 font-medium">
+                      {categoryObj
+                        ? getCategoryLabel(categoryObj)
+                        : "-"}
+                    </td>
+
+                    {/* NAME */}
+                    <td className="border px-4 py-3">
+                      {item.name}
+                    </td>
+
+                    {/* YEAR */}
+                    <td className="border px-4 py-3">
+                      {item.year}
+                    </td>
+
+                    {/* ACTIONS */}
+                    <td className="border px-4 py-3">
+                      <div className="flex justify-center gap-4">
+                        <button
+                          onClick={() =>
+                            handleEdit(item)
+                          }
+                          className="text-blue-600 hover:text-blue-800"
+                        >
+                          <Pencil size={18} />
+                        </button>
+
+                        <button
+                          onClick={() =>
+                            handleDelete(item.id)
+                          }
+                          className="text-red-500 hover:text-red-700"
+                        >
+                          <Trash2 size={18} />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
+            ) : (
+              <tr>
+                <td
+                  colSpan="6"
+                  className="text-center py-10 text-gray-500"
+                >
+                  No committee members found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
-
-    {/* LIST */}
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-
-      {filteredData.map((item) => (
-        <div
-          key={item.id}
-          className="border bg-white p-4 text-center rounded shadow-sm"
-        >
-
-          {item.image && (
-            <img
-              src={item.image}
-              alt={item.name}
-              className="w-full h-48 object-cover mb-3 rounded"
-            />
-          )}
-
-          <p className="font-semibold break-words">
-            {item.name}
-          </p>
-
-          <p className="text-sm text-gray-500 break-words">
-            {item.year}
-          </p>
-
-          <div className="flex flex-col sm:flex-row justify-center gap-3 mt-4">
-            <button
-              onClick={() => handleEdit(item)}
-              className="text-blue-600 text-sm w-full sm:w-auto"
-            >
-              Edit
-            </button>
-
-            <button
-              onClick={() => handleDelete(item.id)}
-              className="text-red-500 text-sm w-full sm:w-auto"
-            >
-              Delete
-            </button>
-          </div>
-
-        </div>
-      ))}
-
-    </div>
-
-  </div>
-);
+  );
 }

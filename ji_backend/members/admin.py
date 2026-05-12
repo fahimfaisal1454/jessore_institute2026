@@ -5,66 +5,36 @@ from .models import Member, VoterList
 
 @admin.register(Member)
 class MemberAdmin(admin.ModelAdmin):
-
-    # 🔹 Clean short name (for TextField)
-    def short_name(self, obj):
-        if obj.name:
-            return obj.name.replace('\n', ' ')[:50] + "..."
-        return "-"
-    short_name.short_description = "Name"
-
-    # 🔹 Image preview (modern Django way)
-    def image_preview(self, obj):
-        if obj.image:
-            return mark_safe(
-                f'<img src="{obj.image.url}" width="80" height="80" '
-                f'style="object-fit:cover;border:1px solid #ccc;" />'
-            )
-        return "No Image"
-    image_preview.short_description = "Preview"
-
-    # 🔹 Table view
     list_display = (
         'id',
-        'member_no',
-        'short_name',     # ✅ fixed name display
+        'member_code',
+        'name',
         'member_type',
-        'date',
-        'mobile',
-        'image_preview',  # ✅ show image in list
+        'include_date',
+        'primary_mobile_number',
+        'is_active',
+        'created_at',
     )
 
-    # 🔹 Filters (right sidebar)
     list_filter = (
         'member_type',
-        'date',
+        'include_date',
+        'is_active',
+        'gender',
+        'blood_group',
     )
 
-    # 🔹 Search
     search_fields = (
-        'member_no',
         'name',
-        'mobile',
+        'member_code',
+        'si_no',
+        'primary_mobile_number',
+        'secondary_mobile_number',
+        'guardian_mobile_number',
+        'nid_no',
     )
 
-    # 🔹 Ordering
-    ordering = ('-id',)
-
-    # 🔹 Form layout
-    fieldsets = (
-        ('Basic Info', {
-            'fields': ('member_no', 'member_type')
-        }),
-        ('Details', {
-            'fields': ('name', 'date', 'mobile')
-        }),
-        ('Media', {
-            'fields': ('image', 'image_preview')
-        }),
-    )
-
-    # 🔹 Readonly fields
-    readonly_fields = ('image_preview',)
+    ordering = ('si_no',)
 
 
 # 🔥 VOTER LIST ADMIN

@@ -59,43 +59,53 @@ export default function RightSidebar() {
   return (
     <div className="space-y-2 text-[14px]">
 
-      {/* EXECUTIVE LEADERS */}
-      {loading ? (
-        <div className="text-center py-4 text-gray-500">
-          Loading...
+{/* EXECUTIVE LEADERS */}
+{loading ? (
+  <div className="text-center py-4 text-gray-500">
+    Loading...
+  </div>
+) : leaders.length > 0 ? (
+  leaders.map((item) => (
+    <div
+      key={item.id || item.position}
+      className="border border-gray-300 bg-white"
+    >
+      {/* POSITION TITLE */}
+      <div className="bg-[#0b6b3a] text-white text-center py-[4px] font-semibold">
+        {item.position_display || getTitle(item.position)}
+      </div>
+
+      <div className="p-4 text-center">
+
+        {/* IMAGE */}
+        <div className="w-[150px] h-[160px] mx-auto border border-gray-300 bg-white p-1">
+          <img
+            src={item.image || "/no-image.png"}
+            alt={item.position}
+            className="w-full h-full object-cover"
+          />
         </div>
-      ) : leaders.length > 0 ? (
-        leaders.map((item) => (
-          <div
-            key={item.id || item.position}
-            className="border border-gray-300 bg-white"
-          >
-            <div className="bg-[#0b6b3a] text-white text-center py-[4px] font-semibold">
-              {getTitle(item.position)}
-            </div>
 
-            <div className="p-4 text-center">
+        {/* NAME */}
+        <p className="mt-3 font-medium text-gray-800">
+          {item.name}
+        </p>
 
-              <div className="w-[150px] h-[160px] mx-auto border border-gray-300 bg-white p-1">
-                <img
-                  src={item.image || "/no-image.png"}
-                  alt={item.position}
-                  className="w-full h-full object-cover"
-                />
-              </div>
+        {/* DETAILS */}
+        {item.details && (
+          <p className="mt-2 text-sm text-gray-600 whitespace-pre-line leading-relaxed">
+            {item.details}
+          </p>
+        )}
 
-              <p className="mt-3 font-medium text-gray-800">
-                {item.name}
-              </p>
-
-            </div>
-          </div>
-        ))
-      ) : (
-        <div className="text-center py-4 text-gray-500">
-          No executive committee data
-        </div>
-      )}
+      </div>
+    </div>
+  ))
+) : (
+  <div className="text-center py-4 text-gray-500">
+    No executive committee data
+  </div>
+)}
 
       {/* LIBRARIES OF BANGLADESH */}
       {/* LIBRARIES OF BANGLADESH */}

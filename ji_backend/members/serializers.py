@@ -4,19 +4,83 @@ from rest_framework import serializers
 from .models import Member, VoterList
 
 class MemberSerializer(serializers.ModelSerializer):
-    image = serializers.ImageField(use_url=True)
+    full_mobile = serializers.ReadOnlyField()
+    member_status = serializers.ReadOnlyField()
 
     class Meta:
         model = Member
-        fields = '__all__'
+        fields = [
+            'id',
 
-    def update(self, instance, validated_data):
-        image = validated_data.get('image', None)
+            # Basic Info
+            'name',
+            'member_code',
+            'members_number',
+            'si_no',
+            'member_type',
+            'include_date',
 
-        if not image:
-            validated_data.pop('image', None)
+            # Family Info
+            'father_name',
+            'mother_name',
 
-        return super().update(instance, validated_data)
+            # Personal Details
+            'date_of_birth',
+            'gender',
+            'blood_group',
+            'religion',
+            'birth_certificate_no',
+            'nid_no',
+            'nationality',
+            'passport_no',
+
+            # Contact Info
+            'primary_mobile_number',
+            'secondary_mobile_number',
+            'guardian_mobile_number',
+            'email',
+
+            # Present Address
+            'present_address',
+            'present_area',
+            'present_thana',
+            'present_district',
+
+            # Permanent Address
+            'permanent_address',
+            'permanent_area',
+            'permanent_thana',
+            'permanent_district',
+
+            # Media
+            'photo',
+            
+
+            # Financial Info
+            'form_no',
+            'admission',
+            'collateral',
+            'donation',
+
+            # Status
+            'is_active',
+            'death_date',
+
+            # System Fields
+            'created_at',
+            'updated_at',
+
+            # Properties
+            'full_mobile',
+            'member_status',
+        ]
+
+        read_only_fields = [
+            'created_at',
+            'updated_at',
+            'full_mobile',
+            'member_status',
+        ]
     
 class VoterListSerializer(serializers.ModelSerializer):
     donor_pdf = serializers.FileField(use_url=True)

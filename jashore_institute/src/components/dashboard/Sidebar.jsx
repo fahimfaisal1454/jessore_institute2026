@@ -1,12 +1,26 @@
+// FILE: src/components/dashboard/Sidebar.jsx
+// FULL FIX:
+// - ONLY ONE ACTIVE MENU
+// - MOBILE FIX
+// - COLLAPSE FIX
+// - SMOOTH ANIMATION
+// READY TO PASTE
+
 import { useNavigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../auth/AuthContext";
 import { useState } from "react";
-import { FaChevronDown } from "react-icons/fa";
+import {
+  FaChevronDown,
+  FaAngleDoubleLeft,
+  FaAngleDoubleRight,
+} from "react-icons/fa";
 
-export default function Sidebar() {
+export default function Sidebar({ closeSidebar }) {
   const navigate = useNavigate();
   const location = useLocation();
   const { logout } = useAuth();
+
+  const [collapsed, setCollapsed] = useState(false);
 
   const [open, setOpen] = useState({
     about: true,
@@ -18,7 +32,10 @@ export default function Sidebar() {
   });
 
   const toggle = (key) => {
-    setOpen((prev) => ({ ...prev, [key]: !prev[key] }));
+    setOpen((prev) => ({
+      ...prev,
+      [key]: !prev[key],
+    }));
   };
 
   const handleLogout = () => {
@@ -26,154 +43,270 @@ export default function Sidebar() {
     navigate("/login");
   };
 
-  const isActive = (path) => location.pathname.startsWith(path);
+  const handleNavigate = (to) => {
+    navigate(to);
+
+    if (window.innerWidth < 1024 && closeSidebar) {
+      closeSidebar();
+    }
+  };
+
+  const isActive = (path) => {
+    if (path === "/dashboard/members") {
+      return location.pathname === path;
+    }
+
+    return (
+      location.pathname === path ||
+      location.pathname.startsWith(path)
+    );
+  };
 
   const linkClass = (path) =>
-    `text-left px-3 py-2 rounded-lg text-sm transition-all duration-200 ${
+    `w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-300 break-words whitespace-normal ${
       isActive(path)
         ? "bg-blue-600 text-white shadow-md"
         : "text-gray-300 hover:bg-gray-700 hover:text-white"
     }`;
 
   return (
-    <div className="w-64 bg-gradient-to-b from-gray-900 to-gray-800 text-white h-full flex flex-col shadow-xl">
+    <div
+      className={`
+        h-screen bg-gradient-to-b from-gray-900 to-gray-800
+        text-white flex flex-col shadow-xl
+        transition-all duration-300 ease-in-out
+        ${collapsed ? "w-20" : "w-64"}
+        max-w-full
+      `}
+    >
+      {/* HEADER */}
+      <div className="p-4 border-b border-gray-700 flex items-center justify-between">
+        <div
+          onClick={() => handleNavigate("/")}
+          className="flex items-center gap-3 cursor-pointer min-w-0"
+        >
+          <img
+            src="/logo.png"
+            alt="Logo"
+            className="w-10 h-10 rounded-full bg-white p-1 flex-shrink-0"
+          />
 
-      {/* 🔥 LOGO */}
-      <div
-        onClick={() => navigate("/")}
-        className="p-4 flex items-center gap-3 cursor-pointer border-b border-gray-700 hover:bg-gray-800 transition"
-      >
-        <img
-          src="/logo.png"
-          className="w-10 h-10 rounded-full bg-white p-1"
-        />
-        <div>
-          <p className="text-sm font-semibold">যশোর ইনস্টিটিউট</p>
-          <p className="text-xs text-gray-400">Admin Panel</p>
+          {!collapsed && (
+            <div className="transition-all duration-300 min-w-0">
+              <p className="text-sm font-semibold truncate">
+                যশোর ইনস্টিটিউট
+              </p>
+              <p className="text-xs text-gray-400 truncate">
+                Admin Panel
+              </p>
+            </div>
+          )}
         </div>
+
+        {/* DESKTOP COLLAPSE */}
+        <button
+          onClick={() => setCollapsed(!collapsed)}
+          className="hidden lg:block text-gray-300 hover:text-white transition ml-2"
+        >
+          {collapsed ? (
+            <FaAngleDoubleRight />
+          ) : (
+            <FaAngleDoubleLeft />
+          )}
+        </button>
       </div>
 
       {/* CONTENT */}
-      <div className="flex-1 overflow-y-auto p-4 space-y-2">
-
-        {/* DASHBOARD */}
+      <div className="flex-1 overflow-y-auto p-3 space-y-2">
         <button
-          onClick={() => navigate("/dashboard")}
+          onClick={() => handleNavigate("/dashboard")}
           className={linkClass("/dashboard")}
         >
-          Dashboard
+          {!collapsed && "Dashboard"}
         </button>
+
         {localStorage.getItem("role") === "superadmin" && (
-  <button
-    onClick={() => navigate("/dashboard/users")}
-    className={linkClass("/dashboard/users")}
-  >
-    User Management
-  </button>
-)}
+          <button
+            onClick={() => handleNavigate("/dashboard/users")}
+            className={linkClass("/dashboard/users")}
+          >
+            {!collapsed && "User Management"}
+          </button>
+        )}
 
         {/* ABOUT */}
-        <Section title="About" open={open.about} toggle={() => toggle("about")}>
-          <NavItem to="/dashboard/about" label="আমাদের সম্পর্কে" />
-          <NavItem to="/dashboard/person" label="যদুনাথ মজুমদার" />
-          <NavItem to="/dashboard/photos" label="ছবিঘর" />
-          <NavItem to="/dashboard/videos" label="ভিডিওঘর" />
-          <NavItem to="/dashboard/library" label="লাইব্রেরি" />
+        <Section
+          title="About"
+          open={open.about}
+          toggle={() => toggle("about")}
+          collapsed={collapsed}
+        >
+          <NavItem to="/dashboard/about" label="আমাদের সম্পর্কে" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/person" label="যদুনাথ মজুমদার" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/photos" label="ছবিঘর" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/videos" label="ভিডিওঘর" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/library" label="লাইব্রেরি" collapsed={collapsed} navigate={handleNavigate} />
         </Section>
 
         {/* CONTENT */}
-        <Section title="Content" open={open.content} toggle={() => toggle("content")}>
-          <NavItem to="/dashboard/reports" label="📄বার্ষিক প্রতিবেদন" />
-          <NavItem to="/dashboard/forms" label="ফরম" />
-          <NavItem to="/dashboard/infopages" label="🏛️উন্মুক্ত স্বাধীনতা মঞ্চ/🏫প্রাথমিক বিদ্যালয়" />
-          <NavItem to="/dashboard/contact" label="Contact Messages" />
+        <Section
+          title="Content"
+          open={open.content}
+          toggle={() => toggle("content")}
+          collapsed={collapsed}
+        >
+          <NavItem to="/dashboard/reports" label="বার্ষিক প্রতিবেদন" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/forms" label="ফরম" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/infopages" label="উন্মুক্ত স্বাধীনতা মঞ্চ" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/contact" label="Contact Messages" collapsed={collapsed} navigate={handleNavigate} />
         </Section>
 
         {/* COMMITTEE */}
-        <Section title="Committee" open={open.committee} toggle={() => toggle("committee")}>
-          <NavItem to="/dashboard/committee/executive" label="নির্বাহী কমিটি" />
-          <NavItem to="/dashboard/committee/members" label="পরিচালনা পরিষদ" />
-          <NavItem to="/dashboard/committee/old" label="পরিচালনা পরিষদ-প্রাক্তন" />
+        <Section
+          title="Committee"
+          open={open.committee}
+          toggle={() => toggle("committee")}
+          collapsed={collapsed}
+        >
+          <NavItem to="/dashboard/committee/executive" label="নির্বাহী কমিটি" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/committee/members" label="পরিচালনা পরিষদ" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/committee/old" label="প্রাক্তন" collapsed={collapsed} navigate={handleNavigate} />
         </Section>
 
-        {/* SUB */}
-        <Section title="Sub Committee" open={open.sub} toggle={() => toggle("sub")}>
-          <NavItem to="/dashboard/committee/sub-categories" label="উপ-কমিটির ক্যাটাগরি " />
-          <NavItem to="/dashboard/committee/sub-members" label="উপ-কমিটির সদস্য" />
-          <NavItem to="/dashboard/committee/sub-docs" label="উপ-কমিটির সদস্য প্রাক্তন" />
+        {/* SUB COMMITTEE */}
+        <Section
+          title="Sub Committee"
+          open={open.sub}
+          toggle={() => toggle("sub")}
+          collapsed={collapsed}
+        >
+          <NavItem to="/dashboard/committee/sub-categories" label="ক্যাটাগরি" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/committee/sub-members" label="উপকমিটি সদস্য" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/committee/sub-docs" label=" উপকমিটি প্রাক্তন " collapsed={collapsed} navigate={handleNavigate} />
         </Section>
 
         {/* OTHER */}
-        <Section title="Other" open={open.other} toggle={() => toggle("other")}>
-          <NavItem to="/dashboard/notices" label="নোটিশ" />
+        <Section
+          title="নোটিশ"
+          open={open.other}
+          toggle={() => toggle("other")}
+          collapsed={collapsed}
+        >
+          <NavItem to="/dashboard/notices" label="নোটিশ" collapsed={collapsed} navigate={handleNavigate} />
+        </Section>
+                {/* MEMBERS */}
+        <Section
+          title="সদস্য"
+          open={open.members}
+          toggle={() => toggle("members")}
+          collapsed={collapsed}
+        >
+          
+          <NavItem to="/dashboard/members" label="সদস্য" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/members/list" label="সদস্য তালিকা" collapsed={collapsed} navigate={handleNavigate} />
+      
+        </Section>
+
+         {/*সভাপতি/সম্পাদকবৃন্দ*/}
+        <Section
+          title="সভাপতি/সম্পাদকবৃন্দ"
+          open={open.president}
+          toggle={() => toggle("president")}
+          collapsed={collapsed}
+        >
+
+          <NavItem to="/dashboard/old-committee-categories" label="সভাপতি/সম্পাদকবৃন্দ ক্যাটাগরি" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/old-committee" label="সভাপতি/সম্পাদকবৃন্দ" collapsed={collapsed} navigate={handleNavigate} />
         </Section>
 
         {/* DIVISION */}
-        <Section title="Division" open={open.division} toggle={() => toggle("division")}>
-          <NavItem to="/dashboard/divisions" label="বিভাগসমূহ " />
-          <NavItem to="/dashboard/members" label="বিভাগসমূহ সদস্য" />
-          <NavItem to="/dashboard/voters" label="ভোটার তালিকা" />
-          <NavItem to="/dashboard/old-committee-categories" label="প্রাক্তন কমিটির ক্যাটাগরি" />
-          <NavItem to="/dashboard/old-committee" label="সভাপতি/সাধারণ সম্পাদকবৃন্দের তালিকা" />
+        <Section
+          title="Division"
+          open={open.division}
+          toggle={() => toggle("division")}
+          collapsed={collapsed}
+        >
+          <NavItem to="/dashboard/divisions" label="বিভাগসমূহ" collapsed={collapsed} navigate={handleNavigate} />
+          {/* <NavItem to="/dashboard/members" label="সদস্য" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/members/list" label="সদস্য তালিকা" collapsed={collapsed} navigate={handleNavigate} /> */}
+          <NavItem to="/dashboard/voters" label="ভোটার তালিকা" collapsed={collapsed} navigate={handleNavigate} />
+          {/* <NavItem to="/dashboard/old-committee-categories" label="সভাপতি/সম্পাদকবৃন্দ ক্যাটাগরি" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/old-committee" label="সভাপতি/সম্পাদকবৃন্দ" collapsed={collapsed} navigate={handleNavigate} /> */}
         </Section>
-
       </div>
 
       {/* LOGOUT */}
-      <div className="p-4 border-t border-gray-700">
+      <div className="p-3 border-t border-gray-700">
         <button
           onClick={handleLogout}
-          className="w-full bg-red-500 py-2 rounded-lg hover:bg-red-600 transition text-sm font-medium shadow"
+          className="w-full bg-red-500 py-2 rounded-lg hover:bg-red-600 transition"
         >
-          Logout
+          {!collapsed && "Logout"}
         </button>
       </div>
     </div>
   );
 }
 
-/* 🔥 CLEAN COMPONENTS */
-
-function Section({ title, open, toggle, children }) {
+/* SECTION */
+function Section({ title, open, toggle, children, collapsed }) {
   return (
-    <div>
+    <div className="w-full">
       <button
         onClick={toggle}
         className="flex justify-between items-center w-full text-[11px] uppercase tracking-wider text-gray-500 font-semibold mt-4 hover:text-white transition"
       >
-        {title}
-        <FaChevronDown
-          className={`transition-transform duration-300 ${
-            open ? "rotate-180" : ""
-          }`}
-        />
+        {!collapsed && (
+          <span className="truncate text-left">{title}</span>
+        )}
+
+        {!collapsed && (
+          <FaChevronDown
+            className={`flex-shrink-0 transition-transform duration-300 ${
+              open ? "rotate-180" : ""
+            }`}
+          />
+        )}
       </button>
 
-      {open && (
-        <div className="ml-3 border-l border-gray-700 pl-2 mt-2 flex flex-col gap-1">
+      <div
+        className={`
+          overflow-hidden transition-all duration-300
+          ${
+            open && !collapsed
+              ? "max-h-[900px] opacity-100 mt-2"
+              : "max-h-0 opacity-0"
+          }
+        `}
+      >
+        <div className="ml-2 border-l border-gray-700 pl-2 flex flex-col gap-1">
           {children}
         </div>
-      )}
+      </div>
     </div>
   );
 }
 
-function NavItem({ to, label }) {
-  const navigate = useNavigate();
+/* NAV ITEM */
+function NavItem({ to, label, collapsed, navigate }) {
   const location = useLocation();
 
-  const active = location.pathname.startsWith(to);
+  const active =
+    to === "/dashboard/members"
+      ? location.pathname === to
+      : location.pathname === to ||
+        location.pathname.startsWith(to);
 
   return (
     <button
       onClick={() => navigate(to)}
-      className={`text-left px-3 py-2 rounded-lg text-sm transition-all ${
+      className={`w-full text-left px-3 py-2 rounded-lg text-sm transition-all duration-300 break-words whitespace-normal ${
         active
           ? "bg-blue-600 text-white shadow-md"
           : "text-gray-300 hover:bg-gray-700 hover:text-white"
       }`}
     >
-      {label}
+      {!collapsed && label}
     </button>
   );
 }
