@@ -86,9 +86,10 @@ export default function DataTable({ title, data }) {
                       className="hover:bg-gray-100 align-middle"
                     >
                       {/* SERIAL */}
-                      <td className="border px-2 sm:px-3 py-2 text-center">
-                        {(i + 1).toLocaleString("bn-BD")}
-                      </td>
+{/* SERIAL */}
+<td className="border px-2 sm:px-3 py-2 text-center">
+  {(sortedData.length - i).toLocaleString("bn-BD")}
+</td>
 
                       {/* NAME */}
                       <td className="border px-2 sm:px-3 py-2 break-words whitespace-pre-line">
