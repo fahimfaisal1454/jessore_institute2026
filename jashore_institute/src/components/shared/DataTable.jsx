@@ -2,20 +2,34 @@ import React from "react";
 
 export default function DataTable({ title, data }) {
   // =========================
-  // FIXED BASE URL
+  // BASE URL
   // =========================
   const API_BASE =
     import.meta.env.MODE === "production"
       ? import.meta.env.VITE_API_BASE_URL_PROD
       : import.meta.env.VITE_API_BASE_URL_LOCAL;
 
-  // Remove /api/ safely
   const BASE_URL = API_BASE.replace(/\/api\/?$/, "/");
 
   // =========================
-  // REVERSE DATA
+  // SORT BY LATEST ADMIN ENTRY
+  // Latest created item first
   // =========================
-  const reversedData = data ? [...data].reverse() : [];
+  const sortedData = data
+    ? [...data].sort((a, b) => {
+        // Prefer ID sorting (newest = highest id)
+        if (a.id && b.id) {
+          return b.id - a.id;
+        }
+
+        // Fallback created_at
+        if (a.created_at && b.created_at) {
+          return new Date(b.created_at) - new Date(a.created_at);
+        }
+
+        return 0;
+      })
+    : [];
 
   // =========================
   // IMAGE URL FIX
@@ -23,10 +37,8 @@ export default function DataTable({ title, data }) {
   const getImageUrl = (imagePath) => {
     if (!imagePath) return null;
 
-    // If already full URL
     if (imagePath.startsWith("http")) return imagePath;
 
-    // Ensure proper slash formatting
     return `${BASE_URL}${imagePath.replace(/^\/+/, "")}`;
   };
 
@@ -41,6 +53,7 @@ export default function DataTable({ title, data }) {
         {/* TABLE */}
         <div className="p-3 sm:p-4 overflow-x-auto">
           <table className="w-full min-w-[650px] text-xs sm:text-sm border">
+            {/* HEAD */}
             <thead className="bg-[#d9e3ea]">
               <tr>
                 <th className="border px-2 sm:px-3 py-2 text-center w-[60px]">
@@ -61,9 +74,10 @@ export default function DataTable({ title, data }) {
               </tr>
             </thead>
 
+            {/* BODY */}
             <tbody>
-              {reversedData.length > 0 ? (
-                reversedData.map((item, i) => {
+              {sortedData.length > 0 ? (
+                sortedData.map((item, i) => {
                   const imageUrl = getImageUrl(item.image);
 
                   return (
@@ -73,7 +87,7 @@ export default function DataTable({ title, data }) {
                     >
                       {/* SERIAL */}
                       <td className="border px-2 sm:px-3 py-2 text-center">
-                        {(reversedData.length - i).toLocaleString("bn-BD")}
+                        {(i + 1).toLocaleString("bn-BD")}
                       </td>
 
                       {/* NAME */}
