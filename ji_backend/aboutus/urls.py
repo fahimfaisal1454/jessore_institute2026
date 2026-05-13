@@ -7,7 +7,7 @@ from .views import (
     ApplicationFormView,
     InfoPageView,
     AnnualReportView,
-    ContactMessageView,LibraryListView
+    ContactMessageView,LibraryListView, HeroSliderListView
 )
 
 urlpatterns = [
@@ -21,6 +21,11 @@ urlpatterns = [
     path('info/<str:page_type>/', InfoPageView.as_view()),
     path("contact/", ContactMessageView.as_view()),
     path("libraries/", LibraryListView.as_view(), name="library-list"),
+     path(
+        "hero-slider/",
+        HeroSliderListView.as_view(),
+        name="hero-slider"
+    ),
 
     # ❗ ALWAYS LAST
     path('<str:page_type>/', AboutUsView.as_view()),

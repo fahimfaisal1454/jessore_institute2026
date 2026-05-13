@@ -99,6 +99,9 @@ import LibraryForm from "./pages/dashboard/about/LibraryForm";
 import CommitteeList from "./pages/dashboard/committee/CommitteeList";
 import UserManagement from "./pages/dashboard/users/UserManagement";
 import MemberList from "./pages/dashboard/members/MemberList";
+import HeroSliderForm from "./pages/dashboard/about/HeroSliderForm";
+
+
 
 function App() {
   return (
@@ -146,6 +149,7 @@ function App() {
 <Route path="/dashboard/members/list" element={<MemberList />} />
 <Route path="members/edit/:id" element={<MemberForm />} />
 <Route path="members/view/:id" element={<MemberForm />} />
+<Route path="/dashboard/hero-slider" element={<HeroSliderForm />} />
 
 <Route
   path="users"

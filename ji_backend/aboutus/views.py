@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import AboutUs, Person, Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library
-from .serializers import AboutUsSerializer, PersonSerializer, PhotoSerializer, VideoSerializer,  ApplicationFormSerializer, InfoPageSerializer, AnnualReportSerializer, ContactMessageSerializer, LibrarySerializer
+from .models import AboutUs, Person, Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library, HeroSlider
+from .serializers import AboutUsSerializer, PersonSerializer, PhotoSerializer, VideoSerializer,  ApplicationFormSerializer, InfoPageSerializer, AnnualReportSerializer, ContactMessageSerializer, LibrarySerializer, HeroSliderSerializer
 
 
 class AboutUsView(APIView):
@@ -94,3 +94,10 @@ class LibraryListView(APIView):
             "title": "দেশ বিদেশের বিভিন্ন লাইব্রেরির ঠিকানা/ওয়েবসাইট",
             "libraries": LibrarySerializer(libraries, many=True).data
         })
+        
+class HeroSliderListView(generics.ListAPIView):
+    queryset = HeroSlider.objects.filter(is_active=True).order_by("order")
+    serializer_class = HeroSliderSerializer
+
+    def get_serializer_context(self):
+        return {"request": self.request}

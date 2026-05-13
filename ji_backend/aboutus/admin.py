@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AboutUs,Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library
+from .models import AboutUs,Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library, HeroSlider
 
 @admin.register(AboutUs)
 class AboutUsAdmin(admin.ModelAdmin):
@@ -50,3 +50,10 @@ class LibraryAdmin(admin.ModelAdmin):
         "library_name",
         "library_address",
     )
+    
+@admin.register(HeroSlider)
+class HeroSliderAdmin(admin.ModelAdmin):
+    list_display = ("id", "title", "order", "is_active")
+    list_editable = ("order", "is_active")
+    search_fields = ("title",)
+    ordering = ("order",)

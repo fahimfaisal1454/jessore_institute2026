@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import AboutUs, Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library
+from .models import AboutUs, Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library, HeroSlider
 
 
 class AboutUsSerializer(serializers.ModelSerializer):
@@ -53,3 +53,24 @@ class LibrarySerializer(serializers.ModelSerializer):
     class Meta:
         model = Library
         fields = '__all__'
+        
+class HeroSliderSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = HeroSlider
+        fields = "__all__"
+
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+
+        request = self.context.get("request")
+
+        if instance.image:
+            if request:
+                representation["image"] = request.build_absolute_uri(
+                    instance.image.url
+                )
+            else:
+                representation["image"] = instance.image.url
+
+        return representation

@@ -169,3 +169,66 @@ class Library(models.Model):
 
     class Meta:
         ordering = ['order']
+        
+class HeroSlider(models.Model):
+    title = models.CharField(max_length=255, blank=True, null=True)
+    image = models.ImageField(upload_to='hero_slider/')
+    order = models.PositiveIntegerField(default=0)
+    is_active = models.BooleanField(default=True)
+
+    # =========================
+    # IMAGE COMPRESSION
+    # =========================
+    def compress_image(self, image_field):
+        img = Image.open(image_field)
+
+        # Convert transparent images
+        if img.mode in ("RGBA", "P"):
+            img = img.convert("RGB")
+
+        # Resize large images
+        max_width = 1600
+
+        if img.width > max_width:
+            ratio = max_width / float(img.width)
+            height = int(float(img.height) * ratio)
+            img = img.resize((max_width, height), Image.LANCZOS)
+
+        output = BytesIO()
+        quality = 85
+
+        # Compress under 150KB
+        while quality >= 10:
+            output.seek(0)
+            output.truncate()
+
+            img.save(
+                output,
+                format="JPEG",
+                quality=quality,
+                optimize=True
+            )
+
+            if output.tell() / 1024 <= 150:
+                break
+
+            quality -= 5
+
+        output.seek(0)
+
+        filename = os.path.splitext(image_field.name)[0] + ".jpg"
+
+        return ContentFile(output.read()), filename
+
+    def save(self, *args, **kwargs):
+        if self.image:
+            compressed_image, filename = self.compress_image(self.image)
+            self.image.save(filename, compressed_image, save=False)
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title if self.title else f"Slider {self.id}"
+
+    class Meta:
+        ordering = ['order']

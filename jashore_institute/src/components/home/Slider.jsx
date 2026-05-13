@@ -1,58 +1,131 @@
 import { useEffect, useState } from "react";
-
-// Import images
-import a from "../../assets/a.jpeg";
-import b from "../../assets/b.jpeg";
-import c from "../../assets/c.jpeg";
-import d from "../../assets/d.jpeg";
-import e from "../../assets/e.jpeg";
-import f from "../../assets/f.jpeg";
-import g from "../../assets/g.jpeg";
-import h from "../../assets/h.jpeg";
+import AxiosInstance from "../../api/AxiosInstance";
 
 export default function Slider() {
-  const images = [a, b, c, d, e, f, g, h];
-
+  const [slides, setSlides] = useState([]);
   const [current, setCurrent] = useState(0);
+  const [loading, setLoading] = useState(true);
 
-  // Auto slide every 4 seconds
+  // =========================
+  // API BASE URL
+  // =========================
+  const API_BASE =
+    import.meta.env.MODE === "production"
+      ? import.meta.env.VITE_API_BASE_URL_PROD
+      : import.meta.env.VITE_API_BASE_URL_LOCAL;
+
+  const BASE_URL = API_BASE.replace(/\/api\/?$/, "/");
+
+  // =========================
+  // FETCH HERO SLIDER
+  // =========================
   useEffect(() => {
+const fetchSlides = async () => {
+  try {
+    const res = await AxiosInstance.get("aboutus/hero-slider/");
+    setSlides(res.data || []);
+  } catch (error) {
+    console.error("Slider fetch failed:", error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+    fetchSlides();
+  }, []);
+
+  // =========================
+  // AUTO SLIDE
+  // =========================
+  useEffect(() => {
+    if (slides.length === 0) return;
+
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length);
+      setCurrent((prev) => (prev + 1) % slides.length);
     }, 4000);
 
     return () => clearInterval(interval);
-  }, [images.length]);
+  }, [slides.length]);
+
+  // =========================
+  // IMAGE FIXER
+  // =========================
+  const getImageUrl = (imagePath) => {
+    if (!imagePath) return "/fallback.jpg";
+
+    if (imagePath.startsWith("http")) {
+      return imagePath;
+    }
+
+    return `${BASE_URL}${imagePath.replace(/^\/+/, "")}`;
+  };
+
+  // =========================
+  // LOADING
+  // =========================
+  if (loading) {
+    return (
+      <div className="border bg-white p-2 sm:p-3 shadow-sm rounded-sm w-full">
+        <div className="w-full aspect-[16/9] flex items-center justify-center">
+          <p className="text-gray-500">Loading slider...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // =========================
+  // EMPTY
+  // =========================
+  if (slides.length === 0) {
+    return (
+      <div className="border bg-white p-2 sm:p-3 shadow-sm rounded-sm w-full">
+        <div className="w-full aspect-[16/9] flex items-center justify-center">
+          <p className="text-gray-500">No slider images available.</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="border bg-white p-2 sm:p-3 shadow-sm rounded-sm w-full">
-      
+
+      {/* ========================= */}
       {/* SLIDER CONTAINER */}
+      {/* ========================= */}
       <div className="relative w-full overflow-hidden rounded-sm">
-        
-        {/* Responsive Height / Aspect Ratio */}
+
+        {/* Responsive Height */}
         <div className="w-full aspect-[16/9] sm:aspect-[16/8] md:aspect-[16/7] lg:h-[400px]">
-          
-          {/* Slides */}
+
+          {/* SLIDES */}
           <div
             className="flex h-full transition-transform duration-700 ease-in-out"
             style={{
               transform: `translateX(-${current * 100}%)`,
             }}
           >
-            {images.map((img, index) => (
+            {slides.map((slide, index) => (
               <div
-                key={index}
+                key={slide.id || index}
                 className="w-full h-full flex-shrink-0 relative"
               >
                 <img
-                  src={img}
-                  alt={`slide-${index + 1}`}
+                  src={getImageUrl(slide.image)}
+                  alt={slide.title || `slide-${index + 1}`}
                   className="w-full h-full object-cover"
                 />
 
-                {/* Optional Overlay */}
+                {/* OVERLAY */}
                 <div className="absolute inset-0 bg-black/10"></div>
+
+{/* TITLE */}
+{slide.title && (
+  <div className="absolute bottom-4 left-4 sm:bottom-6 sm:left-6 bg-black/40 backdrop-blur-sm text-white px-3 sm:px-4 py-2 rounded-md max-w-[75%] shadow-md">
+    <h2 className="text-sm sm:text-base md:text-lg font-semibold leading-snug tracking-wide">
+      {slide.title}
+    </h2>
+  </div>
+)}
               </div>
             ))}
           </div>
@@ -62,7 +135,7 @@ export default function Slider() {
         <button
           onClick={() =>
             setCurrent((prev) =>
-              prev === 0 ? images.length - 1 : prev - 1
+              prev === 0 ? slides.length - 1 : prev - 1
             )
           }
           className="absolute top-1/2 left-2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-2 sm:px-3 py-1 rounded-full transition"
@@ -73,7 +146,7 @@ export default function Slider() {
         {/* NEXT BUTTON */}
         <button
           onClick={() =>
-            setCurrent((prev) => (prev + 1) % images.length)
+            setCurrent((prev) => (prev + 1) % slides.length)
           }
           className="absolute top-1/2 right-2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white px-2 sm:px-3 py-1 rounded-full transition"
         >
@@ -81,9 +154,11 @@ export default function Slider() {
         </button>
       </div>
 
+      {/* ========================= */}
       {/* DOTS */}
+      {/* ========================= */}
       <div className="flex justify-center flex-wrap gap-2 mt-3">
-        {images.map((_, index) => (
+        {slides.map((_, index) => (
           <button
             key={index}
             onClick={() => setCurrent(index)}
