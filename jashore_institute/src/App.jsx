@@ -58,7 +58,8 @@ import SportsMember from "./pages/leftSidebar/members/SportsMember";
 import DramaMember from "./pages/leftSidebar/members/DramaMember";
 import TownClubMember from "./pages/leftSidebar/members/TownClubMember";
 import KidsMember from "./pages/leftSidebar/members/KidsMember";
-
+import Media from "./pages/aboutus/Media";
+import Publications from "./pages/aboutus/Publications";
 // Committee list
 import CommitteePresidentList from "./pages/committeeList/PresidentList";
 import CommitteeSecretaryList from "./pages/committeeList/SecretaryList";
@@ -100,7 +101,8 @@ import CommitteeList from "./pages/dashboard/committee/CommitteeList";
 import UserManagement from "./pages/dashboard/users/UserManagement";
 import MemberList from "./pages/dashboard/members/MemberList";
 import HeroSliderForm from "./pages/dashboard/about/HeroSliderForm";
-
+import MediaForm from "./pages/dashboard/about/MediaForm";
+import PublicationForm from "./pages/dashboard/about/PublicationForm";
 
 
 function App() {
@@ -150,6 +152,8 @@ function App() {
 <Route path="members/edit/:id" element={<MemberForm />} />
 <Route path="members/view/:id" element={<MemberForm />} />
 <Route path="/dashboard/hero-slider" element={<HeroSliderForm />} />
+<Route path="/dashboard/media" element={<MediaForm />} />"
+<Route path="/dashboard/publications" element={<PublicationForm />} />
 
 <Route
   path="users"
@@ -238,6 +242,8 @@ function App() {
           <Route path="/open-liberty-stage" element={<OpenLibertyStagePage />} />
           <Route path="/library-details" element={<LibraryDetails />} />
           <Route path="/committee-old/:committeeId"element={<OldCommitteeList />}/>
+          <Route path="/media" element={<Media />} />
+          <Route path="/publications" element={<Publications />} />
         </Route>
 
       </Routes>

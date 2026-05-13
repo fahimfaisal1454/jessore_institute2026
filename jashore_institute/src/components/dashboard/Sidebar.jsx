@@ -146,6 +146,8 @@ export default function Sidebar({ closeSidebar }) {
           <NavItem to="/dashboard/photos" label="ছবিঘর" collapsed={collapsed} navigate={handleNavigate} />
           <NavItem to="/dashboard/videos" label="ভিডিওঘর" collapsed={collapsed} navigate={handleNavigate} />
           <NavItem to="/dashboard/library" label="লাইব্রেরি" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/media" label="মিডিয়া" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/publications" label="প্রকাশনা" collapsed={collapsed} navigate={handleNavigate} />
           <NavItem to="/dashboard/hero-slider" label="হিরো স্লাইডার" collapsed={collapsed} navigate={handleNavigate} />
         </Section>
 

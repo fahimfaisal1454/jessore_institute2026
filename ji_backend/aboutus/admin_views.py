@@ -16,7 +16,7 @@ from .models import (
     AnnualReport,
     ContactMessage,
     Library,
-    HeroSlider,
+    HeroSlider, Media, Publication
 )
 
 from .serializers import (
@@ -29,7 +29,8 @@ from .serializers import (
     AnnualReportSerializer,
     ContactMessageSerializer,
     LibrarySerializer,
-    HeroSliderSerializer,
+    HeroSliderSerializer, 
+    MediaSerializer, PublicationSerializer,
 )
 
 
@@ -113,3 +114,11 @@ class HeroSliderAdminViewSet(viewsets.ModelViewSet):
     queryset = HeroSlider.objects.all().order_by("order")
     serializer_class = HeroSliderSerializer
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+    
+class MediaAdminViewSet(viewsets.ModelViewSet):
+    queryset = Media.objects.all().order_by("order")
+    serializer_class = MediaSerializer
+    
+class PublicationAdminViewSet(viewsets.ModelViewSet):
+    queryset = Publication.objects.all().order_by("order")
+    serializer_class = PublicationSerializer

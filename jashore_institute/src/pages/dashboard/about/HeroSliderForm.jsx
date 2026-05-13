@@ -355,23 +355,29 @@ export default function HeroSliderForm() {
             </td>
 
             {/* ACTIONS */}
-            <td className="border px-4 py-3">
-              <div className="flex flex-wrap justify-center gap-2">
-                <button
-                  onClick={() => handleEdit(item)}
-                  className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded-lg"
-                >
-                  Edit
-                </button>
+<td className="border px-4 py-3">
+  <div className="flex justify-center gap-3">
+    
+    {/* EDIT BUTTON */}
+    <button
+      onClick={() => handleEdit(item)}
+      className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg transition"
+      title="Edit"
+    >
+      ✏️
+    </button>
 
-                <button
-                  onClick={() => handleDelete(item.id)}
-                  className="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg"
-                >
-                  Delete
-                </button>
-              </div>
-            </td>
+    {/* DELETE BUTTON */}
+    <button
+      onClick={() => handleDelete(item.id)}
+      className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition"
+      title="Delete"
+    >
+      🗑️
+    </button>
+
+  </div>
+</td>
           </tr>
         ))}
       </tbody>

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import AboutUs,Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library, HeroSlider
+from .models import AboutUs,Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library, HeroSlider, Media, Publication
 
 @admin.register(AboutUs)
 class AboutUsAdmin(admin.ModelAdmin):
@@ -56,4 +56,32 @@ class HeroSliderAdmin(admin.ModelAdmin):
     list_display = ("id", "title", "order", "is_active")
     list_editable = ("order", "is_active")
     search_fields = ("title",)
+    ordering = ("order",)
+    
+@admin.register(Media)
+class MediaAdmin(admin.ModelAdmin):
+    list_display = (
+        "information",   # FIRST clickable field
+        "order",
+        "date",
+        "link",
+    )
+
+    list_editable = ("order",)
+    search_fields = ("information",)
+    ordering = ("order",)
+    
+    
+
+@admin.register(Publication)
+class PublicationAdmin(admin.ModelAdmin):
+    list_display = (
+        "information",
+        "order",
+        "date",
+        "link",
+    )
+
+    list_editable = ("order",)
+    search_fields = ("information",)
     ordering = ("order",)

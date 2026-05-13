@@ -14,7 +14,9 @@ from .admin_views import (
     AnnualReportAdminViewSet,
     ContactMessageAdminViewSet,
     LibraryAdminViewSet,
-    HeroSliderAdminViewSet,   # ADD THIS
+    HeroSliderAdminViewSet,   
+    MediaAdminViewSet,        
+    PublicationAdminViewSet,  
 )
 
 router = DefaultRouter()
@@ -33,5 +35,13 @@ router.register("libraries", LibraryAdminViewSet)
 # HERO SLIDER CMS
 # =========================
 router.register("hero-slider", HeroSliderAdminViewSet)
+router.register(
+    "media",
+    MediaAdminViewSet
+)
+router.register(
+    "publication",
+    PublicationAdminViewSet
+)
 
 urlpatterns = router.urls

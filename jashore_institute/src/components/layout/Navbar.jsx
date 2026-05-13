@@ -18,6 +18,9 @@ export default function Navbar() {
   const [mobileSubOpen, setMobileSubOpen] = useState({});
   const [mobileChildOpen, setMobileChildOpen] = useState({});
 
+  // =========================
+  // MOBILE TOGGLE
+  // =========================
   const toggleMobile = (key, setter, state) => {
     setter({
       ...state,
@@ -25,6 +28,9 @@ export default function Navbar() {
     });
   };
 
+  // =========================
+  // MENU DATA
+  // =========================
   const menu = [
     { name: "হোম", path: "/" },
 
@@ -39,22 +45,20 @@ export default function Navbar() {
     {
       name: "কমিটিসমূহ",
       dropdown: [
-        
-        // { name: "পরিচালনা পরিষদ (প্রাক্তন)", path: "/committee-old" },
         { name: "সভাপতিবৃন্দের তালিকা", path: "/president-list" },
         { name: "সাধারণ সম্পাদকবৃন্দের তালিকা", path: "/secretary-list" },
         { name: "পরিচালনা পরিষদ", path: "/committee" },
 
-      {
-  name: "উপকমিটির তালিকা",
-  children: [
-    { name: "লাইব্রেরি বিভাগ", path: "/library" },
-    { name: "ক্রীড়া বিভাগ", path: "/sports" },
-    { name: "নাট্যকলা সংসদ", path: "/drama" },
-    { name: "টাউন ক্লাব", path: "/town" },
-    { name: "ইস্যু বিভাগ", path: "/issue" },
-  ],
-},
+        {
+          name: "উপকমিটির তালিকা",
+          children: [
+            { name: "লাইব্রেরি বিভাগ", path: "/library" },
+            { name: "ক্রীড়া বিভাগ", path: "/sports" },
+            { name: "নাট্যকলা সংসদ", path: "/drama" },
+            { name: "টাউন ক্লাব", path: "/town" },
+            { name: "ইস্যু বিভাগ", path: "/issue" },
+          ],
+        },
 
         {
           name: "বিভাগীয় সম্পাদক",
@@ -88,8 +92,11 @@ export default function Navbar() {
     },
 
     { name: "নোটিশ", path: "/notice" },
-    { name: "প্রকাশনা", path: "/" },
+    { name: "প্রকাশনা", path: "/publications" },
     { name: "বিভিন্ন অনুষ্ঠান", path: "/" },
+
+    // FIXED MEDIA ROUTE
+    { name: "মিডিয়া", path: "/media" },
   ];
 
   return (
@@ -98,7 +105,10 @@ export default function Navbar() {
       aria-label="Main navigation"
     >
       <div className="max-w-screen-xl mx-auto">
+
+        {/* ========================= */}
         {/* MOBILE HEADER */}
+        {/* ========================= */}
         <div className="lg:hidden flex justify-between items-center px-4 py-3">
           <Link
             to="/"
@@ -115,7 +125,9 @@ export default function Navbar() {
           </button>
         </div>
 
+        {/* ========================= */}
         {/* MOBILE MENU */}
+        {/* ========================= */}
         {mobileMenu && (
           <div className="lg:hidden bg-white border-t shadow-md max-h-[80vh] overflow-y-auto">
             {menu.map((item, i) => (
@@ -173,49 +185,14 @@ export default function Navbar() {
 
                               {mobileSubOpen[`${i}-${j}`] &&
                                 sub.children?.map((child, k) => (
-                                  <div key={k} className="bg-gray-100">
-                                    {child.path ? (
-                                      <Link
-                                        to={child.path}
-                                        onClick={() => setMobileMenu(false)}
-                                        className="block px-12 py-2 text-sm hover:bg-gray-200"
-                                      >
-                                        {child.name}
-                                      </Link>
-                                    ) : (
-                                      <>
-                                        <button
-                                          onClick={() =>
-                                            toggleMobile(
-                                              `${i}-${j}-${k}`,
-                                              setMobileChildOpen,
-                                              mobileChildOpen
-                                            )
-                                          }
-                                          className="w-full flex justify-between px-12 py-2 text-sm hover:bg-gray-200"
-                                        >
-                                          {child.name}
-                                          <FiChevronRight />
-                                        </button>
-
-                                        {mobileChildOpen[
-                                          `${i}-${j}-${k}`
-                                        ] &&
-                                          child.children?.map((last, x) => (
-                                            <Link
-                                              key={x}
-                                              to={last.path}
-                                              onClick={() =>
-                                                setMobileMenu(false)
-                                              }
-                                              className="block px-16 py-2 text-sm hover:bg-gray-300"
-                                            >
-                                              {last.name}
-                                            </Link>
-                                          ))}
-                                      </>
-                                    )}
-                                  </div>
+                                  <Link
+                                    key={k}
+                                    to={child.path}
+                                    onClick={() => setMobileMenu(false)}
+                                    className="block px-12 py-2 text-sm hover:bg-gray-200"
+                                  >
+                                    {child.name}
+                                  </Link>
                                 ))}
                             </>
                           )}
@@ -228,8 +205,10 @@ export default function Navbar() {
           </div>
         )}
 
+        {/* ========================= */}
         {/* DESKTOP MENU */}
-        <div className="hidden lg:flex flex-wrap text-sm font-semibold">
+        {/* ========================= */}
+        <div className="hidden lg:flex justify-center flex-wrap text-sm font-semibold w-full">
           {menu.map((item, i) => (
             <div
               key={i}
@@ -241,20 +220,22 @@ export default function Navbar() {
                 setDesktopChildOpen(null);
               }}
             >
+              {/* NORMAL LINK */}
               {item.path ? (
                 <Link
                   to={item.path}
-                  className="px-4 xl:px-5 py-3 block text-white hover:text-green-300 whitespace-nowrap"
+                  className="px-3 xl:px-4 py-3 block text-white hover:text-green-300 whitespace-nowrap text-center transition"
                 >
                   {item.name}
                 </Link>
               ) : (
-                <div className="px-4 xl:px-5 py-3 flex items-center gap-1 cursor-pointer text-white hover:text-green-300 whitespace-nowrap">
+                <div className="px-3 xl:px-4 py-3 flex items-center gap-1 cursor-pointer text-white hover:text-green-300 whitespace-nowrap transition">
                   {item.name}
                   <FiChevronDown size={14} />
                 </div>
               )}
 
+              {/* LEVEL 1 DROPDOWN */}
               {item.dropdown && desktopOpen === i && (
                 <div className="absolute left-0 top-full bg-white shadow-lg min-w-[260px] z-50">
                   {item.dropdown.map((sub, j) => (
@@ -277,43 +258,17 @@ export default function Navbar() {
                         </div>
                       )}
 
+                      {/* LEVEL 2 */}
                       {sub.children && desktopSubOpen === j && (
                         <div className="absolute left-full top-0 bg-white shadow-lg min-w-[260px]">
                           {sub.children.map((child, k) => (
-                            <div
+                            <Link
                               key={k}
-                              className="relative"
-                              onMouseEnter={() => setDesktopChildOpen(k)}
+                              to={child.path}
+                              className="block px-4 py-2 hover:bg-gray-100 text-sm"
                             >
-                              {child.path ? (
-                                <Link
-                                  to={child.path}
-                                  className="block px-4 py-2 hover:bg-gray-100 text-sm"
-                                >
-                                  {child.name}
-                                </Link>
-                              ) : (
-                                <div className="flex justify-between px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm">
-                                  {child.name}
-                                  <FiChevronRight />
-                                </div>
-                              )}
-
-                              {child.children &&
-                                desktopChildOpen === k && (
-                                  <div className="absolute left-full top-0 bg-white shadow-lg min-w-[260px]">
-                                    {child.children.map((last, x) => (
-                                      <Link
-                                        key={x}
-                                        to={last.path}
-                                        className="block px-4 py-2 hover:bg-gray-100 text-sm"
-                                      >
-                                        {last.name}
-                                      </Link>
-                                    ))}
-                                  </div>
-                                )}
-                            </div>
+                              {child.name}
+                            </Link>
                           ))}
                         </div>
                       )}
@@ -324,6 +279,7 @@ export default function Navbar() {
             </div>
           ))}
         </div>
+
       </div>
     </nav>
   );

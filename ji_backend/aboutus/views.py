@@ -4,8 +4,8 @@ from rest_framework import status
 from rest_framework.views import APIView
 from rest_framework.response import Response
 
-from .models import AboutUs, Person, Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library, HeroSlider
-from .serializers import AboutUsSerializer, PersonSerializer, PhotoSerializer, VideoSerializer,  ApplicationFormSerializer, InfoPageSerializer, AnnualReportSerializer, ContactMessageSerializer, LibrarySerializer, HeroSliderSerializer
+from .models import AboutUs, Person, Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library, HeroSlider, Media, Publication
+from .serializers import AboutUsSerializer, PersonSerializer, PhotoSerializer, VideoSerializer,  ApplicationFormSerializer, InfoPageSerializer, AnnualReportSerializer, ContactMessageSerializer, LibrarySerializer, HeroSliderSerializer, MediaSerializer, PublicationSerializer
 
 
 class AboutUsView(APIView):
@@ -101,3 +101,27 @@ class HeroSliderListView(generics.ListAPIView):
 
     def get_serializer_context(self):
         return {"request": self.request}
+    
+class MediaListView(APIView):
+    def get(self, request):
+        media_items = Media.objects.all()
+
+        return Response({
+            "title": "Media Information",
+            "media": MediaSerializer(
+                media_items,
+                many=True
+            ).data
+        })
+        
+class PublicationListView(APIView):
+    def get(self, request):
+        publications = Publication.objects.all()
+
+        return Response({
+            "title": "প্রকাশনা",
+            "publications": PublicationSerializer(
+                publications,
+                many=True
+            ).data
+        })

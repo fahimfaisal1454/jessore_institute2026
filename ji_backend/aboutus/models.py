@@ -232,3 +232,50 @@ class HeroSlider(models.Model):
 
     class Meta:
         ordering = ['order']
+        
+        
+class Media(models.Model):
+    date = models.DateField()
+    information = models.CharField(max_length=500)
+    link = models.URLField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        # Auto-generate order
+        if self.order == 0:
+            last_item = Media.objects.order_by("-order").first()
+            self.order = (last_item.order + 1) if last_item else 1
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.information
+
+    class Meta:
+        ordering = ["order"]
+        
+        
+class Publication(models.Model):
+    date = models.DateField()
+    information = models.CharField(max_length=500)
+    link = models.URLField(blank=True, null=True)
+    description = models.TextField(blank=True, null=True)
+
+    order = models.PositiveIntegerField(default=0)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def save(self, *args, **kwargs):
+        if self.order == 0:
+            last_item = Publication.objects.order_by("-order").first()
+            self.order = (last_item.order + 1) if last_item else 1
+
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.information
+
+    class Meta:
+        ordering = ["order"]

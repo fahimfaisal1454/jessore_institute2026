@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import AboutUs, Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library, HeroSlider
+from .models import AboutUs, Person,Photo, Video, ApplicationForm, InfoPage, AnnualReport, ContactMessage, Library, HeroSlider, Media, Publication
 
 
 class AboutUsSerializer(serializers.ModelSerializer):
@@ -74,3 +74,14 @@ class HeroSliderSerializer(serializers.ModelSerializer):
                 representation["image"] = instance.image.url
 
         return representation
+    
+class MediaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Media
+        fields = "__all__"
+        
+        
+class PublicationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Publication
+        fields = "__all__"
