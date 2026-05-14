@@ -105,7 +105,7 @@ import HeroSliderForm from "./pages/dashboard/about/HeroSliderForm";
 import MediaForm from "./pages/dashboard/about/MediaForm";
 import PublicationForm from "./pages/dashboard/about/PublicationForm";
 import EmployeeForm from "./pages/dashboard/committee/EmployeeForm";
-import BookEntryForm from "./pages/books/BooksEntry";
+import BookEntryForm from "./pages/dashboard/books/BooksEntry";
 
 
 function App() {
