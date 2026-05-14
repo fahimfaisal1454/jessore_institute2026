@@ -6,7 +6,7 @@ from .models import (
     SubCommitteeCategory,
     SubCommitteeMember,
     SubCommitteeDocument,
-    ExecutiveCommittee, Committee
+    ExecutiveCommittee, Committee,Employee
 )
 
 @admin.register(ExecutiveCommittee)
@@ -114,3 +114,28 @@ class SubCommitteeDocumentAdmin(admin.ModelAdmin):
     list_filter = ['category']
     search_fields = ['year']
     ordering = ['category', 'order']
+    
+    
+@admin.register(Employee)
+class EmployeeAdmin(admin.ModelAdmin):
+    list_display = (
+        "serial",
+        "name",
+        "position",
+        "department",
+        "salary",
+    )
+
+    list_filter = (
+        "department",
+    )
+
+    search_fields = (
+        "name",
+        "position",
+    )
+
+    ordering = (
+        "department",
+        "serial",
+    )

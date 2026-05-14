@@ -7,12 +7,22 @@ export default function Publication() {
   const [loading, setLoading] = useState(true);
 
   // =========================
+  // API BASE URL
+  // =========================
+  const API_BASE =
+    import.meta.env.MODE === "production"
+      ? import.meta.env.VITE_API_BASE_URL_PROD
+      : import.meta.env.VITE_API_BASE_URL_LOCAL;
+
+  const BASE_URL = API_BASE.replace(/\/api\/?$/, "/");
+
+  // =========================
   // FETCH PUBLICATION DATA
   // =========================
   useEffect(() => {
     const fetchPublication = async () => {
       try {
-        const res = await AxiosInstance.get("aboutus/publication/");
+        const res = await AxiosInstance.get("aboutus/publications/");
 
         setPublicationData(res.data.publications || []);
         setTitle(res.data.title || "প্রকাশনা");
@@ -26,6 +36,26 @@ export default function Publication() {
 
     fetchPublication();
   }, []);
+
+  // =========================
+  // FILE URL FIX
+  // =========================
+  const getFileUrl = (filePath) => {
+    if (!filePath) return null;
+
+    if (filePath.startsWith("http")) return filePath;
+
+    return `${BASE_URL}${filePath.replace(/^\/+/, "")}`;
+  };
+
+  // =========================
+  // FILE NAME EXTRACTOR
+  // =========================
+  const getFileName = (filePath) => {
+    if (!filePath) return "-";
+
+    return filePath.split("/").pop();
+  };
 
   // =========================
   // SORT LATEST FIRST
@@ -70,7 +100,7 @@ export default function Publication() {
         {/* TABLE */}
         {/* ========================= */}
         <div className="p-3 sm:p-4 overflow-x-auto">
-          <table className="w-full min-w-[900px] text-xs sm:text-sm border">
+          <table className="w-full min-w-[1000px] text-xs sm:text-sm border">
 
             {/* HEAD */}
             <thead className="bg-[#d9e3ea]">
@@ -84,7 +114,7 @@ export default function Publication() {
                 </th>
 
                 <th className="border px-2 sm:px-3 py-2 text-center">
-                  তথ্য
+                  ফাইল
                 </th>
 
                 <th className="border px-2 sm:px-3 py-2 text-center w-[120px]">
@@ -119,14 +149,25 @@ export default function Publication() {
                     {/* DATE */}
                     <td className="border px-2 sm:px-3 py-2 text-center whitespace-nowrap">
                       {item.date
-                        ? new Date(item.date).toLocaleDateString("en-GB")
+                        ? new Date(item.date).toLocaleDateString("bn-BN")
                         : "-"}
                     </td>
 
-                    {/* INFORMATION */}
-                    <td className="border px-2 sm:px-3 py-2 break-words whitespace-pre-line">
-                      {item.information}
-                    </td>
+{/* FILE */}
+<td className="border px-2 sm:px-3 py-2 break-words text-center">
+  {item.information ? (
+    <a
+      href={getFileUrl(item.information)}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="text-blue-600 hover:underline font-medium"
+    >
+      ফাইল দেখুন
+    </a>
+  ) : (
+    "-"
+  )}
+</td>
 
                     {/* LINK */}
                     <td className="border px-2 sm:px-3 py-2 text-center">

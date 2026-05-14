@@ -164,6 +164,30 @@ export default function Sidebar({ closeSidebar }) {
           <NavItem to="/dashboard/contact" label="Contact Messages" collapsed={collapsed} navigate={handleNavigate} />
         </Section>
 
+
+                {/* Employee*/}
+        <Section
+          title="বই এন্ট্রি"
+          open={open.books}
+          toggle={() => toggle("books")}
+          collapsed={collapsed}
+        >
+          <NavItem to="/dashboard/books/entry" label="বই এন্ট্রি" collapsed={collapsed} navigate={handleNavigate} />
+          
+        </Section>
+
+                {/* Employee*/}
+        <Section
+          title="কর্মচারী"
+          open={open.employee}
+          toggle={() => toggle("employee")}
+          collapsed={collapsed}
+        >
+          <NavItem to="/dashboard/employees" label="কর্মচারী" collapsed={collapsed} navigate={handleNavigate} />
+          
+        </Section>
+
+
         {/* COMMITTEE */}
         <Section
           title="Committee"

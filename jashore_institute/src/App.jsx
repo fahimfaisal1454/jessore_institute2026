@@ -60,6 +60,7 @@ import TownClubMember from "./pages/leftSidebar/members/TownClubMember";
 import KidsMember from "./pages/leftSidebar/members/KidsMember";
 import Media from "./pages/aboutus/Media";
 import Publications from "./pages/aboutus/Publications";
+import EmployeeList from "./pages/committee/EmployeeList";
 // Committee list
 import CommitteePresidentList from "./pages/committeeList/PresidentList";
 import CommitteeSecretaryList from "./pages/committeeList/SecretaryList";
@@ -103,6 +104,8 @@ import MemberList from "./pages/dashboard/members/MemberList";
 import HeroSliderForm from "./pages/dashboard/about/HeroSliderForm";
 import MediaForm from "./pages/dashboard/about/MediaForm";
 import PublicationForm from "./pages/dashboard/about/PublicationForm";
+import EmployeeForm from "./pages/dashboard/committee/EmployeeForm";
+import BookEntryForm from "./pages/books/BooksEntry";
 
 
 function App() {
@@ -154,7 +157,8 @@ function App() {
 <Route path="/dashboard/hero-slider" element={<HeroSliderForm />} />
 <Route path="/dashboard/media" element={<MediaForm />} />"
 <Route path="/dashboard/publications" element={<PublicationForm />} />
-
+<Route path="/dashboard/employees" element={<EmployeeForm />} />
+<Route path="/dashboard/books/entry" element={<BookEntryForm />} />
 <Route
   path="users"
   element={
@@ -244,6 +248,7 @@ function App() {
           <Route path="/committee-old/:committeeId"element={<OldCommitteeList />}/>
           <Route path="/media" element={<Media />} />
           <Route path="/publications" element={<Publications />} />
+          <Route path="/employee-list" element={<EmployeeList />} />
         </Route>
 
       </Routes>

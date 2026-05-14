@@ -204,3 +204,23 @@ class SubCommitteeDocument(models.Model):
 
     class Meta:
         ordering = ['order']
+        
+        
+        
+class Employee(models.Model):
+    DEPARTMENT_CHOICES = [
+        ('general', 'সাধারণ বিভাগ'),
+        ('library', 'লাইব্রেরি বিভাগ'),
+        ('sports', 'ক্রীড়া সংসদ'),
+        ('drama', 'নাট্যকলা সংসদ'),
+    ]
+
+    name = models.CharField(max_length=255)
+    position = models.CharField(max_length=255)
+    department = models.CharField(max_length=50, choices=DEPARTMENT_CHOICES)
+    serial = models.PositiveIntegerField()
+    salary = models.CharField(max_length=100, blank=True, null=True)
+    image = models.ImageField(upload_to='employees/', blank=True, null=True)
+
+    def __str__(self):
+        return self.name

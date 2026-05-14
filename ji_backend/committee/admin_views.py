@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, generics, permissions
 from rest_framework.parsers import (
     MultiPartParser,
     FormParser,
@@ -14,6 +14,7 @@ from .models import (
     SubCommitteeMember,
     SubCommitteeDocument,
     SubCommitteeCategory,
+    Employee
 )
 
 from .serializers import (
@@ -25,6 +26,7 @@ from .serializers import (
     SubCommitteeMemberSerializer,
     SubCommitteeDocumentSerializer,
     SubCommitteeCategorySerializer,
+    EmployeeSerializer
 )
 
 
@@ -147,6 +149,15 @@ class SubCommitteeDocumentAdminViewSet(viewsets.ModelViewSet):
         MultiPartParser,
         FormParser
     ]
+
+    def get_serializer_context(self):
+        return {"request": self.request}
+    
+class EmployeeAdminViewSet(viewsets.ModelViewSet):
+    queryset = Employee.objects.all().order_by("department", "serial")
+    serializer_class = EmployeeSerializer
+    permission_classes = [permissions.IsAuthenticated]
+    parser_classes = [MultiPartParser, FormParser]
 
     def get_serializer_context(self):
         return {"request": self.request}

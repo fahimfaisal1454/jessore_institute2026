@@ -5,7 +5,7 @@ from .views import (
     OldCommitteeDocumentView,
     SubCommitteeView,
     SubCommitteeOldView,
-    ExecutiveCommitteeView,
+    ExecutiveCommitteeView, EmployeeListView, EmployeeDetailView
 )
 
 urlpatterns = [
@@ -15,5 +15,7 @@ urlpatterns = [
     path('executive/', ExecutiveCommitteeView.as_view()),
     path('subcommittee/<str:type>/', SubCommitteeView.as_view()),
     path('subcommittee/<str:type>/old/', SubCommitteeOldView.as_view()),
+    path("employees/", EmployeeListView.as_view(), name="employee-list"),
+    path("employees/<int:pk>/", EmployeeDetailView.as_view(), name="employee-detail"),
     
 ]

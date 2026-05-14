@@ -8,7 +8,7 @@ from .admin_views import (
     SubCommitteeAdminViewSet,
     SubCommitteeCategoryAdminViewSet,
     SubCommitteeMemberAdminViewSet,
-    SubCommitteeDocumentAdminViewSet,
+    SubCommitteeDocumentAdminViewSet, EmployeeAdminViewSet,
 )
 
 router = DefaultRouter()
@@ -93,5 +93,10 @@ router.register(
     basename="sub-docs"
 )
 
+router.register(
+    r"employees",
+    EmployeeAdminViewSet,
+    basename="employees"
+)
 
 urlpatterns = router.urls

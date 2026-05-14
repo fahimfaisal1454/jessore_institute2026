@@ -236,9 +236,21 @@ class HeroSlider(models.Model):
         
 class Media(models.Model):
     date = models.DateField()
-    information = models.CharField(max_length=500)
-    link = models.URLField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+
+    # FILE UPLOAD (PDF / IMAGE / DOC / ETC)
+    information = models.FileField(
+        upload_to="media_files/"
+    )
+
+    link = models.URLField(
+        blank=True,
+        null=True
+    )
+
+    description = models.TextField(
+        blank=True,
+        null=True
+    )
 
     order = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -252,7 +264,7 @@ class Media(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.information
+        return f"Media {self.id}"
 
     class Meta:
         ordering = ["order"]
@@ -260,9 +272,21 @@ class Media(models.Model):
         
 class Publication(models.Model):
     date = models.DateField()
-    information = models.CharField(max_length=500)
-    link = models.URLField(blank=True, null=True)
-    description = models.TextField(blank=True, null=True)
+
+    # FILE UPLOAD (PDF / IMAGE / DOC / ETC)
+    information = models.FileField(
+        upload_to="publications/"
+    )
+
+    link = models.URLField(
+        blank=True,
+        null=True
+    )
+
+    description = models.TextField(
+        blank=True,
+        null=True
+    )
 
     order = models.PositiveIntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -275,7 +299,7 @@ class Publication(models.Model):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.information
+        return f"Publication {self.id}"
 
     class Meta:
         ordering = ["order"]

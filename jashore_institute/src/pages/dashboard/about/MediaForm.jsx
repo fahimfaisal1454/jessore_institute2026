@@ -10,17 +10,28 @@ export default function MediaForm() {
 
   const [formData, setFormData] = useState({
     date: "",
-    information: "",
+    information: null,
     link: "",
     description: "",
     order: 0,
   });
 
   // =========================
+  // API BASE URL
+  // =========================
+  const API_BASE =
+    import.meta.env.MODE === "production"
+      ? import.meta.env.VITE_API_BASE_URL_PROD
+      : import.meta.env.VITE_API_BASE_URL_LOCAL;
+
+  const BASE_URL = API_BASE.replace(/\/api\/?$/, "/");
+
+  // =========================
   // FETCH MEDIA
   // =========================
   const fetchMedia = async () => {
     setLoading(true);
+
     try {
       const res = await AxiosInstance.get("admin/media/");
       setMediaList(res.data || []);
@@ -39,10 +50,15 @@ export default function MediaForm() {
   // HANDLE INPUT
   // =========================
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
+
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "order" ? Number(value) : value,
+      [name]: files
+        ? files[0]
+        : name === "order"
+        ? Number(value)
+        : value,
     }));
   };
 
@@ -52,12 +68,27 @@ export default function MediaForm() {
   const resetForm = () => {
     setFormData({
       date: "",
-      information: "",
+      information: null,
       link: "",
       description: "",
       order: 0,
     });
+
     setEditingId(null);
+
+    const fileInput = document.getElementById("media-file-input");
+    if (fileInput) fileInput.value = "";
+  };
+
+  // =========================
+  // FILE URL FIX
+  // =========================
+  const getFileUrl = (filePath) => {
+    if (!filePath) return null;
+
+    if (filePath.startsWith("http")) return filePath;
+
+    return `${BASE_URL}${filePath.replace(/^\/+/, "")}`;
   };
 
   // =========================
@@ -68,14 +99,42 @@ export default function MediaForm() {
     setSubmitting(true);
 
     try {
+      const payload = new FormData();
+
+      payload.append("date", formData.date);
+      payload.append("link", formData.link);
+      payload.append("description", formData.description);
+      payload.append("order", formData.order);
+
+      if (formData.information) {
+        payload.append("information", formData.information);
+      }
+
       if (editingId) {
-        await AxiosInstance.patch(`admin/media/${editingId}/`, formData);
+        await AxiosInstance.patch(
+          `admin/media/${editingId}/`,
+          payload,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
       } else {
-        await AxiosInstance.post("admin/media/", formData);
+        await AxiosInstance.post(
+          "admin/media/",
+          payload,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
       }
 
       resetForm();
       fetchMedia();
+
     } catch (error) {
       console.error("Submit failed:", error.response?.data || error);
       alert("Failed to save media item.");
@@ -89,13 +148,17 @@ export default function MediaForm() {
   // =========================
   const handleEdit = (item) => {
     setEditingId(item.id);
+
     setFormData({
       date: item.date || "",
-      information: item.information || "",
+      information: null,
       link: item.link || "",
       description: item.description || "",
       order: item.order || 0,
     });
+
+    const fileInput = document.getElementById("media-file-input");
+    if (fileInput) fileInput.value = "";
 
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -117,9 +180,12 @@ export default function MediaForm() {
 
   return (
     <div className="p-4 md:p-6 max-w-7xl mx-auto space-y-8">
+
       {/* ========================= FORM ========================= */}
       <FormWrapper title={editingId ? "Update Media" : "Add Media"}>
         <form onSubmit={handleSubmit} className="space-y-5">
+
+          {/* DATE */}
           <div>
             <label className="block font-medium mb-2">Date</label>
             <input
@@ -132,19 +198,20 @@ export default function MediaForm() {
             />
           </div>
 
+          {/* FILE */}
           <div>
-            <label className="block font-medium mb-2">Information</label>
+            <label className="block font-medium mb-2">Media File</label>
             <input
-              type="text"
+              id="media-file-input"
+              type="file"
               name="information"
-              value={formData.information}
               onChange={handleChange}
-              required
-              placeholder="Enter information title"
+              required={!editingId}
               className="w-full border rounded-lg p-3"
             />
           </div>
 
+          {/* LINK */}
           <div>
             <label className="block font-medium mb-2">Link</label>
             <input
@@ -157,6 +224,7 @@ export default function MediaForm() {
             />
           </div>
 
+          {/* DESCRIPTION */}
           <div>
             <label className="block font-medium mb-2">Description</label>
             <textarea
@@ -169,6 +237,7 @@ export default function MediaForm() {
             />
           </div>
 
+          {/* ORDER */}
           <div>
             <label className="block font-medium mb-2">Display Order</label>
             <input
@@ -180,6 +249,7 @@ export default function MediaForm() {
             />
           </div>
 
+          {/* BUTTONS */}
           <div className="flex flex-wrap gap-3">
             <button
               type="submit"
@@ -222,7 +292,7 @@ export default function MediaForm() {
               <tr>
                 <th className="border px-4 py-3">Serial</th>
                 <th className="border px-4 py-3">Date</th>
-                <th className="border px-4 py-3">Information</th>
+                <th className="border px-4 py-3">File</th>
                 <th className="border px-4 py-3">Link</th>
                 <th className="border px-4 py-3">Description</th>
                 <th className="border px-4 py-3">Actions</th>
@@ -240,8 +310,19 @@ export default function MediaForm() {
                     {item.date}
                   </td>
 
-                  <td className="border px-4 py-3 min-w-[220px]">
-                    {item.information}
+                  <td className="border px-4 py-3 text-center">
+                    {item.information ? (
+                      <a
+                        href={getFileUrl(item.information)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        View File
+                      </a>
+                    ) : (
+                      "-"
+                    )}
                   </td>
 
                   <td className="border px-4 py-3">
@@ -264,31 +345,30 @@ export default function MediaForm() {
                   </td>
 
                   <td className="border px-4 py-3">
-  <div className="flex justify-center gap-3">
-    
-    {/* EDIT BUTTON */}
-    <button
-      onClick={() => handleEdit(item)}
-      className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg transition"
-      title="Edit"
-    >
-      ✏️
-    </button>
+                    <div className="flex justify-center gap-3">
 
-    {/* DELETE BUTTON */}
-    <button
-      onClick={() => handleDelete(item.id)}
-      className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition"
-      title="Delete"
-    >
-      🗑️
-    </button>
+                      <button
+                        onClick={() => handleEdit(item)}
+                        className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg transition"
+                        title="Edit"
+                      >
+                        ✏️
+                      </button>
 
-  </div>
-</td>
+                      <button
+                        onClick={() => handleDelete(item.id)}
+                        className="bg-red-600 hover:bg-red-700 text-white p-2 rounded-lg transition"
+                        title="Delete"
+                      >
+                        🗑️
+                      </button>
+
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
+
           </table>
         )}
       </div>

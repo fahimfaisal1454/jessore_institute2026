@@ -7,6 +7,16 @@ export default function Media() {
   const [loading, setLoading] = useState(true);
 
   // =========================
+  // API BASE URL
+  // =========================
+  const API_BASE =
+    import.meta.env.MODE === "production"
+      ? import.meta.env.VITE_API_BASE_URL_PROD
+      : import.meta.env.VITE_API_BASE_URL_LOCAL;
+
+  const BASE_URL = API_BASE.replace(/\/api\/?$/, "/");
+
+  // =========================
   // FETCH MEDIA DATA
   // =========================
   useEffect(() => {
@@ -26,6 +36,17 @@ export default function Media() {
 
     fetchMedia();
   }, []);
+
+  // =========================
+  // FILE URL FIX
+  // =========================
+  const getFileUrl = (filePath) => {
+    if (!filePath) return null;
+
+    if (filePath.startsWith("http")) return filePath;
+
+    return `${BASE_URL}${filePath.replace(/^\/+/, "")}`;
+  };
 
   // =========================
   // SORT LATEST FIRST
@@ -70,16 +91,16 @@ export default function Media() {
         {/* TABLE */}
         {/* ========================= */}
         <div className="p-3 sm:p-4 overflow-x-auto">
-          <table className="w-full min-w-[900px] text-xs sm:text-sm border">
+          <table className="w-full min-w-[1000px] text-xs sm:text-sm border">
 
             {/* HEAD */}
             <thead className="bg-[#d9e3ea]">
               <tr>
-                <th className="border px-2 sm:px-3 py-2 text-center w-[40px]">
+                <th className="border px-2 sm:px-3 py-2 text-center w-[60px]">
                   ক্রমিক
                 </th>
 
-                <th className="border px-2 sm:px-3 py-2 text-center w-[10px]">
+                <th className="border px-2 sm:px-3 py-2 text-center w-[140px]">
                   তারিখ
                 </th>
 
@@ -106,19 +127,37 @@ export default function Media() {
                     className="hover:bg-gray-100 align-middle"
                   >
                     {/* SERIAL */}
-                    <td className="border px-2 sm:px-3 py-2 text-center">
+                    <td
+                      className="border px-2 sm:px-3 py-2 text-center font-semibold"
+                      style={{
+                        fontFamily:
+                          "'Noto Sans Bengali', 'Hind Siliguri', sans-serif",
+                      }}
+                    >
                       {(sortedData.length - i).toLocaleString("bn-BD")}
                     </td>
 
-<td className="border px-2 sm:px-3 py-2 text-center whitespace-nowrap">
-  {item.date
-    ? new Date(item.date).toLocaleDateString("bn-BD")
-    : "-"}
-</td>
+                    {/* DATE */}
+                    <td className="border px-2 sm:px-3 py-2 text-center whitespace-nowrap">
+                      {item.date
+                        ? new Date(item.date).toLocaleDateString("bn-BD")
+                        : "-"}
+                    </td>
 
-                    {/* INFORMATION */}
-                    <td className="border px-2 sm:px-3 py-2 break-words whitespace-pre-line">
-                      {item.information}
+                    {/* FILE */}
+                    <td className="border px-2 sm:px-3 py-2 break-words text-center">
+                      {item.information ? (
+                        <a
+                          href={getFileUrl(item.information)}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:underline font-medium"
+                        >
+                          ফাইল দেখুন
+                        </a>
+                      ) : (
+                        "-"
+                      )}
                     </td>
 
                     {/* LINK */}

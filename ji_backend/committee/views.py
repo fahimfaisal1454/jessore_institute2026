@@ -11,7 +11,7 @@ from .models import (
     SubCommitteeCategory,
     SubCommitteeMember,
     SubCommitteeDocument,
-    ExecutiveCommittee,
+    ExecutiveCommittee, Employee
 )
 
 from .serializers import (
@@ -22,7 +22,7 @@ from .serializers import (
     SubCommitteeCategorySerializer,
     SubCommitteeMemberSerializer,
     SubCommitteeDocumentSerializer,
-    ExecutiveCommitteeSerializer,
+    ExecutiveCommitteeSerializer, EmployeeSerializer
 )
 
 
@@ -201,3 +201,13 @@ class ActiveSubCommitteeListView(APIView):
                 context={"request": request}
             ).data
         )
+        
+        
+class EmployeeListView(generics.ListAPIView):
+    queryset = Employee.objects.all().order_by("department", "serial")
+    serializer_class = EmployeeSerializer
+
+
+class EmployeeDetailView(generics.RetrieveAPIView):
+    queryset = Employee.objects.all()
+    serializer_class = EmployeeSerializer

@@ -70,6 +70,8 @@ export default function Navbar() {
             { name: "সম্পাদক, শিশু চিত্রাঙ্কন কেন্দ্র", path: "/kids-page" },
           ],
         },
+        
+        { name: "কর্মচারী তালিকা", path: "/employee-list" },
       ],
     },
 

@@ -10,11 +10,21 @@ export default function PublicationForm() {
 
   const [formData, setFormData] = useState({
     date: "",
-    information: "",
+    information: null,
     link: "",
     description: "",
     order: 0,
   });
+
+  // =========================
+  // API BASE URL
+  // =========================
+  const API_BASE =
+    import.meta.env.MODE === "production"
+      ? import.meta.env.VITE_API_BASE_URL_PROD
+      : import.meta.env.VITE_API_BASE_URL_LOCAL;
+
+  const BASE_URL = API_BASE.replace(/\/api\/?$/, "/");
 
   // =========================
   // FETCH PUBLICATIONS
@@ -37,14 +47,18 @@ export default function PublicationForm() {
   }, []);
 
   // =========================
-  // INPUT CHANGE
+  // HANDLE INPUT
   // =========================
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value, files } = e.target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "order" ? Number(value) : value,
+      [name]: files
+        ? files[0]
+        : name === "order"
+        ? Number(value)
+        : value,
     }));
   };
 
@@ -54,13 +68,27 @@ export default function PublicationForm() {
   const resetForm = () => {
     setFormData({
       date: "",
-      information: "",
+      information: null,
       link: "",
       description: "",
       order: 0,
     });
 
     setEditingId(null);
+
+    const fileInput = document.getElementById("publication-file-input");
+    if (fileInput) fileInput.value = "";
+  };
+
+  // =========================
+  // FILE URL FIX
+  // =========================
+  const getFileUrl = (filePath) => {
+    if (!filePath) return null;
+
+    if (filePath.startsWith("http")) return filePath;
+
+    return `${BASE_URL}${filePath.replace(/^\/+/, "")}`;
   };
 
   // =========================
@@ -71,15 +99,36 @@ export default function PublicationForm() {
     setSubmitting(true);
 
     try {
+      const payload = new FormData();
+
+      payload.append("date", formData.date);
+      payload.append("link", formData.link);
+      payload.append("description", formData.description);
+      payload.append("order", formData.order);
+
+      if (formData.information) {
+        payload.append("information", formData.information);
+      }
+
       if (editingId) {
         await AxiosInstance.patch(
           `admin/publication/${editingId}/`,
-          formData
+          payload,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
       } else {
         await AxiosInstance.post(
           "admin/publication/",
-          formData
+          payload,
+          {
+            headers: {
+              "Content-Type": "multipart/form-data",
+            },
+          }
         );
       }
 
@@ -106,11 +155,14 @@ export default function PublicationForm() {
 
     setFormData({
       date: item.date || "",
-      information: item.information || "",
+      information: null,
       link: item.link || "",
       description: item.description || "",
       order: item.order || 0,
     });
+
+    const fileInput = document.getElementById("publication-file-input");
+    if (fileInput) fileInput.value = "";
 
     window.scrollTo({
       top: 0,
@@ -175,19 +227,18 @@ export default function PublicationForm() {
             />
           </div>
 
-          {/* INFORMATION */}
+          {/* FILE */}
           <div>
             <label className="block font-medium mb-2">
-              Information
+              Publication File
             </label>
 
             <input
-              type="text"
+              id="publication-file-input"
+              type="file"
               name="information"
-              value={formData.information}
               onChange={handleChange}
-              required
-              placeholder="Enter publication title"
+              required={!editingId}
               className="w-full border rounded-lg p-3"
             />
           </div>
@@ -286,24 +337,12 @@ export default function PublicationForm() {
           <table className="min-w-full border border-gray-300">
             <thead className="bg-gray-100">
               <tr>
-                <th className="border px-4 py-3">
-                  Serial
-                </th>
-                <th className="border px-4 py-3">
-                  Date
-                </th>
-                <th className="border px-4 py-3">
-                  Information
-                </th>
-                <th className="border px-4 py-3">
-                  Link
-                </th>
-                <th className="border px-4 py-3">
-                  Description
-                </th>
-                <th className="border px-4 py-3">
-                  Actions
-                </th>
+                <th className="border px-4 py-3">Serial</th>
+                <th className="border px-4 py-3">Date</th>
+                <th className="border px-4 py-3">File</th>
+                <th className="border px-4 py-3">Link</th>
+                <th className="border px-4 py-3">Description</th>
+                <th className="border px-4 py-3">Actions</th>
               </tr>
             </thead>
 
@@ -313,22 +352,29 @@ export default function PublicationForm() {
                   key={item.id}
                   className="hover:bg-gray-50"
                 >
-                  {/* SERIAL */}
                   <td className="border px-4 py-3 text-center">
                     {index + 1}
                   </td>
 
-                  {/* DATE */}
                   <td className="border px-4 py-3 whitespace-nowrap">
                     {item.date}
                   </td>
 
-                  {/* INFORMATION */}
-                  <td className="border px-4 py-3 min-w-[220px]">
-                    {item.information}
+                  <td className="border px-4 py-3">
+                    {item.information ? (
+                      <a
+                        href={getFileUrl(item.information)}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-blue-600 hover:underline"
+                      >
+                        View File
+                      </a>
+                    ) : (
+                      "-"
+                    )}
                   </td>
 
-                  {/* LINK */}
                   <td className="border px-4 py-3">
                     {item.link ? (
                       <a
@@ -344,15 +390,12 @@ export default function PublicationForm() {
                     )}
                   </td>
 
-                  {/* DESCRIPTION */}
                   <td className="border px-4 py-3 min-w-[250px]">
                     {item.description || "-"}
                   </td>
 
-                  {/* ACTIONS */}
                   <td className="border px-4 py-3">
                     <div className="flex justify-center gap-3">
-
                       <button
                         onClick={() => handleEdit(item)}
                         className="bg-yellow-500 hover:bg-yellow-600 text-white p-2 rounded-lg"
@@ -370,12 +413,12 @@ export default function PublicationForm() {
                       >
                         🗑️
                       </button>
-
                     </div>
                   </td>
                 </tr>
               ))}
             </tbody>
+
           </table>
         )}
       </div>
