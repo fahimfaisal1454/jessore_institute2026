@@ -40,8 +40,9 @@ export default function EmployeeList() {
   const departmentTitles = {
     general: "সাধারণ বিভাগ",
     library: "লাইব্রেরি বিভাগ",
-    sports: "ক্রীড়া সংসদ",
+    
     drama: "নাট্যকলা সংসদ",
+    sports: "ক্রীড়া সংসদ",
   };
 
   // =========================

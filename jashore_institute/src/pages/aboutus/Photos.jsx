@@ -69,7 +69,7 @@ return (
 
     {/* Main Header */}
     <div className="bg-[#e9e9e9] border-b px-3 sm:px-4 py-4">
-      <h1 className="text-2xl sm:text-3xl font-bold text-center text-[#0A3B68] break-words">
+      <h1 className="text-2xl sm:text-xl font-bold text-center text-[#0A3B68] break-words">
         {title}
       </h1>
     </div>
@@ -79,10 +79,10 @@ return (
         <div key={folder} className="mb-10 sm:mb-12">
 
           {/* Folder Title */}
-          <h2 className="text-xl sm:text-2xl font-semibold text-[#0A3B68] mb-6 border-b pb-3 text-center break-words">
+          <h2 className="text-xl sm:text-lg font-semibold text-[#0A3B68] mb-6 border-b pb-3 text-center break-words">
             📁 {folder}
 
-            <span className="block text-sm text-gray-500 mt-1">
+            <span className="block text-xs text-gray-500 mt-1">
               ({items.length} ছবি)
             </span>
           </h2>
