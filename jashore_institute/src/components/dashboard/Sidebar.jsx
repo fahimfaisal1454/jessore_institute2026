@@ -160,7 +160,7 @@ export default function Sidebar({ closeSidebar }) {
         >
           <NavItem to="/dashboard/reports" label="বার্ষিক প্রতিবেদন" collapsed={collapsed} navigate={handleNavigate} />
           <NavItem to="/dashboard/forms" label="ফরম" collapsed={collapsed} navigate={handleNavigate} />
-          <NavItem to="/dashboard/infopages" label="উন্মুক্ত স্বাধীনতা মঞ্চ" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/infopages" label="উন্মুক্ত স্বাধীনতা মঞ্চ/ প্রাথকি বিদ্যালয়" collapsed={collapsed} navigate={handleNavigate} />
           <NavItem to="/dashboard/contact" label="Contact Messages" collapsed={collapsed} navigate={handleNavigate} />
         </Section>
 
