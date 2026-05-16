@@ -1,3 +1,4 @@
+from django.db.models import Case, When, IntegerField
 from rest_framework import generics, viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -204,8 +205,18 @@ class ActiveSubCommitteeListView(APIView):
         
         
 class EmployeeListView(generics.ListAPIView):
-    queryset = Employee.objects.all().order_by("department", "serial")
     serializer_class = EmployeeSerializer
+
+    def get_queryset(self):
+        return Employee.objects.annotate(
+            department_order=Case(
+                When(department="general", then=0),
+                When(department="library", then=1),
+                When(department="sports", then=2),
+                When(department="drama", then=3),  # LAST
+                output_field=IntegerField(),
+            )
+        ).order_by("department_order", "serial")
 
 
 class EmployeeDetailView(generics.RetrieveAPIView):
