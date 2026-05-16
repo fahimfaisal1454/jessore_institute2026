@@ -172,7 +172,9 @@ export default function Sidebar({ closeSidebar }) {
           toggle={() => toggle("books")}
           collapsed={collapsed}
         >
+          <NavItem to="/dashboard/book/categories" label="বই বিভাগ" collapsed={collapsed} navigate={handleNavigate} />
           <NavItem to="/dashboard/books/entry" label="বই এন্ট্রি" collapsed={collapsed} navigate={handleNavigate} />
+          <NavItem to="/dashboard/book/list" label="বই তালিকা" collapsed={collapsed} navigate={handleNavigate} />
           
         </Section>
 

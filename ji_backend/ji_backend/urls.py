@@ -21,6 +21,7 @@ urlpatterns = [
     path('api/admin/members/', include('members.admin_urls')),
     path('api/admin/divisions/', include('divisions.admin_urls')),
     path('api/admin/oldcommittee/', include('oldcommittee.admin_urls')),
+    path('api/admin/book/', include('book.urls')),
 ]
 
 # ✅ MEDIA SERVING

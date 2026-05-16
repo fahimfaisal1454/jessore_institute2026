@@ -61,6 +61,7 @@ INSTALLED_APPS = [
     'notice',
     'divisions',
     'members',
+    'book'
 ]
 
 

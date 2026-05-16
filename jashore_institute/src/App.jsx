@@ -105,7 +105,9 @@ import HeroSliderForm from "./pages/dashboard/about/HeroSliderForm";
 import MediaForm from "./pages/dashboard/about/MediaForm";
 import PublicationForm from "./pages/dashboard/about/PublicationForm";
 import EmployeeForm from "./pages/dashboard/committee/EmployeeForm";
-import BookEntryForm from "./pages/dashboard/books/BooksEntry";
+import BookEntryForm from "./pages/dashboard/book/BooksEntry";
+import BookCategoryAdmin from "./pages/dashboard/book/BookCategory";
+import BookListAdmin from "./pages/dashboard/book/BookList";
 
 
 function App() {
@@ -159,6 +161,8 @@ function App() {
 <Route path="/dashboard/publications" element={<PublicationForm />} />
 <Route path="/dashboard/employees" element={<EmployeeForm />} />
 <Route path="/dashboard/books/entry" element={<BookEntryForm />} />
+<Route path="/dashboard/book/categories" element={<BookCategoryAdmin />} />
+<Route path="/dashboard/book/list" element={<BookListAdmin />} />
 <Route
   path="users"
   element={
