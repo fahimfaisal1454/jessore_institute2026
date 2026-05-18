@@ -5,6 +5,7 @@ from .admin_views import (
     BookCategoryAdminViewSet,
     BookMasterAdminViewSet,
     NextSerialAdminView,
+    BulkBookUploadAPIView,
 )
 
 router = DefaultRouter()
@@ -31,7 +32,17 @@ router.register(
 
 
 urlpatterns = [
-    path('', include(router.urls)),
+
+    # =========================
+    # BULK BOOK UPLOAD
+    # =========================
+    # IMPORTANT:
+    # Use separate root path to avoid router conflict
+    path(
+        'bulk-book-upload/',
+        BulkBookUploadAPIView.as_view(),
+        name='bulk-book-upload'
+    ),
 
     # =========================
     # NEXT SERIAL
@@ -41,4 +52,9 @@ urlpatterns = [
         NextSerialAdminView.as_view(),
         name='admin-next-serial'
     ),
+
+    # =========================
+    # ROUTER URLS
+    # =========================
+    path('', include(router.urls)),
 ]

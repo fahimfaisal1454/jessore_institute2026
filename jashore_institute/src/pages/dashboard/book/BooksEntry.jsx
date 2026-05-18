@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import AxiosInstance from "../../../api/AxiosInstance";
+import * as XLSX from "xlsx";
 
 export default function BookEntryAdmin() {
   const initialForm = {
@@ -38,6 +39,8 @@ export default function BookEntryAdmin() {
   const [saving, setSaving] = useState(false);
   const [editingId, setEditingId] = useState(null);
   const [search, setSearch] = useState("");
+  const [excelData, setExcelData] = useState([]);
+  const [uploadingExcel, setUploadingExcel] = useState(false);
 
   useEffect(() => {
     fetchBooks();
@@ -72,7 +75,10 @@ export default function BookEntryAdmin() {
 
   const fetchNextSerial = async (version) => {
     try {
-      const res = await AxiosInstance.get(`admin/book/next-serial/?version=${version}`);
+      const res = await AxiosInstance.get(
+        `admin/book/next-serial/?version=${version}`
+      );
+
       setFormData((prev) => ({
         ...prev,
         serial_no: res.data.serial_no,
@@ -84,6 +90,7 @@ export default function BookEntryAdmin() {
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
+
     setFormData((prev) => ({
       ...prev,
       [name]: type === "checkbox" ? checked : value,
@@ -92,6 +99,7 @@ export default function BookEntryAdmin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
       setSaving(true);
 
@@ -101,17 +109,29 @@ export default function BookEntryAdmin() {
       };
 
       if (editingId) {
-        await AxiosInstance.put(`admin/book/books/${editingId}/`, payload);
+        await AxiosInstance.put(
+          `admin/book/books/${editingId}/`,
+          payload
+        );
       } else {
-        await AxiosInstance.post("admin/book/books/", payload);
+        await AxiosInstance.post(
+          "admin/book/books/",
+          payload
+        );
       }
 
       resetForm();
       fetchBooks();
       fetchNextSerial(formData.version);
+
     } catch (err) {
-      console.error("Save failed:", err.response?.data || err);
+      console.error(
+        "Save failed:",
+        err.response?.data || err
+      );
+
       alert("Failed to save book.");
+
     } finally {
       setSaving(false);
     }
@@ -119,45 +139,397 @@ export default function BookEntryAdmin() {
 
   const handleEdit = (book) => {
     setEditingId(book.id);
+
     setFormData({
       ...initialForm,
       ...book,
     });
-    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    window.scrollTo({
+      top: 0,
+      behavior: "smooth",
+    });
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure you want to delete this book?")) return;
+    if (
+      !window.confirm(
+        "Are you sure you want to delete this book?"
+      )
+    )
+      return;
+
     try {
-      await AxiosInstance.delete(`admin/book/books/${id}/`);
+      await AxiosInstance.delete(
+        `admin/book/books/${id}/`
+      );
+
       fetchBooks();
+
     } catch (err) {
       console.error("Delete failed:", err);
     }
   };
 
+  // =========================
+  // FIXED EXCEL UPLOAD
+  // =========================
+  const handleExcelUpload = (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+
+    reader.onload = (evt) => {
+      try {
+        const data = new Uint8Array(
+          evt.target.result
+        );
+
+        const workbook = XLSX.read(data, {
+          type: "array",
+          cellDates: true,
+        });
+
+        const sheetName =
+          workbook.SheetNames[0];
+
+        const worksheet =
+          workbook.Sheets[sheetName];
+
+        const rawData =
+          XLSX.utils.sheet_to_json(
+            worksheet,
+            {
+              defval: "",
+            }
+          );
+
+       const formattedData = rawData.map((row, index) => ({
+  version:
+    row.version ||
+    row.Version ||
+    "Bangla",
+
+  category_code:
+    row.category_code ||
+    row.CategoryCode ||
+    "",
+
+  book_code:
+    row.book_code ||
+    row.BookCode ||
+    "",
+
+  book_addition_number:
+    row.book_addition_number ||
+    row.BookAdditionNumber ||
+    row.AdditionNo ||
+    row.addition_no ||
+    "",
+
+book_addition_date: (() => {
+  const rawDate =
+    row.book_addition_date ||
+    row.BookAddiDate ||
+    row.BookAdditionDate ||
+    row.AdditionDate ||
+    "";
+
+  if (!rawDate) return "";
+
+  // Excel serial number
+  if (typeof rawDate === "number") {
+    const excelDate = new Date(
+      (rawDate - 25569) * 86400 * 1000
+    );
+    return excelDate.toISOString().split("T")[0];
+  }
+
+  // JS Date object
+  if (rawDate instanceof Date) {
+    return rawDate.toISOString().split("T")[0];
+  }
+
+  // String date
+  const parsedDate = new Date(rawDate);
+  if (!isNaN(parsedDate)) {
+    return parsedDate.toISOString().split("T")[0];
+  }
+
+  return "";
+})(),
+
+// RELEASE DATE
+release_date: (() => {
+  const rawRelease =
+    row.release_date ||
+    row.ReleaseDate ||
+    "";
+
+  if (!rawRelease) return "";
+
+  if (typeof rawRelease === "number") {
+    const excelDate = new Date(
+      (rawRelease - 25569) * 86400 * 1000
+    );
+    return excelDate.toISOString().split("T")[0];
+  }
+
+  if (rawRelease instanceof Date) {
+    return rawRelease.toISOString().split("T")[0];
+  }
+
+  const parsedDate = new Date(rawRelease);
+  if (!isNaN(parsedDate)) {
+    return parsedDate.toISOString().split("T")[0];
+  }
+
+  return "";
+})(),
+
+  book_name:
+    row.book_name ||
+    row.BookName ||
+    "",
+
+  author_name:
+    row.author_name ||
+    row.AuthorName ||
+    row.Author ||
+    "",
+
+  editor_name:
+    row.editor_name ||
+    row.EditorName ||
+    row.Editor ||
+    "",
+
+  translator_name:
+    row.translator_name ||
+    row.TranslatorName ||
+    row.Translator ||
+    "",
+
+  call_no:
+    row.call_no ||
+    row.CallNo ||
+    "",
+
+  isbn_number:
+    row.isbn_number ||
+    row.ISBNNumber ||
+    row.ISBN ||
+    "",
+
+  copy_no:
+    row.copy_no ||
+    row.CopyNo ||
+    "",
+
+  publisher_name:
+    row.publisher_name ||
+    row.PublisherName ||
+    row.Publisher ||
+    "",
+
+  place_of_publication:
+    row.place_of_publication ||
+    row.PlaceOfPublication ||
+    row.PublicationPlace ||
+    "",
+
+  release_date:
+    row.release_date ||
+    row.ReleaseDate ||
+    null,
+
+  price:
+    row.price ||
+    row.Price ||
+    0,
+
+  book_page_no:
+    row.book_page_no ||
+    row.BookPageNo ||
+    row.PageNo ||
+    null,
+
+  source:
+    row.source ||
+    row.Source ||
+    "ক্রয়",
+
+  place:
+    row.place ||
+    row.Place ||
+    "",
+
+  floor_no:
+    row.floor_no ||
+    row.FloorNo ||
+    row.Floor ||
+    "",
+
+  cupboard:
+    row.cupboard ||
+    row.Cupboard ||
+    "",
+
+  rack_no:
+    row.rack_no ||
+    row.RackNo ||
+    "",
+
+bar_code: String(
+  row.BarCode ??
+  row.Barcode ??
+  row.bar_code ??
+  row["Bar Code"] ??
+  row["Barcode *"] ??
+  row["Barcode No"] ??
+  row["BarCodeNo"] ??
+  row["BARCODE"] ??
+  `BC${Date.now()}${index + 1}`
+).trim(),
+
+  remarks:
+    row.remarks ||
+    row.Remarks ||
+    "",
+
+  is_active:
+    row.is_active ??
+    row.IsActive ??
+    true,
+}));
+
+        setExcelData(formattedData);
+
+        alert(
+          `${formattedData.length} rows loaded successfully.`
+        );
+
+      } catch (error) {
+        console.error(
+          "Excel parsing failed:",
+          error
+        );
+
+        alert(
+          "Failed to parse Excel file."
+        );
+      }
+    };
+
+    reader.readAsArrayBuffer(file);
+  };
+
+  // =========================
+  // FIXED BULK SUBMIT
+  // =========================
+  // =========================
+// ONLY CHANGE THIS PART
+// =========================
+
+const submitBulkUpload = async () => {
+  if (!excelData.length) {
+    alert("No Excel data loaded.");
+    return;
+  }
+
+  const chunkSize = 500;
+  let totalSuccess = 0;
+  let totalFailed = 0;
+  let allFailedRows = [];
+
+  try {
+    setUploadingExcel(true);
+
+    for (let i = 0; i < excelData.length; i += chunkSize) {
+      const chunk = excelData.slice(i, i + chunkSize);
+
+      const res = await AxiosInstance.post(
+        "admin/book/bulk-book-upload/",
+        {
+          rows: chunk,
+        }
+      );
+
+      totalSuccess += res.data.success_count || 0;
+      totalFailed += res.data.failed_count || 0;
+
+      if (res.data.failed_rows) {
+        allFailedRows.push(...res.data.failed_rows);
+      }
+
+      const progress = Math.round(
+        ((i + chunk.length) / excelData.length) * 100
+      );
+
+      console.log(`Upload Progress: ${progress}%`);
+    }
+
+    alert(
+      `Upload Complete!\nSuccess: ${totalSuccess}\nFailed: ${totalFailed}`
+    );
+
+    console.log("All Failed Rows:", allFailedRows);
+
+    fetchBooks();
+    setExcelData([]);
+
+  } catch (err) {
+    console.error(
+      "Bulk upload failed:",
+      err.response?.data || err
+    );
+
+    alert(
+      JSON.stringify(
+        err.response?.data || "Bulk upload failed.",
+        null,
+        2
+      )
+    );
+
+  } finally {
+    setUploadingExcel(false);
+  }
+};
+
   const resetForm = () => {
     setFormData(initialForm);
     setEditingId(null);
-    fetchNextSerial(initialForm.version);
+    fetchNextSerial(
+      initialForm.version
+    );
   };
 
-  const filteredBooks = books.filter((book) =>
-    [
-      book.book_name,
-      book.book_code,
-      book.author_name,
-      book.bar_code,
-      book.serial_no,
-    ]
-      .join(" ")
-      .toLowerCase()
-      .includes(search.toLowerCase())
+  const filteredBooks = books.filter(
+    (book) =>
+      [
+        book.book_name,
+        book.book_code,
+        book.author_name,
+        book.bar_code,
+        book.serial_no,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes(
+          search.toLowerCase()
+        )
   );
 
   const getCategoryName = (id) => {
-    const category = categories.find((cat) => cat.id === id);
-    return category ? `${category.category_code} - ${category.category_name}` : "-";
+    const category = categories.find(
+      (cat) => cat.id === id
+    );
+
+    return category
+      ? `${category.category_code} - ${category.category_name}`
+      : "-";
   };
 
   return (
@@ -174,7 +546,35 @@ export default function BookEntryAdmin() {
           New Book
         </button>
       </div>
+{/* BULK EXCEL UPLOAD */}
+<div className="bg-green-50 border border-green-300 p-4 rounded-lg mb-8">
+  <h2 className="text-xl font-bold text-green-800 mb-4">
+    Bulk Excel Upload
+  </h2>
 
+  <input
+    type="file"
+    accept=".xlsx,.xls"
+    onChange={handleExcelUpload}
+    className="mb-4 block"
+  />
+
+  {excelData.length > 0 && (
+    <div>
+      <p className="font-semibold text-gray-700 mb-3">
+        {excelData.length} rows loaded from Excel
+      </p>
+
+      <button
+        onClick={submitBulkUpload}
+        disabled={uploadingExcel}
+        className="bg-green-600 text-white px-6 py-2 rounded hover:bg-green-700"
+      >
+        {uploadingExcel ? "Uploading..." : "Upload All Books"}
+      </button>
+    </div>
+  )}
+</div>
       {/* FORM */}
       <form onSubmit={handleSubmit} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         <div>
